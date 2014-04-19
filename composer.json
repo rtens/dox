@@ -1,0 +1,24 @@
+{
+    "name": "rtens/dox",
+    "description": "Browser for executable specification.",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Nikolas Martens",
+            "email": "Nikolas.M@rtens.org"
+        }
+    ],
+    "require": {
+        "nikic/php-parser": "1.*",
+        "erusev/parsedown": "1.*"
+    },
+    "require-dev": {
+        "watoki/scrut": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "rtens\\dox": "src/",
+            "spec\\rtens\\dox": ""
+        }
+    }
+}
