@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteBase /dox
+RewriteRule ^(.*)$ index.php?-=$1 [L,QSA]
