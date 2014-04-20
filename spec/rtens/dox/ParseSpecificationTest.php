@@ -11,7 +11,8 @@ class ParseSpecificationTest extends Specification {
 
     public function testSpecificationClass() {
         $this->parser->whenIParse(
-            'class SomeSpecificationTest {}'
+            'namespace some\name\space;
+            class SomeSpecificationTest {}'
         );
         $this->parser->thenThereShouldBeASpecificationWithTheName('Some specification');
     }

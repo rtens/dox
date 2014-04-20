@@ -40,6 +40,10 @@ class Parser {
             if ($stmt instanceof Node\Stmt\Class_) {
                 return $stmt;
             }
+            try {
+                return $this->findClassStatement($stmt);
+            } catch (\Exception $e) {
+            }
         }
         throw new \Exception('Could not find class definition');
     }
