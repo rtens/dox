@@ -1,20 +1,19 @@
 <?php
 namespace spec\rtens\dox;
 
-use rtens\dox\MarkdownParser;
 use watoki\scrut\Specification;
 
 /**
- * @property string out
+ * @property ParserFixture parser <-
  */
-class MethodBodyTest extends Specification {
+class ParseScenarioMethodsTest extends Specification {
 
     public function testJustCode() {
-        $this->whenIParse(
+        $this->parser->whenIParseTheMethodBody(
             '$some = 3;
             $code = $some + 1;'
         );
-        $this->thenTheOutputShouldBe(
+        $this->parser->thenTheScenarioShouldBe(
             '```php
             $some = 3;
             $code = $some + 1;
@@ -23,16 +22,24 @@ class MethodBodyTest extends Specification {
     }
 
     public function testJustComment() {
-        $this->whenIParse('// Just a comment');
-        $this->thenTheOutputShouldBe('');
+        $this->parser->whenIParseTheMethodBody('// Just a comment');
+        $this->parser->thenTheScenarioShouldBe('');
+    }
+
+    public function testJustCommentHack() {
+        $this->parser->whenIParseTheMethodBody(
+            '// Just a comment
+            null;'
+        );
+        $this->parser->thenTheScenarioShouldBe('Just a comment');
     }
 
     public function testCodeWithLineComment() {
-        $this->whenIParse(
+        $this->parser->whenIParseTheMethodBody(
             '// Some comment describing the code
             $code = 3 + 4;'
         );
-        $this->thenTheOutputShouldBe(
+        $this->parser->thenTheScenarioShouldBe(
             'Some comment describing the code
 
             ```php
@@ -42,13 +49,13 @@ class MethodBodyTest extends Specification {
     }
 
     public function testCodeWithTwoLineComments() {
-        $this->whenIParse(
+        $this->parser->whenIParseTheMethodBody(
             '// Some comment describing the code
             // Some more commenting
             $code = 3 + 4;
             $more = $code + 1;'
         );
-        $this->thenTheOutputShouldBe(
+        $this->parser->thenTheScenarioShouldBe(
             'Some comment describing the code
 
             Some more commenting
@@ -61,14 +68,14 @@ class MethodBodyTest extends Specification {
     }
 
     public function testCodeWithBlockComment() {
-        $this->whenIParse(
+        $this->parser->whenIParseTheMethodBody(
             '/*
               * This is some
               * *block* comment.
               */
             $code = 1 + 1;'
         );
-        $this->thenTheOutputShouldBe(
+        $this->parser->thenTheScenarioShouldBe(
             'This is some
             *block* comment.
 
@@ -78,8 +85,28 @@ class MethodBodyTest extends Specification {
         );
     }
 
+    public function testBlockCommentWithParagraphs() {
+        $this->parser->whenIParseTheMethodBody(
+            '/*
+              * This is some comment.
+              *
+              * With two paragraphs.
+              */
+            $code = 1 + 1;'
+        );
+        $this->parser->thenTheScenarioShouldBe(
+            'This is some comment.
+
+            With two paragraphs.
+
+            ```php
+            $code = 1 + 1;
+            ```'
+        );
+    }
+
     public function testMultipleCommentsAndCode() {
-        $this->whenIParse(
+        $this->parser->whenIParseTheMethodBody(
             '// Some comment
             $code = 1 + 1;
 
@@ -88,7 +115,7 @@ class MethodBodyTest extends Specification {
              */
             $more = $code;'
         );
-        $this->thenTheOutputShouldBe(
+        $this->parser->thenTheScenarioShouldBe(
             'Some comment
 
             ```php
@@ -101,22 +128,6 @@ class MethodBodyTest extends Specification {
             $more = $code;
             ```'
         );
-    }
-
-    private function whenIParse($code) {
-        $parser = new MarkdownParser();
-        $this->out = $parser->parse('<?php ' . $this->trimLines($code));
-    }
-
-    private function thenTheOutputShouldBe($string) {
-        $this->assertEquals($this->trimLines($string), $this->out);
-    }
-
-    private function trimLines($string) {
-        $string = implode("\n", array_map(function ($line) {
-            return trim($line);
-        }, explode("\n", $string)));
-        return $string;
     }
 
 } 
