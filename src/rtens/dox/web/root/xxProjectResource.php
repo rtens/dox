@@ -48,7 +48,10 @@ class xxProjectResource extends Container {
 
         foreach (glob($dir . '/*') as $file) {
             if (is_dir($file)) {
-                $tree["folder"][] = $this->assembleSubTree($file, $config);
+                $subTree = $this->assembleSubTree($file, $config);
+                if ($subTree) {
+                    $tree["folder"][] = $subTree;
+                }
             } else if (substr($file, -strlen($fileSuffix)) == $fileSuffix) {
                 $path = substr($file, strlen($config->getFolder()), -strlen($fileSuffix));
                 $url = $this->getUrl() . $path;
@@ -59,7 +62,7 @@ class xxProjectResource extends Container {
                 );
             }
         }
-        return $tree;
+        return $tree['specification'] ? $tree : null;
     }
 
 } 

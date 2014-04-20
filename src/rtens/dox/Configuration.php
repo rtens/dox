@@ -3,6 +3,8 @@ namespace rtens\dox;
 
 class Configuration {
 
+    public static $CLASS = __CLASS__;
+
     /** @var array|ProjectConfiguration[] */
     private $projects = array();
 

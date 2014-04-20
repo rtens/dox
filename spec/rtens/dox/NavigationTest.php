@@ -132,4 +132,25 @@ class NavigationTest extends Specification {
         ]);
     }
 
+    public function testSkipEmptyFolders() {
+        $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
+        $this->file->givenTheFile('spec/OneTest.php');
+        $this->file->givenTheFile('spec/a/Ignored.php');
+        $this->file->givenTheFile('spec/a/b/IgnoredAsWell.php');
+
+        $this->web->whenIRequestTheResourceAt('MyProject');
+        $this->web->thenTheResponseShouldContain([
+            "navigation" => [
+                "name" => "MyProject",
+                "folder" => [],
+                "specification" => [
+                    [
+                        "name" => "One",
+                        "href" => "http://dox/MyProject/One"
+                    ]
+                ]
+            ]
+        ]);
+    }
+
 } 
