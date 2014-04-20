@@ -14,6 +14,9 @@ class xxSpecificationResource extends DynamicResource {
     /** @var Configuration <- */
     public $config;
 
+    /** @var \Parsedown <- */
+    public $markdown;
+
     /** @var Path */
     private $path;
 
@@ -37,7 +40,7 @@ class xxSpecificationResource extends DynamicResource {
         return array(
             'specification' => array(
                 'name' => $specification->getName(),
-                'description' => $specification->getDescription(),
+                'description' => $this->asHtml($specification->getDescription()),
                 'scenarios' => $this->assembleScenarios($specification)
             )
         );
@@ -48,11 +51,18 @@ class xxSpecificationResource extends DynamicResource {
         foreach ($specification->getScenarios() as $scenario) {
             $scenarios[] = array(
                 'name' => $scenario->getName(),
-                'description' => $scenario->getDescription(),
-                'content' => $scenario->getContent()
+                'description' => $this->asHtml($scenario->getDescription()),
+                'content' => $this->asHtml($scenario->getContent())
             );
         }
         return $scenarios;
+    }
+
+    private function asHtml($markdown) {
+        if (!$markdown) {
+            return $markdown;
+        }
+        return $this->markdown->text($markdown);
     }
 
 }

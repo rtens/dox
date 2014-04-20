@@ -45,16 +45,16 @@ class RenderSpecificationTest extends Specification {
             '<?php
 
             /**
-             * This is some description
+             * This is some *description*
              *
              * @property ignore this
              */
             class SpecificationTest {
                 /**
-                 * Description of scenario
+                 * Description of *scenario*
                  */
                 public function testSomeThings() {
-                    // Just some comment
+                    // Just *some* **comment**
                     $andCode = 1 + 1;
                 }
             }'
@@ -63,20 +63,16 @@ class RenderSpecificationTest extends Specification {
         $this->thenTheResponseShouldContain(
             '"specification": {
                 "name": "Specification",
-                "description": "This is some description",
+                "description": "<p>This is some <em>description<\\/em><\\/p>",
                 "scenarios": [
                     {
                         "name": "Some things",
-                        "description": "Description of scenario",
-                        "content": "Just some comment\n\n```php\n$andCode = 1 + 1;\n```"
+                        "description": "<p>Description of <em>scenario<\\/em><\\/p>",
+                        "content": "<p>Just <em>some<\\/em> <strong>comment<\\/strong><\\/p>\n<pre><code class=\"language-php\">$andCode = 1 + 1;<\\/code><\\/pre>"
                     }
                 ]
             }'
         );
-    }
-
-    public function testParseDescriptionsAndCommentsAsMarkdown() {
-        $this->markTestIncomplete();
     }
 
     protected function setUp() {
