@@ -43,7 +43,7 @@ class NavigationTest extends Specification {
         $this->web->thenIShouldBeRedirectedTo('http://dox/MyProject/my/Introduction');
     }
 
-    public function testSpecificationTree() {
+    public function testNavigationTreeInProjectResource() {
         $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
         $this->file->givenTheFile('spec/OneTest.php');
         $this->file->givenTheFile('spec/TwoTest.php');
@@ -94,6 +94,30 @@ class NavigationTest extends Specification {
                         ]
                     ]
                 ],
+                "specification" => [
+                    [
+                        "name" => "One",
+                        "href" => "http://dox/MyProject/One"
+                    ],
+                    [
+                        "name" => "Two",
+                        "href" => "http://dox/MyProject/Two"
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    public function testNavigationTreeInSpecificationResource() {
+        $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
+        $this->file->givenTheFile_WithContent('spec/OneTest.php', '<?php class OneTest {}');
+        $this->file->givenTheFile_WithContent('spec/TwoTest.php', '<?php class TwoTest {}');
+
+        $this->web->whenIRequestTheResourceAt('MyProject/One');
+        $this->web->thenTheResponseShouldContain([
+            "navigation" => [
+                "name" => "MyProject",
+                "folder" => [],
                 "specification" => [
                     [
                         "name" => "One",

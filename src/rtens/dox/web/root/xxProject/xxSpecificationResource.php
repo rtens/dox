@@ -4,6 +4,7 @@ namespace rtens\dox\web\root\xxProject;
 use rtens\dox\Configuration;
 use rtens\dox\Reader;
 use rtens\dox\Specification;
+use rtens\dox\web\root\xxProjectResource;
 use watoki\curir\http\Path;
 use watoki\curir\http\Request;
 use watoki\curir\resource\DynamicResource;
@@ -33,16 +34,28 @@ class xxSpecificationResource extends DynamicResource {
         $reader = new Reader($this->config->getProject($project));
         $specification = $reader->readSpecification($this->path);
 
-        return json_encode($this->assembleSpecification($specification), JSON_PRETTY_PRINT);
+        return json_encode($this->assembleModel($specification, $project), JSON_PRETTY_PRINT);
+    }
+
+    private function assembleModel(Specification $specification, $project) {
+        return array(
+            'specification' => $this->assembleSpecification($specification),
+            'navigation' => $this->getParent()->assembleNavigation($this->config->getProject($project))
+        );
+    }
+
+    /**
+     * @return xxProjectResource
+     */
+    public function getParent() {
+        return parent::getParent();
     }
 
     private function assembleSpecification(Specification $specification) {
         return array(
-            'specification' => array(
-                'name' => $specification->getName(),
-                'description' => $this->asHtml($specification->getDescription()),
-                'scenarios' => $this->assembleScenarios($specification)
-            )
+            'name' => $specification->getName(),
+            'description' => $this->asHtml($specification->getDescription()),
+            'scenarios' => $this->assembleScenarios($specification)
         );
     }
 

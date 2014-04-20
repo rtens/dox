@@ -46,7 +46,10 @@ class WebFixture extends Fixture {
     }
 
     public function thenTheResponseShouldContain($model) {
-        $this->spec->assertContains(json_encode($model, JSON_PRETTY_PRINT), $this->response->getBody());
+        $charlist = "{}, \n";
+        $this->spec->assertContains(
+            trim(json_encode($model, JSON_PRETTY_PRINT), $charlist),
+            trim($this->response->getBody(), $charlist));
     }
 
     public function thenIShouldBeRedirectedTo($path) {

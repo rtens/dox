@@ -26,16 +26,19 @@ class xxProjectResource extends Container {
         return json_encode($this->assembleModel($config), JSON_PRETTY_PRINT);
     }
 
-    private function assembleModel(ProjectConfiguration $config) {
-        $tree = $this->assembleNavigationTree($config->getFolder(), $config);
+    public function assembleNavigation(ProjectConfiguration $config) {
+        $tree = $this->assembleSubTree($config->getFolder(), $config);
         $tree['name'] = $config->getName();
+        return $tree;
+    }
 
+    private function assembleModel(ProjectConfiguration $config) {
         return array(
-            'navigation' => $tree
+            'navigation' => $this->assembleNavigation($config)
         );
     }
 
-    private function assembleNavigationTree($dir, ProjectConfiguration $config) {
+    private function assembleSubTree($dir, ProjectConfiguration $config) {
         $tree = array(
             "name" => basename($dir),
             "folder" => array(),
@@ -45,7 +48,7 @@ class xxProjectResource extends Container {
 
         foreach (glob($dir . '/*') as $file) {
             if (is_dir($file)) {
-                $tree["folder"][] = $this->assembleNavigationTree($file, $config);
+                $tree["folder"][] = $this->assembleSubTree($file, $config);
             } else if (substr($file, -strlen($fileSuffix)) == $fileSuffix) {
                 $path = substr($file, strlen($config->getFolder()), -strlen($fileSuffix));
                 $url = $this->getUrl() . $path;
