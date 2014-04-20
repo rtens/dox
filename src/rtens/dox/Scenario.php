@@ -5,9 +5,9 @@ class Scenario {
 
     private $name;
 
-    private $description = '';
+    private $description;
 
-    private $content = '';
+    private $content;
 
     function __construct($name) {
         $this->name = $name;

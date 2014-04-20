@@ -10,7 +10,10 @@
     ],
     "require": {
         "nikic/php-parser": "1.*",
-        "erusev/parsedown": "1.*"
+        "erusev/parsedown": "1.*",
+        "watoki/curir": "*",
+        "watoki/tempan": "*",
+        "watoki/cfg": "*"
     },
     "require-dev": {
         "watoki/scrut": "*"

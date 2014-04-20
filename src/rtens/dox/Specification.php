@@ -5,7 +5,7 @@ class Specification {
 
     private $name;
 
-    private $description = '';
+    private $description;
 
     /** @var array|Scenario[] */
     private $scenarios = array();

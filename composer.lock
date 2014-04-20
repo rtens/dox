@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "8db99592296892d92b5bc0e0a0b77dcb",
+    "hash": "939c6ccfd67c520eaaf859d40406b112",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -50,12 +50,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "c341ab2ecfa117b265c452666f11471e152c9416"
+                "reference": "3db3ad7d1ecd731ffdd0c4c04db4bb019f56c0c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/c341ab2ecfa117b265c452666f11471e152c9416",
-                "reference": "c341ab2ecfa117b265c452666f11471e152c9416",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3db3ad7d1ecd731ffdd0c4c04db4bb019f56c0c7",
+                "reference": "3db3ad7d1ecd731ffdd0c4c04db4bb019f56c0c7",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,331 @@
                 "parser",
                 "php"
             ],
-            "time": "2014-04-02 07:44:45"
+            "time": "2014-04-19 21:14:28"
+        },
+        {
+            "name": "watoki/cfg",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/watoki/cfg.git",
+                "reference": "302c997fe89b7389d4916d0e7df8fa1f53e14533"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/watoki/cfg/zipball/302c997fe89b7389d4916d0e7df8fa1f53e14533",
+                "reference": "302c997fe89b7389d4916d0e7df8fa1f53e14533",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.8",
+                "watoki/factory": "*"
+            },
+            "require-dev": {
+                "watoki/scrut": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "watoki\\cfg": "src/",
+                    "spec\\watoki\\cfg": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolas Martens",
+                    "email": "Nikolas.M@rtens.org",
+                    "homepage": "http://rtens.org"
+                }
+            ],
+            "description": "Configuration loader",
+            "homepage": "http://github.com/watoki/cfg",
+            "keywords": [
+                "configuration",
+                "watoki"
+            ],
+            "time": "2013-11-21 12:47:38"
+        },
+        {
+            "name": "watoki/collections",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/watoki/collections.git",
+                "reference": "a82f3e39f1e450af910486dcf1ea5fdbb5a176df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/watoki/collections/zipball/a82f3e39f1e450af910486dcf1ea5fdbb5a176df",
+                "reference": "a82f3e39f1e450af910486dcf1ea5fdbb5a176df",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "watoki/smokey": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "spec\\watoki\\collections": "",
+                    "watoki\\collections": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolas Martens",
+                    "email": "Nikolas.M@rtens.org",
+                    "homepage": "http://rtens.org"
+                }
+            ],
+            "description": "Array wrapper for more structured collections for PHP",
+            "homepage": "http://github.com/watoki/collections",
+            "keywords": [
+                "collection",
+                "data structure",
+                "watoki"
+            ],
+            "time": "2014-02-22 09:18:23"
+        },
+        {
+            "name": "watoki/curir",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/watoki/curir.git",
+                "reference": "81e51e6b0b1f272685d522c8aa157c42083bdafc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/watoki/curir/zipball/81e51e6b0b1f272685d522c8aa157c42083bdafc",
+                "reference": "81e51e6b0b1f272685d522c8aa157c42083bdafc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.8",
+                "watoki/collections": "*",
+                "watoki/factory": "*"
+            },
+            "require-dev": {
+                "watoki/scrut": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "watoki\\curir": "src/",
+                    "spec\\watoki\\curir": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolas Martens",
+                    "email": "Nikolas.M@rtens.org",
+                    "homepage": "http://rtens.org"
+                }
+            ],
+            "description": "Web delivery system for PHP applications",
+            "homepage": "http://github.com/watoki/curir",
+            "keywords": [
+                "mvc",
+                "router",
+                "routing",
+                "watoki"
+            ],
+            "time": "2014-04-15 21:03:05"
+        },
+        {
+            "name": "watoki/dom",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/watoki/dom.git",
+                "reference": "6e7940dbca9e9008c18381eb0aa86ea10e304476"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/watoki/dom/zipball/6e7940dbca9e9008c18381eb0aa86ea10e304476",
+                "reference": "6e7940dbca9e9008c18381eb0aa86ea10e304476",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.8",
+                "watoki/collections": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "watoki\\dom": "src/",
+                    "spec\\watoki\\dom": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolas Martens",
+                    "email": "Nikolas.M@rtens.org",
+                    "homepage": "http://rtens.org"
+                }
+            ],
+            "description": "A minimal (X)HTML/XML parser for PHP",
+            "homepage": "http://github.com/watoki/dom",
+            "keywords": [
+                "parser",
+                "watoki"
+            ],
+            "time": "2013-11-09 10:12:08"
+        },
+        {
+            "name": "watoki/factory",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/watoki/factory.git",
+                "reference": "62fac599be709be176858f4f102c52fe9ea2725d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/watoki/factory/zipball/62fac599be709be176858f4f102c52fe9ea2725d",
+                "reference": "62fac599be709be176858f4f102c52fe9ea2725d",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "1.*",
+                "php": ">=5.3.8"
+            },
+            "require-dev": {
+                "watoki/scrut": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "watoki\\factory": "src/",
+                    "spec\\watoki\\factory": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolas Martens",
+                    "email": "Nikolas.M@rtens.org",
+                    "homepage": "http://rtens.org"
+                }
+            ],
+            "description": "A simple dependency injection container for PHP",
+            "homepage": "http://github.com/watoki/factory",
+            "keywords": [
+                "dependency injection",
+                "watoki"
+            ],
+            "time": "2014-04-19 18:06:49"
+        },
+        {
+            "name": "watoki/smokey",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/watoki/smokey.git",
+                "reference": "ea146faf54720b74df22a2602500420b6cc844fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/watoki/smokey/zipball/ea146faf54720b74df22a2602500420b6cc844fb",
+                "reference": "ea146faf54720b74df22a2602500420b6cc844fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "spec\\watoki\\smokey": "",
+                    "watoki\\smokey": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolas Martens",
+                    "email": "Nikolas.M@rtens.org",
+                    "homepage": "http://rtens.org"
+                }
+            ],
+            "description": "Simple runtime event dispatcher for PHP",
+            "homepage": "http://github.com/watoki/smokey",
+            "keywords": [
+                "event",
+                "event dispatcher",
+                "watoki"
+            ],
+            "time": "2013-03-05 08:49:27"
+        },
+        {
+            "name": "watoki/tempan",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/watoki/tempan.git",
+                "reference": "db2b9dd70f53d7386127d05f3145f5368ed55189"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/watoki/tempan/zipball/db2b9dd70f53d7386127d05f3145f5368ed55189",
+                "reference": "db2b9dd70f53d7386127d05f3145f5368ed55189",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.8",
+                "watoki/collections": "*",
+                "watoki/dom": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "watoki\\tempan": "src/",
+                    "spec\\watoki\\tempan": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolas Martens",
+                    "email": "Nikolas.M@rtens.org",
+                    "homepage": "http://rtens.org"
+                }
+            ],
+            "description": "Template animation engine using annotated HTML for PHP",
+            "homepage": "http://github.com/watoki/tempan",
+            "keywords": [
+                "rdfa",
+                "template",
+                "template animation",
+                "watoki"
+            ],
+            "time": "2014-04-12 10:56:45"
         }
     ],
     "packages-dev": [
@@ -514,53 +838,6 @@
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
             "time": "2014-04-18 20:40:13"
-        },
-        {
-            "name": "watoki/factory",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/watoki/factory.git",
-                "reference": "62fac599be709be176858f4f102c52fe9ea2725d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/watoki/factory/zipball/62fac599be709be176858f4f102c52fe9ea2725d",
-                "reference": "62fac599be709be176858f4f102c52fe9ea2725d",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "1.*",
-                "php": ">=5.3.8"
-            },
-            "require-dev": {
-                "watoki/scrut": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "watoki\\factory": "src/",
-                    "spec\\watoki\\factory": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nikolas Martens",
-                    "email": "Nikolas.M@rtens.org",
-                    "homepage": "http://rtens.org"
-                }
-            ],
-            "description": "A simple dependency injection container for PHP",
-            "homepage": "http://github.com/watoki/factory",
-            "keywords": [
-                "dependency injection",
-                "watoki"
-            ],
-            "time": "2014-04-19 18:06:49"
         },
         {
             "name": "watoki/scrut",

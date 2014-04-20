@@ -43,13 +43,6 @@ class ParserFixture extends Fixture {
         $this->spec->assertEquals($this->trimLines($string), $this->specification->getDescription());
     }
 
-    private function trimLines($string) {
-        $string = implode("\n", array_map(function ($line) {
-            return trim($line);
-        }, explode("\n", $string)));
-        return $string;
-    }
-
     public function thenThereShouldBe_Scenarios($int) {
         $this->spec->assertCount($int, $this->specification->getScenarios());
     }
@@ -71,6 +64,13 @@ class ParserFixture extends Fixture {
     public function thenScenario_ShouldHaveTheContent($pos, $string) {
         $scenarios = $this->specification->getScenarios();
         $this->spec->assertEquals($this->trimLines($string), $scenarios[$pos - 1]->getContent());
+    }
+
+    private function trimLines($string) {
+        $string = implode("\n", array_map(function ($line) {
+            return trim($line);
+        }, explode("\n", $string)));
+        return $string;
     }
 
 } 
