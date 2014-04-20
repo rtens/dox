@@ -39,6 +39,46 @@ class RenderSpecificationTest extends Specification {
         );
     }
 
+    public function testSpecificationWithDescriptionAndScenarios() {
+        $this->givenTheProject_WithTheSpecificationFolder('YourProject', 'yourSpec');
+        $this->file->givenTheFile_WithContent('yourSpec/some/SpecificationTest.php',
+            '<?php
+
+            /**
+             * This is some description
+             *
+             * @property ignore this
+             */
+            class SpecificationTest {
+                /**
+                 * Description of scenario
+                 */
+                public function testSomeThings() {
+                    // Just some comment
+                    $andCode = 1 + 1;
+                }
+            }'
+        );
+        $this->whenIRequestTheResourceAt('YourProject/some/Specification');
+        $this->thenTheResponseShouldContain(
+            '"specification": {
+                "name": "Specification",
+                "description": "This is some description",
+                "scenarios": [
+                    {
+                        "name": "Some things",
+                        "description": "Description of scenario",
+                        "content": "Just some comment\n\n```php\n$andCode = 1 + 1;\n```"
+                    }
+                ]
+            }'
+        );
+    }
+
+    public function testParseDescriptionsAndCommentsAsMarkdown() {
+        $this->markTestIncomplete();
+    }
+
     protected function setUp() {
         parent::setUp();
         $this->config = new Configuration();

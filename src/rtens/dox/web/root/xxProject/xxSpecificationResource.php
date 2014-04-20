@@ -46,7 +46,11 @@ class xxSpecificationResource extends DynamicResource {
     private function assembleScenarios(Specification $specification) {
         $scenarios = array();
         foreach ($specification->getScenarios() as $scenario) {
-            $scenarios[] = $scenario;
+            $scenarios[] = array(
+                'name' => $scenario->getName(),
+                'description' => $scenario->getDescription(),
+                'content' => $scenario->getContent()
+            );
         }
         return $scenarios;
     }
