@@ -53,4 +53,8 @@ class FileFixture extends Fixture {
         };
     }
 
+    public function givenTheFile($path) {
+        $this->givenTheFile_WithContent($path, '');
+    }
+
 } 

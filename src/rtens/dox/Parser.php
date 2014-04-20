@@ -155,7 +155,7 @@ class Parser {
         return "```php\n" . $this->printer->prettyPrint($stmts) . "\n```";
     }
 
-    private function uncamelize($string) {
+    public function uncamelize($string) {
         return ucfirst(trim(strtolower(preg_replace('/([A-Z])/', ' $1', $string))));
     }
 }

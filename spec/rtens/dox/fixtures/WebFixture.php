@@ -33,6 +33,10 @@ class WebFixture extends Fixture {
         $this->config->addProject(new ProjectConfiguration($project, $this->file->tmpDir() . '/spec'));
     }
 
+    public function givenTheStartSpecificationOf_Is($project, $specification) {
+        $this->config->getProject($project)->setStartSpecification($specification);
+    }
+
     public function givenTheProject_WithTheSpecificationFolder($project, $folder) {
         $this->config->addProject(new ProjectConfiguration($project, $this->file->tmpDir() . '/' . $folder));
     }
@@ -43,6 +47,10 @@ class WebFixture extends Fixture {
 
     public function thenTheResponseShouldContain($model) {
         $this->spec->assertContains(json_encode($model, JSON_PRETTY_PRINT), $this->response->getBody());
+    }
+
+    public function thenIShouldBeRedirectedTo($path) {
+        $this->spec->assertEquals($path, $this->response->getHeaders()->get(Response::HEADER_LOCATION));
     }
 
 } 

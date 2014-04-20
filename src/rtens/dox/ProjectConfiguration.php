@@ -7,6 +7,8 @@ class ProjectConfiguration {
 
     private $folder;
 
+    private $startSpecificationPath;
+
     function __construct($name, $folder) {
         $this->name = $name;
         $this->folder = $folder;
@@ -18,5 +20,17 @@ class ProjectConfiguration {
 
     public function getFolder() {
         return $this->folder;
+    }
+
+    public function setStartSpecification($path) {
+        $this->startSpecificationPath = $path;
+    }
+
+    public function getStartSpecification() {
+        return $this->startSpecificationPath;
+    }
+
+    public function getClassSuffix() {
+        return 'Test';
     }
 }
