@@ -1,5 +1,5 @@
 <?php
-namespace spec\rtens\dox;
+namespace spec\rtens\dox\fixtures;
 
 use rtens\dox\Parser;
 use watoki\factory\Factory;

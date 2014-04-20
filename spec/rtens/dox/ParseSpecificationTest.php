@@ -1,6 +1,7 @@
 <?php
 namespace spec\rtens\dox;
 
+use spec\rtens\dox\fixtures\ParserFixture;
 use watoki\scrut\Specification;
 
 /**

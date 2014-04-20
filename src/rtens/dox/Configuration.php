@@ -13,4 +13,8 @@ class Configuration {
     public function getProject($project) {
         return $this->projects[$project];
     }
+
+    public function getProjects() {
+        return array_keys($this->projects);
+    }
 }
