@@ -34,6 +34,11 @@ class ParserFixture extends Fixture {
         $this->thenScenario_ShouldHaveTheContent(1, $string);
     }
 
+    public function thenTheScenarioShouldContain($string) {
+        $scenarios = $this->specification->getScenarios();
+        $this->spec->assertContains($this->trimLines($string), $scenarios[0]->getContent());
+    }
+
     public function thenThereShouldBeASpecificationWithTheName($name) {
         $this->spec->assertTrue($this->specification instanceof \rtens\dox\Specification);
         $this->spec->assertEquals($name, $this->specification->getName());

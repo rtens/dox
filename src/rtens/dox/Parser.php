@@ -115,7 +115,7 @@ class Parser {
                 array_unshift($nodes, $codeStmt);
             } else if ($this->isStep($node)) {
                 $next = 'step';
-            } else  {
+            } else {
                 $next = 'code';
             }
 
@@ -186,36 +186,63 @@ class Parser {
         return "```php\n" . $this->printer->prettyPrint($nodes) . "\n```";
     }
 
+    private function isStep($node) {
+        return $node instanceof MethodCall
+        && (substr($node->name, 0, 5) == 'given'
+            || substr($node->name, 0, 4) == 'when'
+            || substr($node->name, 0, 4) == 'then');
+    }
+
     /**
-     * @param Node[] $nodes
+     * @param MethodCall[] $nodes
      * @return string
      */
     private function printSteps($nodes) {
-        $out = '<div class="steps">' . "\n";
-        $out .= '<div class="step-group context">' . "\n";
+        $map = array(
+            'give' => 'context',
+            'when' => 'action',
+            'then' => 'assertion'
+        );
+
+        $groups = array();
         foreach ($nodes as $node) {
-            if ($node instanceof MethodCall) {
-                $out .= $this->printStep($node) . "\n";
-            }
+            $groups[substr($node->name, 0, 4)][] = $this->printStep($node);
         }
-        $out .= '</div>';
-        return $out . "\n" . '</div>';
+
+        $out = '<div class="steps">';
+        foreach ($groups as $key => $steps) {
+            $out .= "\n". '<div class="step-group ' . $map[$key] . '">' . "\n";
+            $out .= implode("\n", $steps);
+            $out .= '</div>' . "";
+        }
+        return $out . '</div>';
     }
 
     private function printStep(MethodCall $step) {
-        return '<div class="step" title="' . $this->printer->prettyPrintExpr($step) . '">'
-        . $this->uncamelize($step->name) . '.</div>';
+        $code = htmlentities($this->printer->prettyPrintExpr($step));
+
+        return '<div class="step" title="' . $code . '">'
+        . $this->printStepName($step) . '</div>';
+    }
+
+    private function printStepName(MethodCall $step) {
+        $args = array_map(function (Node\Arg $arg) {
+            $printed = $this->printer->pArg($arg);
+            $printed = preg_replace('/_NO_INDENT_\d+/', '', $printed);
+            return ' <span class="arg">' . $printed . '</span>';
+        }, $step->args);
+        $uncamelized = $this->uncamelize($step->name);
+        while ($args) {
+            if (strpos($uncamelized, '_') !== false) {
+                $uncamelized = preg_replace('/_/', array_shift($args), $uncamelized, 1);
+            } else {
+                $uncamelized .= array_shift($args);
+            }
+        }
+        return $uncamelized;
     }
 
     public function uncamelize($string) {
-        return ucfirst(trim(strtolower(preg_replace('/([A-Z])/', ' $1', $string))));
-    }
-
-    /**
-     * @param $node
-     * @return bool
-     */
-    private function isStep($node) {
-        return $node instanceof MethodCall && substr($node->name, 0, 5) == 'given';
+        return str_replace(' i ', ' I ', ucfirst(trim(strtolower(preg_replace('/([A-Z])/', ' $1', $string)))));
     }
 }
