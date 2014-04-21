@@ -6,6 +6,7 @@ use rtens\dox\Executer;
 use rtens\dox\Parser;
 use rtens\dox\ProjectConfiguration;
 use rtens\dox\web\Presenter;
+use watoki\curir\http\error\HttpError;
 use watoki\curir\resource\Container;
 use watoki\curir\responder\Redirecter;
 
@@ -35,11 +36,11 @@ class xxProjectResource extends Container {
         $this->executer->execute('cd ' . $config->getFolder());
         $error = $this->executer->execute('git pull origin master');
 
-        if (!$error) {
-            return 'OK - Updated ' . $config->getName();
-        } else {
-            return "FAILED with return code " . $error . ' (see logs for details)';
+        if ($error) {
+            throw new \Exception("FAILED with return code " . $error . ' (see logs for details)');
         }
+
+        return 'OK - Updated ' . $config->getName();
     }
 
     private function assembleModel(ProjectConfiguration $config) {
