@@ -4,6 +4,12 @@
 
 [executable specification]: http://specificationbyexample.com/key_ideas.html
 
+## Documentation ##
+
+Of course, *dox* itself is documentad using executable specification. You can find it [here][dox].
+
+[dox]: http://dox.rtens.org/rtens-dox
+
 ## Installation ##
 
 Clone and build
