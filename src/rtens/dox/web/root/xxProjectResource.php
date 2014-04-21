@@ -33,8 +33,7 @@ class xxProjectResource extends Container {
 
     public function doPost() {
         $config = $this->getProjectConfig();
-        $this->executer->execute('cd ' . $config->getFolder());
-        $error = $this->executer->execute('git pull origin master');
+        $error = $this->executer->execute('cd ' . $config->getFolder() . ' && git pull origin master');
 
         if ($error) {
             throw new \Exception("FAILED with return code " . $error . ' (see logs for details)');

@@ -21,8 +21,7 @@ class WebHookTest extends Specification {
     public function testReceivePushEvent() {
         $this->web->givenTheProject_WithTheSpecificationFolder('Project', 'spec');
         $this->web->whenISendA_RequestTo(Request::METHOD_POST, 'Project');
-        $this->thenExecutedCommand_ShouldBe(1, 'cd ' . $this->file->pathTo('spec'));
-        $this->thenExecutedCommand_ShouldBe(2, 'git pull origin master');
+        $this->thenExecutedCommand_ShouldBe(1, 'cd ' . $this->file->pathTo('spec') . ' && git pull origin master');
         $this->web->thenTheResponseShouldBe('OK - Updated Project');
     }
 
