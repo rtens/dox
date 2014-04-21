@@ -1,4 +1,4 @@
-# dox #
+# dox [![Build Status](https://travis-ci.org/rtens/dox.png?branch=master)](https://travis-ci.org/rtens/dox)
 
 *dox* publishes [executable specification] in a human-friendly and easily browsable way.
 
