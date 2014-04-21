@@ -7,11 +7,11 @@ class Executer {
         $return = 0;
         $output = array();
         exec($command, $output, $return);
-        $this->log($command, $output);
+        $this->log($command, $output, $return);
         return $return;
     }
 
-    private function log($command, $output) {
+    private function log($command, $output, $return) {
         $logDir = ROOT . '/log';
         if (!file_exists($logDir)) {
             mkdir($logDir);
@@ -19,7 +19,7 @@ class Executer {
 
         $output = $output ? "\n" . implode("\n", $output) : "";
 
-            $data = date('Y-m-d H:i:s') . "\n$ $command$output\n\n";
+            $data = date('Y-m-d H:i:s') . "\n$ $command [$return] $output\n\n";
         file_put_contents($logDir . '/' . date('Y-m-d') . '.txt', $data, FILE_APPEND);
     }
 
