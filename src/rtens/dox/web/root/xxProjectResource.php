@@ -2,6 +2,7 @@
 namespace rtens\dox\web\root;
 
 use rtens\dox\Configuration;
+use rtens\dox\Executer;
 use rtens\dox\Parser;
 use rtens\dox\ProjectConfiguration;
 use rtens\dox\web\Presenter;
@@ -16,15 +17,24 @@ class xxProjectResource extends Container {
     /** @var Parser <- */
     public $parser;
 
+    /** @var Executer <- */
+    public $executer;
+
     public function doGet() {
-        $project = $this->getUrl()->getPath()->last();
-        $config = $this->config->getProject($project);
+        $config = $this->getProjectConfig();
         $start = $config->getStartSpecification();
         if ($start) {
             return new Redirecter($this->getUrl($start));
         }
 
         return new Presenter($this, $this->assembleModel($config));
+    }
+
+    public function doPost() {
+        $config = $this->getProjectConfig();
+        $this->executer->execute('cd ' . $config->getFolder());
+        $this->executer->execute('git pull origin master');
+        return 'OK - Updated ' . $config->getName();
     }
 
     private function assembleModel(ProjectConfiguration $config) {
@@ -75,6 +85,14 @@ class xxProjectResource extends Container {
             }
         }
         return $list;
+    }
+
+    /**
+     * @return ProjectConfiguration
+     */
+    private function getProjectConfig() {
+        $project = $this->getUrl()->getPath()->last();
+        return $this->config->getProject($project);
     }
 
 } 

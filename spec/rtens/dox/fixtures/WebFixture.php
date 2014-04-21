@@ -1,7 +1,6 @@
 <?php
 namespace spec\rtens\dox\fixtures;
 
-use watoki\scrut\Fixture;
 use rtens\dox\Configuration;
 use rtens\dox\ProjectConfiguration;
 use rtens\dox\web\RootResource;
@@ -9,24 +8,20 @@ use watoki\curir\http\Path;
 use watoki\curir\http\Request;
 use watoki\curir\http\Response;
 use watoki\curir\http\Url;
-use watoki\factory\Factory;
+use watoki\scrut\Fixture;
 
 /**
  * @property FileFixture file <-
  *
  * @property Configuration config
  * @property Response response
- * @property RootResource root
  */
 class WebFixture extends Fixture {
 
     protected function setUp() {
         parent::setUp();
         $this->config = new Configuration();
-        $factory = new Factory();
-        $factory->setSingleton(get_class($this->config), $this->config);
-
-        $this->root = $factory->getInstance(RootResource::$CLASS, array(Url::parse('http://dox')));
+        $this->spec->factory->setSingleton(get_class($this->config), $this->config);
     }
 
     public function givenTheProject($project) {
@@ -42,7 +37,17 @@ class WebFixture extends Fixture {
     }
 
     public function whenIRequestTheResourceAt($path) {
-        $this->response = $this->root->respond(new Request(Path::parse($path), array('json')));
+        $this->whenISendA_RequestTo(Request::METHOD_GET, $path);
+    }
+
+    public function whenISendA_RequestTo($method, $path) {
+        /** @var RootResource $root */
+        $root = $this->spec->factory->getInstance(RootResource::$CLASS, array(Url::parse('http://dox')));
+        $this->response = $root->respond(new Request(Path::parse($path), array('json'), $method));
+    }
+
+    public function thenTheResponseShouldBe($string) {
+        $this->spec->assertEquals($string, $this->response->getBody());
     }
 
     public function thenTheResponseShouldContain($json) {

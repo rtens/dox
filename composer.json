@@ -16,7 +16,8 @@
         "watoki/cfg": "*"
     },
     "require-dev": {
-        "watoki/scrut": "*"
+        "watoki/scrut": "*",
+        "rtens/mockster": "*"
     },
     "autoload": {
         "psr-0": {

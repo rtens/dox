@@ -9,6 +9,10 @@ class FileFixture extends Fixture {
         return __DIR__ . '/tmp';
     }
 
+    public function pathTo($file) {
+        return $this->tmpDir() . '/' . $file;
+    }
+
     protected function setUp() {
         parent::setUp();
 
