@@ -26,43 +26,54 @@ class xxProjectResource extends Container {
         return json_encode($this->assembleModel($config), JSON_PRETTY_PRINT);
     }
 
-    public function assembleNavigation(ProjectConfiguration $config) {
-        $tree = $this->assembleSubTree($config->getFolder(), $config);
-        $tree['name'] = $config->getName();
-        return $tree;
-    }
-
     private function assembleModel(ProjectConfiguration $config) {
         return array(
             'navigation' => $this->assembleNavigation($config)
         );
     }
 
-    private function assembleSubTree($dir, ProjectConfiguration $config) {
-        $tree = array(
-            "name" => basename($dir),
-            "folder" => array(),
-            "specification" => array()
+    public function assembleNavigation(ProjectConfiguration $config) {
+        $list= array(
+            "name" => $config->getName(),
+            "folder" => $this->assembleFolders($config->getFolder(), $config),
+            "specification" => $this->assembleSpecificationList($config->getFolder(), $config)
         );
+        return $list;
+    }
+
+    private function assembleSpecificationList($dir, ProjectConfiguration $config) {
         $fileSuffix = $config->getClassSuffix() . '.php';
 
+        $list = array();
         foreach (glob($dir . '/*') as $file) {
-            if (is_dir($file)) {
-                $subTree = $this->assembleSubTree($file, $config);
-                if ($subTree) {
-                    $tree["folder"][] = $subTree;
-                }
-            } else if (substr($file, -strlen($fileSuffix)) == $fileSuffix) {
+            if (!is_dir($file) && substr($file, -strlen($fileSuffix)) == $fileSuffix) {
                 $path = substr($file, strlen($config->getFolder()), -strlen($fileSuffix));
                 $url = $this->getUrl() . $path;
 
-                $tree["specification"][] = array(
+                $list[] = array(
                     "name" => $this->parser->uncamelize(substr(basename($file), 0, -strlen($fileSuffix))),
                     "href" => $url
                 );
             }
         }
-        return $tree['specification'] ? $tree : null;
+        return $list;
+    }
+
+    private function assembleFolders($dir, ProjectConfiguration $config) {
+        $list = array();
+        foreach (glob($dir . '/*') as $file) {
+            if (is_dir($file)) {
+                $specifications = $this->assembleSpecificationList($file, $config);
+                if ($specifications) {
+                    $list[] = array(
+                        'name' => substr($file, strlen($config->getFolder())+1),
+                        'specification' => $specifications
+                    );
+                }
+                $list = array_merge($list, $this->assembleFolders($file, $config));
+            }
+        }
+        return $list;
     }
 
 } 

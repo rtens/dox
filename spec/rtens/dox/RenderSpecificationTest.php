@@ -23,7 +23,7 @@ class RenderSpecificationTest extends Specification {
             "specification" => [
                 "name" => "Some specification",
                 "description" => null,
-                "scenarios" => []
+                "scenario" => []
             ]
         ]);
     }
@@ -53,7 +53,7 @@ class RenderSpecificationTest extends Specification {
             "specification" => [
                 "name" => "Specification",
                 "description" => "<p>This is some <em>description</em></p>",
-                "scenarios" => [
+                "scenario" => [
                     [
                         "name" => "Some things",
                         "description" => "<p>Description of <em>scenario</em></p>",

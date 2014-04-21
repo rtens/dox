@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>dox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"/>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"/>
+    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <style>
+        h1, h2, h3, h4, h5, .list-group-item {
+            text-transform: capitalize;
+        }
+
+        p {
+            line-height: 1.7em;
+            margin-bottom: 1.2em;
+        }
+
+        pre {
+            margin-bottom: 1.2em;
+        }
+
+        pre code {
+            word-wrap: normal;
+            white-space: pre;
+        }
+
+        .panel-default > .panel-heading {
+            cursor: pointer;
+            background-color: #eee;
+        }
+
+        .panel-heading:hover {
+            background-color: #ddd;
+        }
+
+        .list-group .list-group-item.active,
+        .list-group .list-group-item.active:hover,
+        .list-group .list-group-item.active:focus {
+            background-color: #eee;
+            border-color: #eee;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-3" property="navigation">
+            <div>
+                <h1 property="name">This Project</h1>
+
+                <div class="list-group">
+                    <a class="list-group-item" property="specification" href="#">
+                        <span property="name">Another Specification</span>
+                    </a>
+                    <a class="list-group-item active" property="specification" href="#">
+                        <span property="name">Some Specification</span>
+                    </a>
+                    <a class="list-group-item" property="specification" href="#">
+                        <span property="name">Even more stuff</span>
+                    </a>
+                </div>
+
+                <div property="folder">
+                    <h4 property="name">some/other/folder</h4>
+
+                    <div class="list-group">
+                        <a class="list-group-item" property="specification" href="#">
+                            <span property="name">Another Specification</span>
+                        </a>
+                        <a class="list-group-item" property="specification" href="#">
+                            <span property="name">Even more stuff</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8" property="specification">
+
+            <h2 class="page-header" property="name">Some specification</h2>
+
+            <div class="well" property="description"><p>Some description</p></div>
+
+            <div class="panel-group">
+
+                <div class="panel panel-default" property="scenario">
+                    <div class="panel-heading">
+                        <h3 property="name">Some scenario</h3>
+
+                        <div property="description"><p>Some description</p></div>
+                    </div>
+                    <div class="panel-collapse collapse">
+                        <div class="panel-body" property="content">
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+
+                            <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+                                no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit ame.</p>
+
+<pre><code>$some = $code + 1;
+$really->nothing(2);
+$some = $reall->longCode('this should be more than a line') + $so->iCanSeeIfIt('breaks or scrolls');
+$iSay = 'Hello World!";</code></pre>
+
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                                At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+                                no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit ame.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default" property="scenario">
+                    <div class="panel-heading">
+                        <h3 property="name">Another scenario</h3>
+                    </div>
+                    <div class="panel-collapse collapse">
+                        <div class="panel-body" property="content">
+                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+
+                            <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+                                no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit ame.
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+                                At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+                                no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit ame.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.panel-group .panel-heading').each(function (i, e) {
+        $(e).on('click', function () {
+            var body = $(e).parent().find('.collapse');
+            body.collapse('toggle');
+            body.on("shown.bs.collapse", function () {
+                console.log('shown');
+                $('body').scrollTop($(e).offset().top - 20);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

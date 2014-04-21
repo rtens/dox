@@ -43,7 +43,7 @@ class NavigationTest extends Specification {
         $this->web->thenIShouldBeRedirectedTo('http://dox/MyProject/my/Introduction');
     }
 
-    public function testNavigationTreeInProjectResource() {
+    public function testNavigationInProjectResource() {
         $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
         $this->file->givenTheFile('spec/OneTest.php');
         $this->file->givenTheFile('spec/TwoTest.php');
@@ -60,18 +60,6 @@ class NavigationTest extends Specification {
                 "folder" => [
                     [
                         "name" => "a",
-                        "folder" => [
-                            [
-                                "name" => "b",
-                                "folder" => [],
-                                "specification" => [
-                                    [
-                                        "name" => "A b",
-                                        "href" => "http://dox/MyProject/a/b/AB"
-                                    ]
-                                ]
-                            ]
-                        ],
                         "specification" => [
                             [
                                 "name" => "A one",
@@ -84,8 +72,16 @@ class NavigationTest extends Specification {
                         ]
                     ],
                     [
+                        "name" => "a/b",
+                        "specification" => [
+                            [
+                                "name" => "A b",
+                                "href" => "http://dox/MyProject/a/b/AB"
+                            ]
+                        ]
+                    ],
+                    [
                         "name" => "c",
-                        "folder" => [],
                         "specification" => [
                             [
                                 "name" => "C one",
@@ -108,7 +104,7 @@ class NavigationTest extends Specification {
         ]);
     }
 
-    public function testNavigationTreeInSpecificationResource() {
+    public function testNavigationInSpecificationResource() {
         $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
         $this->file->givenTheFile_WithContent('spec/OneTest.php', '<?php class OneTest {}');
         $this->file->givenTheFile_WithContent('spec/TwoTest.php', '<?php class TwoTest {}');
