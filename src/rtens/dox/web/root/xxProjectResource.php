@@ -33,8 +33,13 @@ class xxProjectResource extends Container {
     public function doPost() {
         $config = $this->getProjectConfig();
         $this->executer->execute('cd ' . $config->getFolder());
-        $this->executer->execute('git pull origin master');
-        return 'OK - Updated ' . $config->getName();
+        $error = $this->executer->execute('git pull origin master');
+
+        if (!$error) {
+            return 'OK - Updated ' . $config->getName();
+        } else {
+            return "FAILED with return code " . $error . ' (see logs for details)';
+        }
     }
 
     private function assembleModel(ProjectConfiguration $config) {
