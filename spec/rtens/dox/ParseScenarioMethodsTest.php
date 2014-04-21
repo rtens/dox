@@ -32,7 +32,9 @@ class ParseScenarioMethodsTest extends Specification {
             '// Just a comment
             null;'
         );
-        $this->parser->thenTheScenarioShouldBe('Just a comment');
+        $this->parser->thenTheScenarioShouldBe(
+            'Just a comment'
+        );
     }
 
     public function testCodeWithLineComment() {

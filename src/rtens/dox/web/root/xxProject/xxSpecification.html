@@ -29,13 +29,37 @@
             margin-bottom: 1.2em;
         }
 
-        pre code {
+        pre code, .step {
+            word-break: keep-all;
             word-wrap: normal;
             white-space: pre;
         }
 
         pre code.hljs {
             background: none;
+        }
+
+        .steps {
+            overflow: auto;
+            display: block;
+            padding: 10px;
+            margin: 0 0 10px;
+            font-size: 13px;
+            line-height: 1.5em;
+            color: #333;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+        }
+
+        .step-group {
+            margin-bottom: .5em;
+        }
+
+        .step .arg {
+            font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+            font-weight: bold;
         }
 
         .panel-default > .panel-heading {
@@ -136,7 +160,7 @@ $iSay = 'Hello World!";</code></pre>
                     <div class="panel-heading">
                         <h3 property="name">Another scenario</h3>
                     </div>
-                    <div class="panel-collapse collapse">
+                    <div class="panel-collapse collapse in">
                         <div class="panel-body" property="content">
                             <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
                                 eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
@@ -147,6 +171,21 @@ $iSay = 'Hello World!";</code></pre>
                                 eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
                                 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
                                 no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit ame.</p>
+
+
+                            <div class="steps">
+                                <div class="step-group context">
+                                    <div class="step" title="$this->givenSomething()">Given something.</div>
+                                    <div class="step" title="$this->given_Has_Cows('Bart', 2)">Given <span class="arg">'Bart'</span> has <span class="arg">2</span> cows.</div>
+                                </div>
+                                <div class="step-group action">
+                                    <div class="step" title="$this->whenSomethingBla()">When something really long happens this should be really long and should not break no matter what not even with spaces and all.</div>
+                                </div>
+                                <div class="step-group assertion">
+                                    <div class="step" title="$this->thenSomething()">Then everything should be ok.</div>
+                                    <div class="step" title="$this->thenSomethingElse()">Then I should take a nap.</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

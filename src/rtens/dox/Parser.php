@@ -4,6 +4,7 @@ namespace rtens\dox;
 use PhpParser\Comment;
 use PhpParser\Lexer;
 use PhpParser\Node;
+use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Parser as PhpParser;
 use PhpParser\PrettyPrinter\Standard;
 
@@ -25,23 +26,23 @@ class Parser {
     }
 
     public function parse($code) {
-        $stmts = $this->parser->parse($code);
-        $classStmt = $this->findClassStatement($stmts);
+        $nodes = $this->parser->parse($code);
+        $classStmt = $this->findClassStatement($nodes);
         return $this->parseSpecification($classStmt);
     }
 
     /**
-     * @param Node[] $stmts
+     * @param Node[] $nodes
      * @throws \Exception If class statement cannot be found
      * @return Node\Stmt\Class_
      */
-    private function findClassStatement($stmts) {
-        foreach ($stmts as $stmt) {
-            if ($stmt instanceof Node\Stmt\Class_) {
-                return $stmt;
+    private function findClassStatement($nodes) {
+        foreach ($nodes as $node) {
+            if ($node instanceof Node\Stmt\Class_) {
+                return $node;
             }
             try {
-                return $this->findClassStatement($stmt);
+                return $this->findClassStatement($node);
             } catch (\Exception $e) {
             }
         }
@@ -90,40 +91,63 @@ class Parser {
     }
 
     /**
-     * @param Node[] $stmts
+     * @param Node[] $nodes
      * @return array|string[]
      */
-    private function parseMethodBody($stmts) {
+    private function parseMethodBody($nodes) {
         $out = array();
-        $collectedStmts = array();
+        $state = null;
 
-        foreach ($stmts as $stmt) {
-            $comments = $stmt->getAttribute('comments');
-            if ($comments) {
-                if ($collectedStmts) {
-                    $out[] = $this->printCodeBlock($collectedStmts);
-                    $collectedStmts = array();
-                }
+        /** @var Node[] $buffer */
+        $buffer = array();
 
-                $out[] = $this->parseComments($comments);
-                $stmt->setAttribute('comments', array());
+        $nodes[] = null;
+        while ($nodes) {
+            $node = array_shift($nodes);
+
+            if ($node === null) {
+                $next = 'end';
+            } else if ($node->getAttribute('comments')) {
+                $next = 'comments';
+                /** @var Node $codeStmt */
+                $codeStmt = clone $node;
+                $codeStmt->setAttribute('comments', array());
+                array_unshift($nodes, $codeStmt);
+            } else if ($this->isStep($node)) {
+                $next = 'step';
+            } else  {
+                $next = 'code';
             }
 
-            $collectedStmts[] = $stmt;
+            if (!$nodes || $state && $next != $state) {
+                switch ($state) {
+                    case 'comments':
+                        $out[] = $this->parseComments($buffer[0]->getAttribute('comments'));
+                        $buffer[0]->setAttribute('comments', array());
+                        break;
+                    case 'step':
+                        $out[] = $this->printSteps($buffer);
+                        break;
+                    case 'code':
+                        $out[] = $this->printCodeBlock($buffer);
+                        break;
+                }
+                $buffer = array();
+            }
+            $state = $next;
+
+            $buffer[] = $node;
         }
 
-        if ($collectedStmts && !$this->isIgnorable($collectedStmts)) {
-            $out[] = $this->printCodeBlock($collectedStmts);
-        }
-        return implode("\n\n", $out);
+        return implode("\n\n", array_filter($out));
     }
 
-    private function isIgnorable($stmts) {
-        if (count($stmts) != 1) {
+    private function isIgnorable($nodes) {
+        if (count($nodes) != 1) {
             return false;
         }
-        $stmt = $stmts[0];
-        return $stmt instanceof Node\Expr\ConstFetch && (string)$stmt->name == 'null';
+        $node = $nodes[0];
+        return $node instanceof Node\Expr\ConstFetch && (string)$node->name == 'null';
     }
 
     /**
@@ -152,14 +176,46 @@ class Parser {
     }
 
     /**
-     * @param Node[] $stmts
+     * @param Node[] $nodes
      * @return string
      */
-    private function printCodeBlock($stmts) {
-        return "```php\n" . $this->printer->prettyPrint($stmts) . "\n```";
+    private function printCodeBlock($nodes) {
+        if ($this->isIgnorable($nodes)) {
+            return '';
+        }
+        return "```php\n" . $this->printer->prettyPrint($nodes) . "\n```";
+    }
+
+    /**
+     * @param Node[] $nodes
+     * @return string
+     */
+    private function printSteps($nodes) {
+        $out = '<div class="steps">' . "\n";
+        $out .= '<div class="step-group context">' . "\n";
+        foreach ($nodes as $node) {
+            if ($node instanceof MethodCall) {
+                $out .= $this->printStep($node) . "\n";
+            }
+        }
+        $out .= '</div>';
+        return $out . "\n" . '</div>';
+    }
+
+    private function printStep(MethodCall $step) {
+        return '<div class="step" title="' . $this->printer->prettyPrintExpr($step) . '">'
+        . $this->uncamelize($step->name) . '.</div>';
     }
 
     public function uncamelize($string) {
         return ucfirst(trim(strtolower(preg_replace('/([A-Z])/', ' $1', $string))));
+    }
+
+    /**
+     * @param $node
+     * @return bool
+     */
+    private function isStep($node) {
+        return $node instanceof MethodCall && substr($node->name, 0, 5) == 'given';
     }
 }
