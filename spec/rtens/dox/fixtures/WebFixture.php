@@ -45,7 +45,11 @@ class WebFixture extends Fixture {
         $this->response = $this->root->respond(new Request(Path::parse($path), array('json')));
     }
 
-    public function thenTheResponseShouldContain($model) {
+    public function thenTheResponseShouldContain($json) {
+        $model = json_decode('{' . $json . '}');
+        if (!$model) {
+            throw new \Exception('Invalid JSON: ' . $json);
+        }
         $charlist = "{}, \n";
         $this->spec->assertContains(
             trim(json_encode($model, JSON_PRETTY_PRINT), $charlist),

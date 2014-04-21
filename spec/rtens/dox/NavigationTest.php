@@ -18,22 +18,22 @@ class NavigationTest extends Specification {
 
         $this->web->whenIRequestTheResourceAt('');
 
-        $this->web->thenTheResponseShouldContain([
-            'project' => [
-                [
-                    "name" => "ProjectOne",
-                    "href" => "http://dox/ProjectOne"
-                ],
-                [
-                    "name" => "ProjectTwo",
-                    "href" => "http://dox/ProjectTwo"
-                ],
-                [
-                    "name" => "ProjectThree",
-                    "href" => "http://dox/ProjectThree"
-                ]
+        $this->web->thenTheResponseShouldContain('
+            "project": [
+                {
+                    "name": "ProjectOne",
+                    "href": "http://dox/ProjectOne"
+                },
+                {
+                    "name": "ProjectTwo",
+                    "href": "http://dox/ProjectTwo"
+                },
+                {
+                    "name": "ProjectThree",
+                    "href": "http://dox/ProjectThree"
+                }
             ]
-        ]);
+        ');
     }
 
     public function testProjectStartSpecification() {
@@ -54,54 +54,54 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile('spec/c/COneTest.php');
 
         $this->web->whenIRequestTheResourceAt('MyProject');
-        $this->web->thenTheResponseShouldContain([
-            "navigation" => [
-                "name" => "MyProject",
-                "folder" => [
-                    [
-                        "name" => "a",
-                        "specification" => [
-                            [
-                                "name" => "A one",
-                                "href" => "http://dox/MyProject/a/AOne"
-                            ],
-                            [
-                                "name" => "A two",
-                                "href" => "http://dox/MyProject/a/ATwo"
-                            ]
+        $this->web->thenTheResponseShouldContain('
+            "navigation": {
+                "name": "MyProject",
+                "folder": [
+                    {
+                        "name": "a",
+                        "specification": [
+                            {
+                                "name": "A one",
+                                "href": "http://dox/MyProject/a/AOne"
+                            },
+                            {
+                                "name": "A two",
+                                "href": "http://dox/MyProject/a/ATwo"
+                            }
                         ]
-                    ],
-                    [
-                        "name" => "a/b",
-                        "specification" => [
-                            [
-                                "name" => "A b",
-                                "href" => "http://dox/MyProject/a/b/AB"
-                            ]
+                    },
+                    {
+                        "name": "a/b",
+                        "specification": [
+                            {
+                                "name": "A b",
+                                "href": "http://dox/MyProject/a/b/AB"
+                            }
                         ]
-                    ],
-                    [
-                        "name" => "c",
-                        "specification" => [
-                            [
-                                "name" => "C one",
-                                "href" => "http://dox/MyProject/c/COne"
-                            ]
+                    },
+                    {
+                        "name": "c",
+                        "specification": [
+                            {
+                                "name": "C one",
+                                "href": "http://dox/MyProject/c/COne"
+                            }
                         ]
-                    ]
+                    }
                 ],
-                "specification" => [
-                    [
-                        "name" => "One",
-                        "href" => "http://dox/MyProject/One"
-                    ],
-                    [
-                        "name" => "Two",
-                        "href" => "http://dox/MyProject/Two"
-                    ]
+                "specification": [
+                    {
+                        "name": "One",
+                        "href": "http://dox/MyProject/One"
+                    },
+                    {
+                        "name": "Two",
+                        "href": "http://dox/MyProject/Two"
+                    }
                 ]
-            ]
-        ]);
+            }
+        ');
     }
 
     public function testNavigationInSpecificationResource() {
@@ -110,22 +110,22 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile_WithContent('spec/TwoTest.php', '<?php class TwoTest {}');
 
         $this->web->whenIRequestTheResourceAt('MyProject/One');
-        $this->web->thenTheResponseShouldContain([
-            "navigation" => [
-                "name" => "MyProject",
-                "folder" => [],
-                "specification" => [
-                    [
-                        "name" => "One",
-                        "href" => "http://dox/MyProject/One"
-                    ],
-                    [
-                        "name" => "Two",
-                        "href" => "http://dox/MyProject/Two"
-                    ]
+        $this->web->thenTheResponseShouldContain('
+            "navigation": {
+                "name": "MyProject",
+                "folder": [],
+                "specification": [
+                    {
+                        "name": "One",
+                        "href": "http://dox/MyProject/One"
+                    },
+                    {
+                        "name": "Two",
+                        "href": "http://dox/MyProject/Two"
+                    }
                 ]
-            ]
-        ]);
+            }
+        ');
     }
 
     public function testSkipEmptyFolders() {
@@ -135,18 +135,18 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile('spec/a/b/IgnoredAsWell.php');
 
         $this->web->whenIRequestTheResourceAt('MyProject');
-        $this->web->thenTheResponseShouldContain([
-            "navigation" => [
-                "name" => "MyProject",
-                "folder" => [],
-                "specification" => [
-                    [
-                        "name" => "One",
-                        "href" => "http://dox/MyProject/One"
-                    ]
+        $this->web->thenTheResponseShouldContain('
+            "navigation": {
+                "name": "MyProject",
+                "folder": [],
+                "specification": [
+                    {
+                        "name": "One",
+                        "href": "http://dox/MyProject/One"
+                    }
                 ]
-            ]
-        ]);
+            }
+        ');
     }
 
-} 
+}

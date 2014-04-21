@@ -4,6 +4,7 @@ namespace rtens\dox\web\root;
 use rtens\dox\Configuration;
 use rtens\dox\Parser;
 use rtens\dox\ProjectConfiguration;
+use rtens\dox\web\Presenter;
 use watoki\curir\resource\Container;
 use watoki\curir\responder\Redirecter;
 
@@ -23,7 +24,7 @@ class xxProjectResource extends Container {
             return new Redirecter($this->getUrl($start));
         }
 
-        return json_encode($this->assembleModel($config), JSON_PRETTY_PRINT);
+        return new Presenter($this, $this->assembleModel($config));
     }
 
     private function assembleModel(ProjectConfiguration $config) {

@@ -10,6 +10,7 @@ class Configuration {
 
     public function addProject(ProjectConfiguration $project) {
         $this->projects[$project->getName()] = $project;
+        return $project;
     }
 
     public function getProject($project) {

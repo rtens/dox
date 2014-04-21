@@ -24,6 +24,7 @@ class ProjectConfiguration {
 
     public function setStartSpecification($path) {
         $this->startSpecificationPath = $path;
+        return $this;
     }
 
     public function getStartSpecification() {

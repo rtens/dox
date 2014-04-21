@@ -12,7 +12,7 @@ class RootResource extends Container {
     public $config;
 
     public function doGet() {
-        return json_encode($this->assembleModel(), JSON_PRETTY_PRINT);
+        return new Presenter($this, $this->assembleModel());
     }
 
     private function assembleModel() {

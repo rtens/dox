@@ -19,13 +19,13 @@ class RenderSpecificationTest extends Specification {
             class SomeSpecificationTest {}'
         );
         $this->web->whenIRequestTheResourceAt('MyProject/SomeSpecification');
-        $this->web->thenTheResponseShouldContain([
-            "specification" => [
-                "name" => "Some specification",
-                "description" => null,
-                "scenario" => []
-            ]
-        ]);
+        $this->web->thenTheResponseShouldContain('
+            "specification": {
+                "name": "Some specification",
+                "description": null,
+                "scenario": []
+            }
+        ');
     }
 
     public function testSpecificationWithDescriptionAndScenarios() {
@@ -49,20 +49,19 @@ class RenderSpecificationTest extends Specification {
             }'
         );
         $this->web->whenIRequestTheResourceAt('YourProject/some/Specification');
-        $this->web->thenTheResponseShouldContain([
-            "specification" => [
-                "name" => "Specification",
-                "description" => "<p>This is some <em>description</em></p>",
-                "scenario" => [
-                    [
-                        "name" => "Some things",
-                        "description" => "<p>Description of <em>scenario</em></p>",
-                        "content" => '<p>Just <em>some</em> <strong>comment</strong></p>' . "\n" .
-                            '<pre><code class="language-php">$andCode = 1 + 1;</code></pre>'
-                    ]
+        $this->web->thenTheResponseShouldContain('
+            "specification": {
+                "name": "Specification",
+                "description": "<p>This is some <em>description</em></p>",
+                "scenario": [
+                    {
+                        "name": "Some things",
+                        "description": "<p>Description of <em>scenario</em></p>",
+                        "content": "<p>Just <em>some</em> <strong>comment</strong></p>\n<pre><code class=\"language-php\">$andCode = 1 + 1;</code></pre>"
+                    }
                 ]
-            ]
-        ]);
+            }
+        ');
     }
 
 } 
