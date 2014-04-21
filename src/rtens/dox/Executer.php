@@ -6,7 +6,7 @@ class Executer {
     public function execute($command) {
         $return = 0;
         $output = array();
-        exec($command, $output, $return);
+        exec($command . " 2>&1", $output, $return);
         $this->log($command, $output, $return);
         return $return;
     }
