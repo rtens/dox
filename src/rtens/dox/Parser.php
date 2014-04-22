@@ -4,9 +4,9 @@ namespace rtens\dox;
 use PhpParser\Comment;
 use PhpParser\Lexer;
 use PhpParser\Node;
-use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Parser as PhpParser;
-use PhpParser\PrettyPrinter\Standard;
+use rtens\dox\content\Content;
+use rtens\dox\content\item\CommentItem;
 
 class Parser {
 
@@ -14,15 +14,15 @@ class Parser {
 
     public $METHOD_PREFIX = 'test';
 
-    /** @var \PhpParser\PrettyPrinter\Standard */
-    private $printer;
-
     /** @var \PhpParser\Parser */
     private $parser;
 
+    /** @var \rtens\dox\content\item\CommentItem */
+    private $commentItem;
+
     function __construct() {
         $this->parser = new PhpParser(new Lexer());
-        $this->printer = new Standard();
+        $this->commentItem = new CommentItem();
     }
 
     public function parse($code) {
@@ -58,7 +58,7 @@ class Parser {
         $specification = new Specification($name);
 
         if ($classStmt->getAttribute('comments')) {
-            $specification->setDescription($this->parseComments($classStmt->getAttribute('comments')));
+            $specification->setDescription($this->commentItem->toString(array($classStmt)));
         }
 
         foreach ($this->parseScenarios($classStmt) as $scenario) {
@@ -78,7 +78,7 @@ class Parser {
                 $scenario = new Scenario($this->uncamelize(substr($method->name, strlen($this->METHOD_PREFIX))));
 
                 if ($method->getAttribute('comments')) {
-                    $scenario->setDescription($this->parseComments($method->getAttribute('comments')));
+                    $scenario->setDescription($this->commentItem->toString(array($method)));
                 }
 
                 $scenario->setContent($this->parseMethodBody($method->stmts));
@@ -95,151 +95,7 @@ class Parser {
      * @return array|string[]
      */
     private function parseMethodBody($nodes) {
-        $out = array();
-        $state = null;
-
-        /** @var Node[] $buffer */
-        $buffer = array();
-
-        $nodes[] = null;
-        while ($nodes) {
-            $node = array_shift($nodes);
-
-            if ($node === null) {
-                $next = 'end';
-            } else if ($node->getAttribute('comments')) {
-                $next = 'comments';
-                /** @var Node $codeStmt */
-                $codeStmt = clone $node;
-                $codeStmt->setAttribute('comments', array());
-                array_unshift($nodes, $codeStmt);
-            } else if ($this->isStep($node)) {
-                $next = 'step';
-            } else {
-                $next = 'code';
-            }
-
-            if (!$nodes || $state && $next != $state) {
-                switch ($state) {
-                    case 'comments':
-                        $out[] = $this->parseComments($buffer[0]->getAttribute('comments'));
-                        $buffer[0]->setAttribute('comments', array());
-                        break;
-                    case 'step':
-                        $out[] = $this->printSteps($buffer);
-                        break;
-                    case 'code':
-                        $out[] = $this->printCodeBlock($buffer);
-                        break;
-                }
-                $buffer = array();
-            }
-            $state = $next;
-
-            $buffer[] = $node;
-        }
-
-        return implode("\n\n", array_filter($out));
-    }
-
-    private function isIgnorable($nodes) {
-        if (count($nodes) != 1) {
-            return false;
-        }
-        $node = $nodes[0];
-        return $node instanceof Node\Expr\ConstFetch && (string)$node->name == 'null';
-    }
-
-    /**
-     * @param Comment[] $comments
-     * @return array
-     */
-    private function parseComments($comments) {
-        $out = array();
-        foreach ($comments as $comment) {
-            $lines = explode("\n", trim($comment->getText()));
-
-            $trimLine = function ($line) {
-                $line = trim($line, "/ ");
-                if (substr($line, 0, 2) == '* ') {
-                    $line = substr($line, 2);
-                }
-                if (!trim($line, '*') || substr($line, 0, 1) == '@') {
-                    $line = '';
-                }
-                return $line;
-            };
-
-            $out[] = trim(implode("\n", array_map($trimLine, $lines)));
-        }
-        return implode("\n\n", $out);
-    }
-
-    /**
-     * @param Node[] $nodes
-     * @return string
-     */
-    private function printCodeBlock($nodes) {
-        if ($this->isIgnorable($nodes)) {
-            return '';
-        }
-        return "```php\n" . $this->printer->prettyPrint($nodes) . "\n```";
-    }
-
-    private function isStep($node) {
-        return $node instanceof MethodCall
-        && (substr($node->name, 0, 5) == 'given'
-            || substr($node->name, 0, 4) == 'when'
-            || substr($node->name, 0, 4) == 'then');
-    }
-
-    /**
-     * @param MethodCall[] $nodes
-     * @return string
-     */
-    private function printSteps($nodes) {
-        $map = array(
-            'give' => 'context',
-            'when' => 'action',
-            'then' => 'assertion'
-        );
-
-        $groups = array();
-        foreach ($nodes as $node) {
-            $groups[substr($node->name, 0, 4)][] = $this->printStep($node);
-        }
-
-        $out = '<div class="steps">';
-        foreach ($groups as $key => $steps) {
-            $out .= "\n". '<div class="step-group ' . $map[$key] . '">' . "\n";
-            $out .= implode("\n", $steps);
-            $out .= '</div>' . "";
-        }
-        return $out . '</div>';
-    }
-
-    private function printStep(MethodCall $step) {
-        $code = htmlentities($this->printer->prettyPrintExpr($step));
-
-        return '<div class="step" title="' . $code . '">'
-        . $this->printStepName($step) . '</div>';
-    }
-
-    private function printStepName(MethodCall $step) {
-        $args = array_map(function (Node\Arg $arg) {
-            $printed = $this->printer->pArg($arg);
-            $printed = preg_replace('/_NO_INDENT_\d+/', '', $printed);
-            return ' <span class="arg">' . $printed . '</span>';
-        }, $step->args);
-        $uncamelized = $this->uncamelize($step->name);
-        while ($args) {
-            if (strpos($uncamelized, '_') !== false) {
-                $uncamelized = preg_replace('/_/', array_shift($args), $uncamelized, 1);
-            } else {
-                $uncamelized .= array_shift($args);
-            }
-        }
-        return $uncamelized;
+        return (string)new Content($nodes);
     }
 
     public function uncamelize($string) {
