@@ -35,16 +35,20 @@ class StepsItem extends Item {
      * @return string
      */
     private function parseSteps($nodes) {
-        $map = array(
-            'give' => 'context',
-            'when' => 'action',
-            'then' => 'assertion'
-        );
-
+        $currentGroup = null;
+        $group = array();
         $groups = array();
         foreach ($nodes as $node) {
-            $groups[$map[substr($node->name, 0, 4)]][] = $this->parseStep($node);
+            $nextGroup = substr($node->name, 0, 4);
+            if ($group && $nextGroup != $currentGroup) {
+                $groups[] = $group;
+                $group = array();
+            }
+            $currentGroup = $nextGroup;
+            $group[] = $this->parseStep($node);
         }
+        $groups[] = $group;
+
         return $groups;
     }
 

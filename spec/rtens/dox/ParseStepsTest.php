@@ -63,18 +63,16 @@ class ParseStepsTest extends Specification {
             '$this->givenSomething();
             $this->givenSomethingElse();'
         );
-        $this->parser->thenTheScenarioShouldContain('{
-            "context": [
-                {
-                    "code": "$this->givenSomething()",
-                    "step": ["Given something"]
-                },
-                {
-                    "code": "$this->givenSomethingElse()",
-                    "step": ["Given something else"]
-                }
-            ]
-        }');
+        $this->parser->thenTheScenarioShouldContain('[
+            {
+                "code": "$this->givenSomething()",
+                "step": ["Given something"]
+            },
+            {
+                "code": "$this->givenSomethingElse()",
+                "step": ["Given something else"]
+            }
+        ]');
     }
 
     public function testDifferentGroups() {
@@ -82,10 +80,11 @@ class ParseStepsTest extends Specification {
             '$this->givenSomething();
             $this->givenSomethingElse();
             $this->whenSomethingHappens();
-            $this->thenItShouldBeOk();'
+            $this->thenItShouldBeOk();
+            $this->whenThis();'
         );
-        $this->parser->thenTheScenarioShouldContain('{
-            "context": [
+        $this->parser->thenTheScenarioShouldContain('[
+            [
                 {
                     "code": "$this->givenSomething()",
                     "step": ["Given something"]
@@ -95,19 +94,25 @@ class ParseStepsTest extends Specification {
                     "step": ["Given something else"]
                 }
             ],
-            "action": [
+            [
                 {
                     "code": "$this->whenSomethingHappens()",
                     "step": ["When something happens"]
                 }
             ],
-            "assertion": [
+            [
                 {
                     "code": "$this->thenItShouldBeOk()",
                     "step": ["Then it should be ok"]
                 }
+            ],
+            [
+                {
+                    "code": "$this->whenThis()",
+                    "step": ["When this"]
+                }
             ]
-        }');
+        ]');
     }
 
     public function testCamelCaseExceptions() {

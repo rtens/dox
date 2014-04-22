@@ -89,7 +89,7 @@ class xxSpecificationResource extends DynamicResource {
                 $out[] = "<pre><code>" . $item->content . "</code></pre>";
             } else if ($item instanceof StepsItem) {
                 $groupElements = array();
-                foreach ($item->groups as $group => $steps) {
+                foreach ($item->groups as $steps) {
                     $stepElements = array();
                     foreach ($steps as $step) {
                         $assembled = array();
@@ -103,7 +103,7 @@ class xxSpecificationResource extends DynamicResource {
                         $stepElements[] = '<div title="' . htmlentities($step['code']) . '" class="step">'
                             . implode(" ", $assembled) . '</div>';
                     }
-                    $groupElements[] = '<div class="step-group ' . $group . '">' . "\n"
+                    $groupElements[] = '<div class="step-group">' . "\n"
                         . implode("\n", $stepElements)  . "\n"
                         . '</div>';
                 }

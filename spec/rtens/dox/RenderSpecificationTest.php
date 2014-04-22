@@ -81,13 +81,13 @@ class RenderSpecificationTest extends Specification {
         $this->web->whenIRequestTheResourceAt('YourProject/some/Specification');
         $this->web->thenTheResponseShouldContainTheText(
             '<div class="steps">
-                <div class="step-group context">
+                <div class="step-group">
                     <div title="$this-&gt;fix-&gt;given_Has_Cows(\'Bart\', 2)" class="step">Given <span class="arg">\'Bart\'</span> has <span class="arg">2</span> cows</div>
                 </div>
-                <div class="step-group action">
+                <div class="step-group">
                     <div title="$this-&gt;whenSomethingHappens()" class="step">When something happens</div>
                 </div>
-                <div class="step-group assertion">
+                <div class="step-group">
                     <div title="$this-&gt;thenItShouldBe(\'OK\')" class="step">Then it should be <span class="arg">\'OK\'</span></div>
                 </div>
             </div>'
