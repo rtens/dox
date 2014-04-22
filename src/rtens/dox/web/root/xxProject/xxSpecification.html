@@ -204,10 +204,6 @@ $iSay = 'Hello World!";</code></pre>
         $(e).on('click', function () {
             var body = $(e).parent().find('.collapse');
             body.collapse('toggle');
-            body.on("shown.bs.collapse", function () {
-                console.log('shown');
-                $('body').scrollTop($(e).offset().top - 20);
-            });
         });
     });
 </script>
