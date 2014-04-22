@@ -9,8 +9,15 @@ abstract class Item {
     /** @var \PhpParser\PrettyPrinter\Standard */
     protected $printer;
 
+    public $type;
+
     function __construct() {
         $this->printer = new Standard();
+        $this->type = $this->getTypeName();
+    }
+
+    public function getTypeName() {
+        return lcfirst(substr(get_class($this), strrpos(get_class($this), '\\') + 1, -strlen('Item')));
     }
 
     /**
@@ -21,7 +28,7 @@ abstract class Item {
 
     /**
      * @param Node[] $nodes
-     * @return string
+     * @return Item
      */
-    abstract public function toString($nodes);
+    abstract public function copy($nodes);
 }

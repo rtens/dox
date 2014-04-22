@@ -18,18 +18,24 @@ class ParseStepsTest extends Specification {
         $this->parser->whenIParseTheMethodBody(
             '$this->givenSomething();'
         );
-        $this->parser->thenTheScenarioShouldContain(
-            '<div class="step" title="$this-&gt;givenSomething()">Given something</div>'
-        );
+        $this->parser->thenTheScenarioShouldContain('{
+            "code": "$this->givenSomething()",
+            "step": [
+                "Given something"
+            ]
+        }');
     }
 
     public function testCallOnProperty() {
         $this->parser->whenIParseTheMethodBody(
             '$this->property->givenSomething();'
         );
-        $this->parser->thenTheScenarioShouldContain(
-            '<div class="step" title="$this-&gt;property-&gt;givenSomething()">Given something</div>'
-        );
+        $this->parser->thenTheScenarioShouldContain('{
+            "code": "$this->property->givenSomething()",
+            "step": [
+                "Given something"
+            ]
+        }');
     }
 
     public function testInlineArguments() {
@@ -37,12 +43,19 @@ class ParseStepsTest extends Specification {
             '$this->given_Has_Cows("Bart", 2);
             $this->given_Is("Bart", 10);'
         );
-        $this->parser->thenTheScenarioShouldContain(
-            "Given <span class=\"arg\">'Bart'</span> has <span class=\"arg\">2</span> cows"
-        );
-        $this->parser->thenTheScenarioShouldContain(
-            "Given <span class=\"arg\">'Bart'</span> is <span class=\"arg\">10</span>"
-        );
+        $this->parser->thenTheScenarioShouldContain('[
+            "Given",
+            {"value": "\'Bart\'"},
+            "has",
+            {"value": "2"},
+            "cows"
+        ]');
+        $this->parser->thenTheScenarioShouldContain('[
+            "Given",
+            {"value": "\'Bart\'"},
+            "is",
+            {"value": "10"}
+        ]');
     }
 
     public function testTwoSteps() {
@@ -50,12 +63,18 @@ class ParseStepsTest extends Specification {
             '$this->givenSomething();
             $this->givenSomethingElse();'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            '<div class="steps">
-                <div class="step-group context">
-                    <div class="step" title="$this-&gt;givenSomething()">Given something</div>
-                    <div class="step" title="$this-&gt;givenSomethingElse()">Given something else</div></div></div>'
-        );
+        $this->parser->thenTheScenarioShouldContain('{
+            "context": [
+                {
+                    "code": "$this->givenSomething()",
+                    "step": ["Given something"]
+                },
+                {
+                    "code": "$this->givenSomethingElse()",
+                    "step": ["Given something else"]
+                }
+            ]
+        }');
     }
 
     public function testDifferentGroups() {
@@ -65,16 +84,30 @@ class ParseStepsTest extends Specification {
             $this->whenSomethingHappens();
             $this->thenItShouldBeOk();'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            '<div class="steps">
-                <div class="step-group context">
-                    <div class="step" title="$this-&gt;givenSomething()">Given something</div>
-                    <div class="step" title="$this-&gt;givenSomethingElse()">Given something else</div></div>
-                <div class="step-group action">
-                    <div class="step" title="$this-&gt;whenSomethingHappens()">When something happens</div></div>
-                <div class="step-group assertion">
-                    <div class="step" title="$this-&gt;thenItShouldBeOk()">Then it should be ok</div></div></div>'
-        );
+        $this->parser->thenTheScenarioShouldContain('{
+            "context": [
+                {
+                    "code": "$this->givenSomething()",
+                    "step": ["Given something"]
+                },
+                {
+                    "code": "$this->givenSomethingElse()",
+                    "step": ["Given something else"]
+                }
+            ],
+            "action": [
+                {
+                    "code": "$this->whenSomethingHappens()",
+                    "step": ["When something happens"]
+                }
+            ],
+            "assertion": [
+                {
+                    "code": "$this->thenItShouldBeOk()",
+                    "step": ["Then it should be ok"]
+                }
+            ]
+        }');
     }
 
     public function testCamelCaseExceptions() {
@@ -82,7 +115,7 @@ class ParseStepsTest extends Specification {
             '$this->whenIDoSomething();'
         );
         $this->parser->thenTheScenarioShouldContain(
-            "When I do something"
+            '"When I do something"'
         );
     }
 
@@ -90,9 +123,10 @@ class ParseStepsTest extends Specification {
         $this->parser->whenIParseTheMethodBody(
             '$this->given(array());'
         );
-        $this->parser->thenTheScenarioShouldContain(
-            "Given <span class=\"arg\">array()</span>"
-        );
+        $this->parser->thenTheScenarioShouldContain('[
+            "Given",
+            {"value": "array()"}
+        ]');
     }
 
     public function testIndentedString() {
@@ -102,12 +136,10 @@ class ParseStepsTest extends Specification {
                 indented
             ");'
         );
-        $this->parser->thenTheScenarioShouldContain(
-            "Given <span class=\"arg\">'
-            Something
-            indented
-            '"
-        );
+        $this->parser->thenTheScenarioShouldContain('[
+            "Given",
+            {"value": "\'\nSomething\nindented\n\'"}
+        ]');
     }
 
 } 

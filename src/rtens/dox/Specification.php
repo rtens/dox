@@ -1,37 +1,20 @@
 <?php
 namespace rtens\dox;
 
+use rtens\dox\content\item\CommentItem;
+
 class Specification {
 
-    private $name;
+    public $name;
 
-    private $description;
+    /** @var CommentItem */
+    public $description;
 
     /** @var array|Scenario[] */
-    private $scenarios = array();
+    public $scenarios = array();
 
     function __construct($name) {
         $this->name = $name;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function getDescription() {
-        return $this->description;
-    }
-
-    public function setDescription($description) {
-        $this->description = $description;
-    }
-
-    public function getScenarios() {
-        return $this->scenarios;
-    }
-
-    public function addScenario(Scenario $scenario) {
-        $this->scenarios[] = $scenario;
     }
 
 } 

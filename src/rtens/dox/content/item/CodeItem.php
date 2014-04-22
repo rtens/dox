@@ -6,6 +6,8 @@ use rtens\dox\content\Item;
 
 class CodeItem extends Item {
 
+    public $content;
+
     /**
      * @param Node $node
      * @return boolean
@@ -16,21 +18,16 @@ class CodeItem extends Item {
 
     /**
      * @param Node[] $nodes
-     * @return string
+     * @return Item
      */
-    public function toString($nodes) {
-        return $this->printCodeBlock($nodes);
-    }
-
-    /**
-     * @param Node[] $nodes
-     * @return string
-     */
-    private function printCodeBlock($nodes) {
+    public function copy($nodes) {
         if ($this->isIgnorable($nodes)) {
-            return '';
+            return null;
         }
-        return "```php\n" . $this->printer->prettyPrint($nodes) . "\n```";
+
+        $item = new CodeItem();
+        $item->content = $this->printer->prettyPrint($nodes);
+        return $item;
     }
 
     private function isIgnorable($nodes) {

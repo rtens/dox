@@ -7,6 +7,8 @@ use rtens\dox\content\Item;
 
 class StepsItem extends Item {
 
+    public $groups;
+
     /**
      * @param Node $node
      * @return boolean
@@ -19,18 +21,20 @@ class StepsItem extends Item {
     }
 
     /**
-     * @param Node[] $nodes
+     * @param Node[]|MethodCall[] $nodes
      * @return string
      */
-    public function toString($nodes) {
-        return $this->printSteps($nodes);
+    public function copy($nodes) {
+        $item = new StepsItem();
+        $item->groups = $this->parseSteps($nodes);
+        return $item;
     }
 
     /**
      * @param MethodCall[] $nodes
      * @return string
      */
-    private function printSteps($nodes) {
+    private function parseSteps($nodes) {
         $map = array(
             'give' => 'context',
             'when' => 'action',
@@ -39,43 +43,34 @@ class StepsItem extends Item {
 
         $groups = array();
         foreach ($nodes as $node) {
-            $groups[substr($node->name, 0, 4)][] = $this->printStep($node);
+            $groups[$map[substr($node->name, 0, 4)]][] = $this->parseStep($node);
         }
-
-        $out = '<div class="steps">';
-        foreach ($groups as $key => $steps) {
-            $out .= "\n" . '<div class="step-group ' . $map[$key] . '">' . "\n";
-            $out .= implode("\n", $steps);
-            $out .= '</div>' . "";
-        }
-        return $out . '</div>';
+        return $groups;
     }
 
-    private function printStep(MethodCall $step) {
-        $code = htmlentities($this->printer->prettyPrintExpr($step));
-
-        return '<div class="step" title="' . $code . '">'
-        . $this->printStepName($step) . '</div>';
+    private function parseStep(MethodCall $step) {
+        return array(
+            'code' => $this->printer->prettyPrintExpr($step),
+            'step' => $this->parseStepName($step)
+        );
     }
 
-    private function printStepName(MethodCall $step) {
+    private function parseStepName(MethodCall $step) {
         $args = array_map(function (Node\Arg $arg) {
             $printed = $this->printer->pArg($arg);
             $printed = preg_replace('/_NO_INDENT_\d+/', '', $printed);
-            return ' <span class="arg">' . $printed . '</span>';
+            return array('value' => $printed);
         }, $step->args);
 
-        $uncamelized = $this->uncamelize($step->name);
-
-        while ($args) {
-            if (strpos($uncamelized, '_') !== false) {
-                $uncamelized = preg_replace('/_/', array_shift($args), $uncamelized, 1);
-            } else {
-                $uncamelized .= array_shift($args);
+        $structure = array();
+        foreach (explode('_', $this->uncamelize($step->name)) as $part) {
+            $structure[] = trim($part);
+            if ($args) {
+                $structure[] = array_shift($args);
             }
         }
-
-        return $uncamelized;
+        $structure = array_merge($structure, $args);
+        return $structure;
     }
 
     private function uncamelize($string) {

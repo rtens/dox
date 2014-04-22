@@ -32,12 +32,12 @@ class Parser {
     }
 
     /**
-     * @param Node[] $nodes
+     * @param Node|Node[] $in
      * @throws \Exception If class statement cannot be found
      * @return Node\Stmt\Class_
      */
-    private function findClassStatement($nodes) {
-        foreach ($nodes as $node) {
+    private function findClassStatement($in) {
+        foreach ($in as $node) {
             if ($node instanceof Node\Stmt\Class_) {
                 return $node;
             }
@@ -58,11 +58,11 @@ class Parser {
         $specification = new Specification($name);
 
         if ($classStmt->getAttribute('comments')) {
-            $specification->setDescription($this->commentItem->toString(array($classStmt)));
+            $specification->description = $this->commentItem->copy(array($classStmt));
         }
 
         foreach ($this->parseScenarios($classStmt) as $scenario) {
-            $specification->addScenario($scenario);
+            $specification->scenarios[] = $scenario;
         }
 
         return $specification;
@@ -78,24 +78,16 @@ class Parser {
                 $scenario = new Scenario($this->uncamelize(substr($method->name, strlen($this->METHOD_PREFIX))));
 
                 if ($method->getAttribute('comments')) {
-                    $scenario->setDescription($this->commentItem->toString(array($method)));
+                    $scenario->description = $this->commentItem->copy(array($method));
                 }
 
-                $scenario->setContent($this->parseMethodBody($method->stmts));
+                $scenario->content = new Content($method->stmts);
 
                 $scenarios[] = $scenario;
             }
 
         }
         return $scenarios;
-    }
-
-    /**
-     * @param Node[] $nodes
-     * @return array|string[]
-     */
-    private function parseMethodBody($nodes) {
-        return (string)new Content($nodes);
     }
 
     public function uncamelize($string) {

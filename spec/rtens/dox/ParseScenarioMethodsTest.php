@@ -14,17 +14,17 @@ class ParseScenarioMethodsTest extends Specification {
             '$some = 3;
             $code = $some + 1;'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            '```php
-            $some = 3;
-            $code = $some + 1;
-            ```'
-        );
+        $this->parser->thenTheScenarioShouldBe('[
+            {
+                "content": "$some = 3;\n$code = $some + 1;",
+                "type": "code"
+            }
+        ]');
     }
 
     public function testJustComment() {
         $this->parser->whenIParseTheMethodBody('// Just a comment');
-        $this->parser->thenTheScenarioShouldBe('');
+        $this->parser->thenTheScenarioShouldBe('[]');
     }
 
     public function testJustCommentHack() {
@@ -32,9 +32,12 @@ class ParseScenarioMethodsTest extends Specification {
             '// Just a comment
             null;'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            'Just a comment'
-        );
+        $this->parser->thenTheScenarioShouldBe('[
+            {
+                "content": "Just a comment",
+                "type": "comment"
+            }
+        ]');
     }
 
     public function testCodeWithLineComment() {
@@ -42,13 +45,16 @@ class ParseScenarioMethodsTest extends Specification {
             '// Some comment describing the code
             $code = 3 + 4;'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            'Some comment describing the code
-
-            ```php
-            $code = 3 + 4;
-            ```'
-        );
+        $this->parser->thenTheScenarioShouldBe('[
+            {
+                "content": "Some comment describing the code",
+                "type": "comment"
+            },
+            {
+                "content": "$code = 3 + 4;",
+                "type": "code"
+            }
+        ]');
     }
 
     public function testCodeWithTwoLineComments() {
@@ -58,16 +64,16 @@ class ParseScenarioMethodsTest extends Specification {
             $code = 3 + 4;
             $more = $code + 1;'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            'Some comment describing the code
-
-            Some more commenting
-
-            ```php
-            $code = 3 + 4;
-            $more = $code + 1;
-            ```'
-        );
+        $this->parser->thenTheScenarioShouldBe('[
+            {
+                "content": "Some comment describing the code\n\nSome more commenting",
+                "type": "comment"
+            },
+            {
+                "content": "$code = 3 + 4;\n$more = $code + 1;",
+                "type": "code"
+            }
+        ]');
     }
 
     public function testCodeWithBlockComment() {
@@ -78,14 +84,16 @@ class ParseScenarioMethodsTest extends Specification {
               */
             $code = 1 + 1;'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            'This is some
-            *block* comment.
-
-            ```php
-            $code = 1 + 1;
-            ```'
-        );
+        $this->parser->thenTheScenarioShouldBe('[
+            {
+                "content": "This is some\n*block* comment.",
+                "type": "comment"
+            },
+            {
+                "content": "$code = 1 + 1;",
+                "type": "code"
+            }
+        ]');
     }
 
     public function testBlockCommentWithParagraphs() {
@@ -97,15 +105,16 @@ class ParseScenarioMethodsTest extends Specification {
               */
             $code = 1 + 1;'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            'This is some comment.
-
-            With two paragraphs.
-
-            ```php
-            $code = 1 + 1;
-            ```'
-        );
+        $this->parser->thenTheScenarioShouldBe('[
+            {
+                "content": "This is some comment.\n\nWith two paragraphs.",
+                "type": "comment"
+            },
+            {
+                "content": "$code = 1 + 1;",
+                "type": "code"
+            }
+        ]');
     }
 
     public function testMultipleCommentsAndCode() {
@@ -118,19 +127,24 @@ class ParseScenarioMethodsTest extends Specification {
              */
             $more = $code;'
         );
-        $this->parser->thenTheScenarioShouldBe(
-            'Some comment
-
-            ```php
-            $code = 1 + 1;
-            ```
-
-            More comments
-
-            ```php
-            $more = $code;
-            ```'
-        );
+        $this->parser->thenTheScenarioShouldBe('[
+            {
+                "content": "Some comment",
+                "type": "comment"
+            },
+            {
+                "content": "$code = 1 + 1;",
+                "type": "code"
+            },
+            {
+                "content": "More comments",
+                "type": "comment"
+            },
+            {
+                "content": "$more = $code;",
+                "type": "code"
+            }
+        ]');
     }
 
 } 

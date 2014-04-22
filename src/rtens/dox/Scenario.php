@@ -1,35 +1,21 @@
 <?php
 namespace rtens\dox;
 
+use rtens\dox\content\Content;
+use rtens\dox\content\item\CommentItem;
+
 class Scenario {
 
-    private $name;
+    /** @var string */
+    public $name;
 
-    private $description;
+    /** @var CommentItem */
+    public $description;
 
-    private $content;
+    /** @var null|Content */
+    public $content;
 
     function __construct($name) {
         $this->name = $name;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function getDescription() {
-        return $this->description;
-    }
-
-    public function setDescription($description) {
-        $this->description = $description;
-    }
-
-    public function getContent() {
-        return $this->content;
-    }
-
-    public function setContent($content) {
-        $this->content = $content;
     }
 } 

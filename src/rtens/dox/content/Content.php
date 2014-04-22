@@ -6,7 +6,7 @@ use PhpParser\Node;
 
 class Content {
 
-    private $out = array();
+    public $items = array();
 
     /**
      * @param Node[] $nodes
@@ -14,11 +14,7 @@ class Content {
     function __construct($nodes) {
         $repo = new ItemRepository();
         $nodes = $this->normalize($nodes);
-        $this->out = $this->parse($nodes, $repo->getItems());
-    }
-
-    function __toString() {
-        return implode("\n\n", array_filter($this->out));
+        $this->items = $this->parse($nodes, $repo->getItems());
     }
 
     /**
@@ -41,7 +37,7 @@ class Content {
     /**
      * @param Node[] $nodes
      * @param Item[] $items
-     * @return array
+     * @return array|Item[]
      */
     private function parse($nodes, $items) {
         $nodes[] = null;
@@ -67,7 +63,7 @@ class Content {
             }
 
             if ($currentItem && ($nextItem != $currentItem || !$nodes)) {
-                $out[] = $currentItem->toString($buffer);
+                $out[] = $currentItem->copy($buffer);
                 $buffer = array();
             }
             $currentItem = $nextItem;
@@ -75,7 +71,7 @@ class Content {
             $buffer[] = $node;
         }
 
-        return $out;
+        return array_filter($out);
     }
 
 }

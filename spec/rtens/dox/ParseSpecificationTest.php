@@ -69,11 +69,12 @@ class ParseSpecificationTest extends Specification {
                 }
             }'
         );
-        $this->parser->thenScenario_ShouldHaveTheContent(1,
-            '```php
-            $code = 1 + 1;
-            ```'
-        );
+        $this->parser->thenScenario_ShouldHaveTheContent(1, '[
+            {
+                "content": "$code = 1 + 1;",
+                "type": "code"
+            }
+        ]');
     }
 
     public function testIgnorePrivateAndProtectedMethods() {

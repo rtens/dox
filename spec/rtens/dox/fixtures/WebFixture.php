@@ -18,6 +18,8 @@ use watoki\scrut\Fixture;
  */
 class WebFixture extends Fixture {
 
+    private $format = 'json';
+
     protected function setUp() {
         parent::setUp();
         $this->config = new Configuration();
@@ -40,10 +42,14 @@ class WebFixture extends Fixture {
         $this->whenISendA_RequestTo(Request::METHOD_GET, $path);
     }
 
+    public function givenTheRequestedFormatIs($format) {
+        $this->format = $format;
+    }
+
     public function whenISendA_RequestTo($method, $path) {
         /** @var RootResource $root */
         $root = $this->spec->factory->getInstance(RootResource::$CLASS, array(Url::parse('http://dox')));
-        $this->response = $root->respond(new Request(Path::parse($path), array('json'), $method));
+        $this->response = $root->respond(new Request(Path::parse($path), array($this->format), $method));
     }
 
     public function thenTheResponseShouldBe($string) {
@@ -59,6 +65,17 @@ class WebFixture extends Fixture {
         $this->spec->assertContains(
             trim(json_encode($model, JSON_PRETTY_PRINT), $charlist),
             trim($this->response->getBody(), $charlist));
+    }
+
+    public function thenTheResponseShouldContainTheText($string) {
+        $this->spec->assertContains($this->trimLines($string), $this->trimLines($this->response->getBody()));
+    }
+
+    private function trimLines($string) {
+        $string = implode("\n", array_map(function ($line) {
+            return trim($line);
+        }, explode("\n", $string)));
+        return $string;
     }
 
     public function thenIShouldBeRedirectedTo($path) {

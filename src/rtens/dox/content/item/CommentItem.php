@@ -7,6 +7,8 @@ use rtens\dox\content\Item;
 
 class CommentItem extends Item {
 
+    public $content;
+
     /**
      * @param Node $node
      * @return boolean
@@ -17,10 +19,12 @@ class CommentItem extends Item {
 
     /**
      * @param Node[] $nodes
-     * @return string
+     * @return Item
      */
-    public function toString($nodes) {
-        return $this->parseComments($nodes[0]->getAttribute('comments'));
+    public function copy($nodes) {
+        $item = new CommentItem();
+        $item->content = $this->parseComments($nodes[0]->getAttribute('comments'));
+        return $item;
     }
 
     /**
