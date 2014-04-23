@@ -4,6 +4,14 @@
     <title>dox</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+
+
+
+    <style>
+        h2, h3, h4, h5, .list-group-item {
+            text-transform: capitalize;
+        }
+    </style>
 </head>
 <body>
 
@@ -11,16 +19,19 @@
 
     <div property="navigation">
         <div>
-            <h1 property="name">This Project</h1>
+            <h1>
+                <a href="." class="glyphicon glyphicon-chevron-left small"></a>
+                <span property="name">This Project</span>
+            </h1>
 
             <div class="list-group">
-                <a class="list-group-item" property="specification" href="#">
-                    <span property="name">Another Specification</span>
+                <a class="list-group-item" property="specification" href="xxProject/xxSpecification.html">
+                    <span property="name">Another specification</span>
                 </a>
-                <a class="list-group-item active" property="specification" href="#">
-                    <span property="name">Some Specification</span>
+                <a class="list-group-item" property="specification" href="xxProject/xxSpecification.html">
+                    <span property="name">Some specification</span>
                 </a>
-                <a class="list-group-item" property="specification" href="#">
+                <a class="list-group-item" property="specification" href="xxProject/xxSpecification.html">
                     <span property="name">Even more stuff</span>
                 </a>
             </div>

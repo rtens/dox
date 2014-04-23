@@ -6,9 +6,7 @@ use rtens\dox\Executer;
 use rtens\dox\Parser;
 use rtens\dox\ProjectConfiguration;
 use rtens\dox\web\Presenter;
-use watoki\curir\http\error\HttpError;
 use watoki\curir\resource\Container;
-use watoki\curir\responder\Redirecter;
 
 class xxProjectResource extends Container {
 
@@ -22,13 +20,7 @@ class xxProjectResource extends Container {
     public $executer;
 
     public function doGet() {
-        $config = $this->getProjectConfig();
-        $start = $config->getStartSpecification();
-        if ($start) {
-            return new Redirecter($this->getUrl($start));
-        }
-
-        return new Presenter($this, $this->assembleModel($config));
+        return new Presenter($this, $this->assembleModel($this->getProjectConfig()));
     }
 
     public function doPost() {

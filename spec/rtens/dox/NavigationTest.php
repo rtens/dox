@@ -36,13 +36,6 @@ class NavigationTest extends Specification {
         ');
     }
 
-    public function testProjectStartSpecification() {
-        $this->web->givenTheProject('MyProject');
-        $this->web->givenTheStartSpecificationOf_Is('MyProject', 'my/Introduction');
-        $this->web->whenIRequestTheResourceAt('MyProject');
-        $this->web->thenIShouldBeRedirectedTo('http://dox/MyProject/my/Introduction');
-    }
-
     public function testNavigationInProjectResource() {
         $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
         $this->file->givenTheFile('spec/OneTest.php');
