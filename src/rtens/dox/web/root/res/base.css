@@ -6,6 +6,10 @@ h1 .dox {
     font-size: 2em;
 }
 
+.page-header small {
+    margin-right: 60px;
+}
+
 .dox .x {
     font-weight: bold;
     color: #bb0000;
