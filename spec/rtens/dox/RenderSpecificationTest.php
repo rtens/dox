@@ -79,8 +79,7 @@ class RenderSpecificationTest extends Specification {
             }'
         );
         $this->web->whenIRequestTheResourceAt('YourProject/some/Specification');
-        $this->web->thenTheResponseShouldContainTheText('
-            <div class="steps">
+        $this->web->thenTheResponseShouldContainTheText('<div class="steps">
                 <div class="step-group">
                     <div title="$this-&gt;fix-&gt;given_Has_Cows(\'Bart\', 2)" class="step">Given <span class="arg">\'Bart\'</span> has <span class="arg">2</span> cows</div>
                 </div>
