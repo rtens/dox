@@ -88,7 +88,7 @@ class ParseSpecificationTest extends Specification {
         $this->parser->thenThereShouldBe_Scenarios(1);
     }
 
-    public function testIgnoreMethodsWithoutPrefix() {
+    public function testMethodsWithoutPrefix() {
         $this->parser->givenTheMethodPrefixIs('my');
         $this->parser->whenIParse('
             class SomeTest {
@@ -96,7 +96,9 @@ class ParseSpecificationTest extends Specification {
                 public function yourMethod() {}
             }'
         );
-        $this->parser->thenThereShouldBe_Scenarios(1);
+        $this->parser->thenThereShouldBe_Scenarios(2);
+        $this->parser->thenScenario_ShouldHaveTheName(1, 'Method');
+        $this->parser->thenScenario_ShouldHaveTheName(2, 'Your method');
     }
 
 }

@@ -71,11 +71,13 @@ class Parser {
     private function parseScenarios(Node\Stmt\Class_ $class) {
         $scenarios = array();
         foreach ($class->stmts as $method) {
-            if ($method instanceof Node\Stmt\ClassMethod
-                && $method->isPublic()
-                && substr($method->name, 0, strlen($this->METHOD_PREFIX)) == $this->METHOD_PREFIX
-            ) {
-                $scenario = new Scenario($this->uncamelize(substr($method->name, strlen($this->METHOD_PREFIX))));
+            if ($method instanceof Node\Stmt\ClassMethod && $method->isPublic()) {
+                $name = $method->name;
+                if (substr($name, 0, strlen($this->METHOD_PREFIX)) == $this->METHOD_PREFIX) {
+                    $name = substr($name, strlen($this->METHOD_PREFIX));
+                }
+
+                $scenario = new Scenario($this->uncamelize($name));
 
                 if ($method->getAttribute('comments')) {
                     $scenario->description = $this->commentItem->copy(array($method));
