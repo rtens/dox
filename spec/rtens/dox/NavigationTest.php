@@ -142,4 +142,17 @@ class NavigationTest extends Specification {
         ');
     }
 
+    public function testLinkBackInSpecification() {
+        $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
+        $this->file->givenTheFile_WithContent('spec/OneTest.php', '<?php class SomeSpecClass {}');
+        $this->web->whenIRequestTheResourceAt('project/One');
+        $this->web->thenTheResponseShouldContain('"back": {"href": "../project"}');
+    }
+
+    public function testLinkBackInProject() {
+        $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
+        $this->web->whenIRequestTheResourceAt('project');
+        $this->web->thenTheResponseShouldContain('"back": {"href": "."}');
+    }
+
 }

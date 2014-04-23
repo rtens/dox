@@ -15,106 +15,38 @@
     <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 
-    <style>
-        h2, h3, h4, h5, .list-group-item {
-            text-transform: capitalize;
-        }
+    <link rel="stylesheet" href="../res/base.css"/>
+    <link rel="stylesheet" href="../res/specification.css"/>
 
-        p {
-            line-height: 1.7em;
-            margin-bottom: 1.2em;
-        }
-
-        pre {
-            margin-bottom: 1.2em;
-        }
-
-        p:last-child,
-        pre:last-child {
-            margin-bottom: 0;
-        }
-
-        pre code, .step {
-            word-break: keep-all;
-            word-wrap: normal;
-            white-space: pre;
-        }
-
-        pre code.hljs {
-            background: none;
-        }
-
-        .steps {
-            overflow: auto;
-            display: block;
-            padding: 10px;
-            margin: 0 0 10px;
-            font-size: 13px;
-            line-height: 1.5em;
-            color: #333;
-            background-color: #f5f5f5;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
-        }
-
-        .step-group {
-            margin-bottom: .5em;
-        }
-
-        .step-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .step .arg {
-            font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
-            font-weight: bold;
-        }
-
-        .panel-default > .panel-heading {
-            cursor: pointer;
-            background-color: #eee;
-        }
-
-        .panel-heading:hover {
-            background-color: #ddd;
-        }
-
-        .list-group .list-group-item.active,
-        .list-group .list-group-item.active:hover,
-        .list-group .list-group-item.active:focus {
-            background-color: #eee;
-            border-color: #eee;
-            color: #666;
-        }
-
-        .collapsing {
-            transition: none;
-        }
-    </style>
 </head>
 <body>
 
 <div class="container">
+
+    <h1 class="page-header">
+        <span class="dox">do<span class="x">x</span></span>
+        <small>Executable Documentation</small>
+        <a class="github" href="http://hithub.com/rtens/dox" target="_blank"></a>
+    </h1>
 
     <div class="row">
 
         <div class="col-md-3" property="navigation">
             <div>
                 <h1>
-                    <a href="." class="glyphicon glyphicon-chevron-left small"></a>
+                    <a property="back" href="../xxProject.html" class="glyphicon glyphicon-chevron-left small"></a>
                     <span property="name">This Project</span>
                 </h1>
 
                 <div class="list-group">
                     <a class="list-group-item" property="specification" href="#">
-                        <span property="name">Another Specification</span>
+                        <span class="title" property="name">Another Specification</span>
                     </a>
                     <a class="list-group-item active" property="specification" href="#">
-                        <span property="name">Some Specification</span>
+                        <span class="title" property="name">Some Specification</span>
                     </a>
                     <a class="list-group-item" property="specification" href="#">
-                        <span property="name">Even more stuff</span>
+                        <span class="title" property="name">Even more stuff</span>
                     </a>
                 </div>
 
@@ -123,10 +55,10 @@
 
                     <div class="list-group">
                         <a class="list-group-item" property="specification" href="#">
-                            <span property="name">Another Specification</span>
+                            <span class="title" property="name">Another Specification</span>
                         </a>
                         <a class="list-group-item" property="specification" href="#">
-                            <span property="name">Even more stuff</span>
+                            <span class="title" property="name">Even more stuff</span>
                         </a>
                     </div>
                 </div>
@@ -135,7 +67,7 @@
 
         <div class="col-md-8" property="specification">
 
-            <h2 class="page-header" property="name">Some specification</h2>
+            <h2 class="title" property="name">Some specification</h2>
 
             <div class="well" property="description"><p>Some description</p></div>
 
@@ -143,7 +75,7 @@
 
                 <div class="panel panel-default" property="scenario">
                     <div class="panel-heading">
-                        <h3 property="name">Some scenario</h3>
+                        <h3 class="title" property="name">Some scenario</h3>
 
                         <div property="description"><p>Some description</p></div>
                     </div>
@@ -170,7 +102,7 @@ $iSay = 'Hello World!";</code></pre>
 
                 <div class="panel panel-default" property="scenario">
                     <div class="panel-heading">
-                        <h3 property="name">Another scenario</h3>
+                        <h3 class="title" property="name">Another scenario</h3>
                     </div>
                     <div class="panel-collapse collapse">
                         <div class="panel-body" property="content">

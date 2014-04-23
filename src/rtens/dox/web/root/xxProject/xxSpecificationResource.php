@@ -44,6 +44,7 @@ class xxSpecificationResource extends DynamicResource {
 
     private function assembleModel(Specification $specification, $project) {
         return array(
+            'back' => array('href' => '../' . $project),
             'specification' => $this->assembleSpecification($specification),
             'navigation' => $this->getParent()->assembleNavigation($this->config->getProject($project))
         );

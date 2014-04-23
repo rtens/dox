@@ -36,6 +36,7 @@ class xxProjectResource extends Container {
 
     private function assembleModel(ProjectConfiguration $config) {
         return array(
+            'back' => array('href' => '.'),
             'navigation' => $this->assembleNavigation($config)
         );
     }

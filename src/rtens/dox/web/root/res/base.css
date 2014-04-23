@@ -1,0 +1,38 @@
+.title{
+    text-transform: capitalize;
+}
+
+h1 .dox {
+    font-size: 2em;
+}
+
+.dox .x {
+    font-weight: bold;
+    color: #bb0000;
+}
+
+.octicon-mark-github:before {
+    content: '\f00a';
+}
+
+.page-header {
+    position: relative;
+    margin-top: 20px;
+}
+
+.github {
+    background-image: url("https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Mark.png");
+    background-size: 40px 40px;
+    background-position: center;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    bottom: 15pt;
+    right: 5pt;
+    opacity: .6;
+}
+
+.github:hover {
+    opacity: 1;
+}
