@@ -10,16 +10,16 @@ use watoki\scrut\Specification;
 class ParseSpecificationTest extends Specification {
 
     public function testSpecificationClass() {
-        $this->parser->whenIParse(
-            'namespace some\name\space;
+        $this->parser->whenIParse('
+            namespace some\name\space;
             class SomeSpecificationTest {}'
         );
         $this->parser->thenThereShouldBeASpecificationWithTheName('Some specification');
     }
 
     public function testSpecificationWithDescription() {
-        $this->parser->whenIParse(
-            '/**
+        $this->parser->whenIParse('
+            /**
               * This is my
               * *DocComment* text.
               *
@@ -34,8 +34,8 @@ class ParseSpecificationTest extends Specification {
     }
 
     public function testScenarios() {
-        $this->parser->whenIParse(
-            'class SomeTest {
+        $this->parser->whenIParse('
+            class SomeTest {
                 function testSomeStuff() {}
                 function testSomeMoreStuff() {}
             }'
@@ -46,8 +46,8 @@ class ParseSpecificationTest extends Specification {
     }
 
     public function testScenarioWithDescription() {
-        $this->parser->whenIParse(
-            'class SomeTest {
+        $this->parser->whenIParse('
+            class SomeTest {
                 /**
                  * This is the description
                  * of this scenario.
@@ -62,8 +62,8 @@ class ParseSpecificationTest extends Specification {
     }
 
     public function testScenarioWithCode() {
-        $this->parser->whenIParse(
-            'class SomeTest {
+        $this->parser->whenIParse('
+            class SomeTest {
                 public function testSomeStuff() {
                     $code = 1 + 1;
                 }
@@ -78,8 +78,8 @@ class ParseSpecificationTest extends Specification {
     }
 
     public function testIgnorePrivateAndProtectedMethods() {
-        $this->parser->whenIParse(
-            'class SomeTest {
+        $this->parser->whenIParse('
+            class SomeTest {
                 public function testSomeStuff() {}
                 private function testMoreStuff() {}
                 protected function testEvenMoreStuff() {}
@@ -90,8 +90,8 @@ class ParseSpecificationTest extends Specification {
 
     public function testIgnoreMethodsWithoutPrefix() {
         $this->parser->givenTheMethodPrefixIs('my');
-        $this->parser->whenIParse(
-            'class SomeTest {
+        $this->parser->whenIParse('
+            class SomeTest {
                 public function myMethod() {}
                 public function yourMethod() {}
             }'

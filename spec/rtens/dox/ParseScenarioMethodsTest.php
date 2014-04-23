@@ -10,8 +10,8 @@ use watoki\scrut\Specification;
 class ParseScenarioMethodsTest extends Specification {
 
     public function testJustCode() {
-        $this->parser->whenIParseTheMethodBody(
-            '$some = 3;
+        $this->parser->whenIParseTheMethodBody('
+            $some = 3;
             $code = $some + 1;'
         );
         $this->parser->thenTheScenarioShouldBe('[
@@ -28,8 +28,8 @@ class ParseScenarioMethodsTest extends Specification {
     }
 
     public function testJustCommentHack() {
-        $this->parser->whenIParseTheMethodBody(
-            '// Just a comment
+        $this->parser->whenIParseTheMethodBody('
+            // Just a comment
             null;'
         );
         $this->parser->thenTheScenarioShouldBe('[
@@ -41,8 +41,8 @@ class ParseScenarioMethodsTest extends Specification {
     }
 
     public function testCodeWithLineComment() {
-        $this->parser->whenIParseTheMethodBody(
-            '// Some comment describing the code
+        $this->parser->whenIParseTheMethodBody('
+            // Some comment describing the code
             $code = 3 + 4;'
         );
         $this->parser->thenTheScenarioShouldBe('[
@@ -58,8 +58,8 @@ class ParseScenarioMethodsTest extends Specification {
     }
 
     public function testCodeWithTwoLineComments() {
-        $this->parser->whenIParseTheMethodBody(
-            '// Some comment describing the code
+        $this->parser->whenIParseTheMethodBody('
+            // Some comment describing the code
             // Some more commenting
             $code = 3 + 4;
             $more = $code + 1;'
@@ -77,11 +77,11 @@ class ParseScenarioMethodsTest extends Specification {
     }
 
     public function testCodeWithBlockComment() {
-        $this->parser->whenIParseTheMethodBody(
-            '/*
-              * This is some
-              * *block* comment.
-              */
+        $this->parser->whenIParseTheMethodBody('
+            /*
+             * This is some
+             * *block* comment.
+             */
             $code = 1 + 1;'
         );
         $this->parser->thenTheScenarioShouldBe('[
@@ -97,12 +97,12 @@ class ParseScenarioMethodsTest extends Specification {
     }
 
     public function testBlockCommentWithParagraphs() {
-        $this->parser->whenIParseTheMethodBody(
-            '/*
-              * This is some comment.
-              *
-              * With two paragraphs.
-              */
+        $this->parser->whenIParseTheMethodBody('
+            /*
+             * This is some comment.
+             *
+             * With two paragraphs.
+             */
             $code = 1 + 1;'
         );
         $this->parser->thenTheScenarioShouldBe('[
@@ -118,8 +118,8 @@ class ParseScenarioMethodsTest extends Specification {
     }
 
     public function testMultipleCommentsAndCode() {
-        $this->parser->whenIParseTheMethodBody(
-            '// Some comment
+        $this->parser->whenIParseTheMethodBody('
+            // Some comment
             $code = 1 + 1;
 
             /*

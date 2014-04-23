@@ -39,8 +39,8 @@ class ParseStepsTest extends Specification {
     }
 
     public function testInlineArguments() {
-        $this->parser->whenIParseTheMethodBody(
-            '$this->given_Has_Cows("Bart", 2);
+        $this->parser->whenIParseTheMethodBody('
+            $this->given_Has_Cows("Bart", 2);
             $this->given_Is("Bart", 10);'
         );
         $this->parser->thenTheScenarioShouldContain('[
@@ -59,8 +59,8 @@ class ParseStepsTest extends Specification {
     }
 
     public function testTwoSteps() {
-        $this->parser->whenIParseTheMethodBody(
-            '$this->givenSomething();
+        $this->parser->whenIParseTheMethodBody('
+            $this->givenSomething();
             $this->givenSomethingElse();'
         );
         $this->parser->thenTheScenarioShouldContain('[
@@ -76,8 +76,8 @@ class ParseStepsTest extends Specification {
     }
 
     public function testDifferentGroups() {
-        $this->parser->whenIParseTheMethodBody(
-            '$this->givenSomething();
+        $this->parser->whenIParseTheMethodBody('
+            $this->givenSomething();
             $this->givenSomethingElse();
             $this->whenSomethingHappens();
             $this->thenItShouldBeOk();
@@ -135,8 +135,8 @@ class ParseStepsTest extends Specification {
     }
 
     public function testIndentedString() {
-        $this->parser->whenIParseTheMethodBody(
-            '$this->given("
+        $this->parser->whenIParseTheMethodBody('
+            $this->given("
                 Something
                 indented
             ");'

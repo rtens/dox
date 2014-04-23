@@ -21,7 +21,7 @@ class WebHookTest extends Specification {
     public function testReceivePushEvent() {
         $this->web->givenTheProject_WithTheSpecificationFolder('Project', 'spec');
         $this->web->whenISendA_RequestTo(Request::METHOD_POST, 'Project');
-        $this->thenExecutedCommand_ShouldBe(1, 'cd ' . $this->file->pathTo('spec') . ' && git pull origin master');
+        $this->thenExecutedCommand_ShouldBe(1, 'cd [userDir]/spec && git pull origin master');
         $this->web->thenTheResponseShouldBe('OK - Updated Project');
     }
 
@@ -33,6 +33,7 @@ class WebHookTest extends Specification {
     }
 
     private function thenExecutedCommand_ShouldBe($pos, $command) {
+        $command = str_replace('[userDir]', $this->file->tmpDir(), $command);
         $history = $this->executer->__mock()->method('execute')->getHistory();
         $this->assertEquals($command, $history->getCalledArgumentAt($pos - 1, 0));
     }
