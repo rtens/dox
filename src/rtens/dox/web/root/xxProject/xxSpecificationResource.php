@@ -87,7 +87,7 @@ class xxSpecificationResource extends DynamicResource {
             if ($item instanceof CommentItem && $item->content) {
                 $out[] = $this->markdown->text($item->content);
             } else if ($item instanceof CodeItem) {
-                $out[] = "<pre><code>" . $item->content . "</code></pre>";
+                $out[] = "<pre><code>" . htmlentities($item->content) . "</code></pre>";
             } else if ($item instanceof StepsItem) {
                 $groupElements = array();
                 foreach ($item->groups as $steps) {
