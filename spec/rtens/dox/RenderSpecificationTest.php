@@ -109,4 +109,21 @@ class RenderSpecificationTest extends Specification {
         $this->web->thenTheResponseShouldContainTheText('&lt;div&gt;Some &lt;em&gt;HTML&lt;/em&gt;&lt;/div&gt;');
     }
 
+    public function testHtmlEntitiesInSteps() {
+        $this->web->givenTheRequestedFormatIs('html');
+        $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
+        $this->file->givenTheFile_WithContent('spec/SpecificationTest.php', '
+            <?php
+
+            class SpecificationTest {
+                public function testSomeThings() {
+                    $this->givenSomeHtml("<div>Some <em>HTML</em></div>");
+                }
+            }'
+        );
+        $this->web->whenIRequestTheResourceAt('project/Specification');
+        $this->web->thenTheResponseShouldContainTheText('$this-&gt;givenSomeHtml(\'&lt;div&gt;Some &lt;em&gt;HTML&lt;/em&gt;&lt;/div&gt;\')');
+        $this->web->thenTheResponseShouldContainTheText('<span class="arg">\'&lt;div&gt;Some &lt;em&gt;HTML&lt;/em&gt;&lt;/div&gt;\'</span>');
+    }
+
 } 

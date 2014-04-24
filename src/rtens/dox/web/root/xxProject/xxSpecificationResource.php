@@ -96,7 +96,7 @@ class xxSpecificationResource extends DynamicResource {
                         $assembled = array();
                         foreach ($step['step'] as $part) {
                             if (is_array($part)) {
-                                $assembled[] = '<span class="arg">' . $part['value'] . '</span>';
+                                $assembled[] = '<span class="arg">' . htmlentities($part['value']) . '</span>';
                             } else {
                                 $assembled[] = $part;
                             }
