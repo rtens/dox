@@ -32,7 +32,7 @@ $commands->add('installDependencies', new GenericCommand(function () {
 }));
 
 $commands->add('updateDependencies', new GenericCommand(function () {
-    system("php build/composer.phar install --dev");
+    system("php build/composer.phar update");
 }));
 
 $commands->add('test', GenericCommand::build(function () {

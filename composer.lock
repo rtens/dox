@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "84074e5aca166fe541a186dffdb92a27",
+    "hash": "cf6b89a76bea862a27f0881444e64b08",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -50,12 +50,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "3db3ad7d1ecd731ffdd0c4c04db4bb019f56c0c7"
+                "reference": "2e195d7cb2deebfd2f31e63bdd442bb235bd0149"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3db3ad7d1ecd731ffdd0c4c04db4bb019f56c0c7",
-                "reference": "3db3ad7d1ecd731ffdd0c4c04db4bb019f56c0c7",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/2e195d7cb2deebfd2f31e63bdd442bb235bd0149",
+                "reference": "2e195d7cb2deebfd2f31e63bdd442bb235bd0149",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2014-04-19 21:14:28"
+            "time": "2014-04-21 09:15:33"
         },
         {
             "name": "watoki/cfg",
@@ -712,12 +712,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "54ff6104fb211dbc5e9eaf82dbc8ee6dabdf6ed0"
+                "reference": "ce2099fad55c1374c192d7587ee5cb4ee63c8740"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/54ff6104fb211dbc5e9eaf82dbc8ee6dabdf6ed0",
-                "reference": "54ff6104fb211dbc5e9eaf82dbc8ee6dabdf6ed0",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ce2099fad55c1374c192d7587ee5cb4ee63c8740",
+                "reference": "ce2099fad55c1374c192d7587ee5cb4ee63c8740",
                 "shasum": ""
             },
             "require": {
@@ -778,7 +778,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-04-21 06:38:30"
+            "time": "2014-04-24 08:24:57"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -843,12 +843,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rtens/mockster.git",
-                "reference": "0ba95d9da9c563f9c4a33c4067b9e83121599854"
+                "reference": "4eae182bf056d7cd2d9af41559152cad741e63fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rtens/mockster/zipball/0ba95d9da9c563f9c4a33c4067b9e83121599854",
-                "reference": "0ba95d9da9c563f9c4a33c4067b9e83121599854",
+                "url": "https://api.github.com/repos/rtens/mockster/zipball/4eae182bf056d7cd2d9af41559152cad741e63fd",
+                "reference": "4eae182bf056d7cd2d9af41559152cad741e63fd",
                 "shasum": ""
             },
             "require": {
@@ -884,7 +884,7 @@
                 "mocking",
                 "unit testing"
             ],
-            "time": "2014-04-21 14:46:05"
+            "time": "2014-04-24 21:27:00"
         },
         {
             "name": "symfony/yaml",
@@ -987,9 +987,9 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "watoki/cli": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": [
 
     ],
