@@ -44,14 +44,14 @@ class NavigationTest extends Specification {
     }
 
     public function testNavigationInProjectResource() {
-        $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
-        $this->file->givenTheFile('spec/OneTest.php');
-        $this->file->givenTheFile('spec/TwoTest.php');
-        $this->file->givenTheFile('spec/Three.php');
-        $this->file->givenTheFile('spec/a/AOneTest.php');
-        $this->file->givenTheFile('spec/a/ATwoTest.php');
-        $this->file->givenTheFile('spec/a/b/ABTest.php');
-        $this->file->givenTheFile('spec/c/COneTest.php');
+        $this->web->givenTheProject('MyProject');
+        $this->file->givenTheFile('user/projects/MyProject/spec/OneTest.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/TwoTest.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/Three.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/a/AOneTest.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/a/ATwoTest.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/a/b/ABTest.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/c/COneTest.php');
 
         $this->web->whenIRequestTheResourceAt('projects/MyProject');
         $this->web->thenTheResponseShouldContain('
@@ -105,9 +105,9 @@ class NavigationTest extends Specification {
     }
 
     public function testNavigationInSpecificationResource() {
-        $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
-        $this->file->givenTheFile_WithContent('spec/OneTest.php', '<?php class OneTest {}');
-        $this->file->givenTheFile_WithContent('spec/TwoTest.php', '<?php class TwoTest {}');
+        $this->web->givenTheProject('MyProject');
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/OneTest.php', '<?php class OneTest {}');
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/TwoTest.php', '<?php class TwoTest {}');
 
         $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/One');
         $this->web->thenTheResponseShouldContain('
@@ -129,10 +129,10 @@ class NavigationTest extends Specification {
     }
 
     public function testSkipEmptyFolders() {
-        $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'spec');
-        $this->file->givenTheFile('spec/OneTest.php');
-        $this->file->givenTheFile('spec/a/Ignored.php');
-        $this->file->givenTheFile('spec/a/b/IgnoredAsWell.php');
+        $this->web->givenTheProject('MyProject');
+        $this->file->givenTheFile('user/projects/MyProject/spec/OneTest.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/a/Ignored.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/a/b/IgnoredAsWell.php');
 
         $this->web->whenIRequestTheResourceAt('projects/MyProject');
         $this->web->thenTheResponseShouldContain('
@@ -150,14 +150,14 @@ class NavigationTest extends Specification {
     }
 
     public function testLinkBackInSpecification() {
-        $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
-        $this->file->givenTheFile_WithContent('spec/OneTest.php', '<?php class SomeSpecClass {}');
+        $this->web->givenTheProject('project');
+        $this->file->givenTheFile_WithContent('user/projects/project/spec/OneTest.php', '<?php class SomeSpecClass {}');
         $this->web->whenIRequestTheResourceAt('projects/project/specs/One');
         $this->web->thenTheResponseShouldContain('"back": {"href": "http://dox/projects/project"}');
     }
 
     public function testLinkBackInProject() {
-        $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
+        $this->web->givenTheProject('project');
         $this->web->whenIRequestTheResourceAt('projects/project');
         $this->web->thenTheResponseShouldContain('"back": {"href": "http://dox/home"}');
     }

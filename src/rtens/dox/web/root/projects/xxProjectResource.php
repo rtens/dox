@@ -28,7 +28,7 @@ class xxProjectResource extends Container {
 
     public function doPost() {
         $config = $this->getProjectConfig();
-        $error = $this->executer->execute('cd ' . $config->getFolder() . ' && git pull origin master');
+        $error = $this->executer->execute('cd ' . $config->getFullProjectFolder() . ' && git pull origin master');
 
         if ($error) {
             throw new \Exception("FAILED with return code " . $error . ' (see logs for details)');
@@ -45,10 +45,11 @@ class xxProjectResource extends Container {
     }
 
     public function assembleNavigation(ProjectConfiguration $config) {
+        $dir = $config->getFullSpecFolder();
         $list= array(
             "name" => $config->getName(),
-            "folder" => $this->assembleFolders($config->getFolder(), $config),
-            "specification" => $this->assembleSpecificationList($config->getFolder(), $config)
+            "folder" => $this->assembleFolders($config->getFullSpecFolder(), $config),
+            "specification" => $this->assembleSpecificationList($dir, $config)
         );
         return $list;
     }
@@ -59,7 +60,7 @@ class xxProjectResource extends Container {
         $list = array();
         foreach (glob($dir . '/*') as $file) {
             if (!is_dir($file) && substr($file, -strlen($fileSuffix)) == $fileSuffix) {
-                $path = substr($file, strlen($config->getFolder()), -strlen($fileSuffix));
+                $path = substr($file, strlen($config->getFullSpecFolder()), -strlen($fileSuffix));
                 $url = $this->getUrl('specs' . $path)->toString();
 
                 $list[] = array(
@@ -78,7 +79,7 @@ class xxProjectResource extends Container {
                 $specifications = $this->assembleSpecificationList($file, $config);
                 if ($specifications) {
                     $list[] = array(
-                        'name' => substr($file, strlen($config->getFolder())+1),
+                        'name' => substr($file, strlen($config->getFullSpecFolder())+1),
                         'specification' => $specifications
                     );
                 }

@@ -2,13 +2,12 @@
 namespace spec\rtens\dox;
 
 use rtens\dox\Configuration;
-use rtens\dox\ProjectConfiguration;
 use watoki\scrut\Specification;
 
 /**
  * **Start Here**
  *
- * @property Configuration configuration <-
+ * @property Configuration configuration
  */
 class IntroductionTest extends Specification {
 
@@ -95,17 +94,22 @@ class IntroductionTest extends Specification {
          * #### Publish yourself
          *
          * You can also host do<span style="color: #bb0000; font-weight: bold;">x</span> yourself.
-         * To do so [install dox] on your host and clone the projects into a folder accessible by the web
-         * server (e.g. `user/projects`).
-         *
-         * Then add the project to the configuration. The best way is to overwrite the constructor in
-         * `user/UserConfiguration.php`.
+         * To do so [install dox] on your host and the project to the configuration. The best way is to
+         * overwrite the constructor in `user/UserConfiguration.php`.
          *
          * [install dox]: http://github.com/rtens/dox
          */
 
-        $this->configuration->addProject(
-            new ProjectConfiguration('project-name', '/path/to/folder/containing/specs'));
+        $project = $this->configuration->addProject('example-name');
+
+        /*
+         * You can either download the files manually into the folder `user/projects/<projectName>` or
+         * provide the URL to a [git] repository to have it downloaded automatically.
+         *
+         * [git]: http://git-scm.org
+         */
+
+        $project->setRepositoryUrl('http://github.com/example/project.git');
 
         /*
          * #### Automatic Update
@@ -121,6 +125,10 @@ class IntroductionTest extends Specification {
         null;
     }
 
+    protected function setUp() {
+        parent::setUp();
+        $this->configuration = new Configuration(__DIR__);
+    }
 
     private $apples = array();
 

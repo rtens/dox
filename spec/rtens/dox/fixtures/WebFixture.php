@@ -2,7 +2,6 @@
 namespace spec\rtens\dox\fixtures;
 
 use rtens\dox\Configuration;
-use rtens\dox\ProjectConfiguration;
 use rtens\dox\web\RootResource;
 use watoki\curir\http\Path;
 use watoki\curir\http\Request;
@@ -11,31 +10,33 @@ use watoki\curir\http\Url;
 use watoki\scrut\Fixture;
 
 /**
- * @property FileFixture file <-
- *
- * @property Configuration config
  * @property Response response
+ * @property FileFixture file <-
  */
 class WebFixture extends Fixture {
 
     private $format = 'json';
 
-    protected function setUp() {
-        parent::setUp();
-        $this->config = new Configuration();
-        $this->spec->factory->setSingleton(get_class($this->config), $this->config);
+    protected function config() {
+        try {
+            return $this->spec->factory->getSingleton(Configuration::$CLASS);
+        } catch (\Exception $e) {
+            $config = new Configuration($this->file->tmpDir());
+            $this->spec->factory->setSingleton(Configuration::$CLASS, $config);
+            return $config;
+        }
     }
 
     public function givenTheProject($project) {
-        $this->config->addProject(new ProjectConfiguration($project, $this->file->tmpDir() . '/spec'));
+        $this->config()->addProject($project);
     }
 
-    public function givenTheStartSpecificationOf_Is($project, $specification) {
-        $this->config->getProject($project)->setStartSpecification($specification);
+    public function givenTheProject_HasTheSpecFolder($project, $path) {
+        $this->config()->getProject($project)->setSpecFolder($path);
     }
 
-    public function givenTheProject_WithTheSpecificationFolder($project, $folder) {
-        $this->config->addProject(new ProjectConfiguration($project, $this->file->tmpDir() . '/' . $folder));
+    public function givenTheProject_HasTheRepositoryUrl($project, $url) {
+        $this->config()->getProject($project)->setRepositoryUrl($url);
     }
 
     public function whenIRequestTheResourceAt($path) {

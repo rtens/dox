@@ -8,9 +8,15 @@ class Configuration {
     /** @var array|ProjectConfiguration[] */
     private $projects = array();
 
-    public function addProject(ProjectConfiguration $project) {
-        $this->projects[$project->getName()] = $project;
-        return $project;
+    private $root;
+
+    function __construct($root) {
+        $this->root = $root;
+    }
+
+    public function addProject($projectName) {
+        $this->projects[$projectName] = new ProjectConfiguration($this, $projectName);
+        return $this->projects[$projectName];
     }
 
     public function getProject($project) {
@@ -19,5 +25,17 @@ class Configuration {
 
     public function getProjects() {
         return array_keys($this->projects);
+    }
+
+    public function inUserFolder($path) {
+        return $this->getUserFolder() . DIRECTORY_SEPARATOR . $path;
+    }
+
+    public function inProjectsFolder($path) {
+        return $this->inUserFolder('projects' . DIRECTORY_SEPARATOR . $path);
+    }
+
+    protected function getUserFolder() {
+        return $this->root . DIRECTORY_SEPARATOR . 'user';
     }
 }

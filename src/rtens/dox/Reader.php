@@ -14,7 +14,7 @@ class Reader {
     }
 
     public function readSpecification(Liste $path) {
-        $file = $this->config->getFolder() . '/' . $path->join('/') . $this->parser->CLASS_SUFFIX . '.php';
+        $file = $this->config->getFullSpecFolder() . '/' . $path->join('/') . $this->parser->CLASS_SUFFIX . '.php';
         return $this->parser->parse(file_get_contents($file));
     }
 

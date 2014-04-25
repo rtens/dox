@@ -17,8 +17,9 @@ use watoki\scrut\Specification;
 class RenderSpecificationTest extends Specification {
 
     public function testEmptySpecification() {
-        $this->web->givenTheProject_WithTheSpecificationFolder('MyProject', 'mySpec');
-        $this->file->givenTheFile_WithContent('mySpec/SomeSpecificationTest.php', '
+        $this->web->givenTheProject('MyProject');
+        $this->web->givenTheProject_HasTheSpecFolder('MyProject', 'mySpec');
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/mySpec/SomeSpecificationTest.php', '
             <?php
             class SomeSpecificationTest {}'
         );
@@ -33,8 +34,9 @@ class RenderSpecificationTest extends Specification {
     }
 
     public function testSpecificationWithDescriptionAndMethods() {
-        $this->web->givenTheProject_WithTheSpecificationFolder('YourProject', 'yourSpec');
-        $this->file->givenTheFile_WithContent('yourSpec/some/SpecificationTest.php', '
+        $this->web->givenTheProject('MyProject');
+        $this->web->givenTheProject_HasTheSpecFolder('MyProject', 'mySpec');
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/mySpec/some/SpecificationTest.php', '
             <?php
 
             /**
@@ -59,7 +61,7 @@ class RenderSpecificationTest extends Specification {
                 }
             }'
         );
-        $this->web->whenIRequestTheResourceAt('projects/YourProject/specs/some/Specification');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/some/Specification');
         $this->web->thenTheResponseShouldContain('
             "specification": {
                 "name": "Specification",
@@ -84,8 +86,9 @@ class RenderSpecificationTest extends Specification {
 
     public function testRenderSteps() {
         $this->web->givenTheRequestedFormatIs('html');
-        $this->web->givenTheProject_WithTheSpecificationFolder('YourProject', 'yourSpec');
-        $this->file->givenTheFile_WithContent('yourSpec/some/SpecificationTest.php', '
+        $this->web->givenTheProject('YourProject');
+        $this->web->givenTheProject_HasTheSpecFolder('YourProject', 'yourSpec');
+        $this->file->givenTheFile_WithContent('user/projects/YourProject/yourSpec/some/SpecificationTest.php', '
             <?php
 
             class SpecificationTest {
@@ -113,8 +116,8 @@ class RenderSpecificationTest extends Specification {
 
     public function testHtmlEntitiesInCode() {
         $this->web->givenTheRequestedFormatIs('html');
-        $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
-        $this->file->givenTheFile_WithContent('spec/SpecificationTest.php', '
+        $this->web->givenTheProject('project');
+        $this->file->givenTheFile_WithContent('user/projects/project/spec/SpecificationTest.php', '
             <?php
 
             class SpecificationTest {
@@ -129,8 +132,8 @@ class RenderSpecificationTest extends Specification {
 
     public function testHtmlEntitiesInSteps() {
         $this->web->givenTheRequestedFormatIs('html');
-        $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
-        $this->file->givenTheFile_WithContent('spec/SpecificationTest.php', '
+        $this->web->givenTheProject('project');
+        $this->file->givenTheFile_WithContent('user/projects/project/spec/SpecificationTest.php', '
             <?php
 
             class SpecificationTest {
