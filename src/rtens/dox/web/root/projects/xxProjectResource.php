@@ -11,6 +11,8 @@ use watoki\curir\resource\Container;
 
 class xxProjectResource extends Container {
 
+    public static $CLASS = __CLASS__;
+
     /** @var Configuration <- */
     public $config;
 

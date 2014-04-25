@@ -3,6 +3,8 @@ namespace rtens\dox;
 
 class Executer {
 
+    public static $CLASS = __CLASS__;
+
     public function execute($command) {
         $return = 0;
         $output = array();

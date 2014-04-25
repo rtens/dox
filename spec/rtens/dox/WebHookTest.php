@@ -27,8 +27,8 @@ class WebHookTest extends Specification {
     protected function setUp() {
         parent::setUp();
         $mf = new MockFactory();
-        $this->executer = $mf->getMock(Executer::CLASS);
-        $this->factory->setSingleton(Executer::CLASS, $this->executer);
+        $this->executer = $mf->getMock(Executer::$CLASS);
+        $this->factory->setSingleton(Executer::$CLASS, $this->executer);
     }
 
     private function thenExecutedCommand_ShouldBe($pos, $command) {

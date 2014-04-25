@@ -132,7 +132,7 @@ class xxSpecificationResource extends DynamicResource {
      * @return xxProjectResource
      */
     private function getProjectResource() {
-        return $this->getAncestor(xxProjectResource::CLASS);
+        return $this->getAncestor(xxProjectResource::$CLASS);
     }
 
 }
