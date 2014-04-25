@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "943f7c869781a7404265ecabd64d4a2e",
+    "hash": "84074e5aca166fe541a186dffdb92a27",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -135,6 +135,53 @@
                 "watoki"
             ],
             "time": "2013-11-21 12:47:38"
+        },
+        {
+            "name": "watoki/cli",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/watoki/cli.git",
+                "reference": "3996b4071200a1408b6d2aec3048e0ce2f1eaf53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/watoki/cli/zipball/3996b4071200a1408b6d2aec3048e0ce2f1eaf53",
+                "reference": "3996b4071200a1408b6d2aec3048e0ce2f1eaf53",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.8",
+                "watoki/factory": "*"
+            },
+            "require-dev": {
+                "watoki/scrut": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "watoki\\cli": "src/",
+                    "spec\\watoki\\cli": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolas Martens",
+                    "email": "Nikolas.M@rtens.org",
+                    "homepage": "http://rtens.org"
+                }
+            ],
+            "description": "Library for CLI application in PHP",
+            "homepage": "http://github.com/watoki/cli",
+            "keywords": [
+                "cli",
+                "watoki"
+            ],
+            "time": "2014-02-24 13:09:24"
         },
         {
             "name": "watoki/collections",
@@ -940,9 +987,9 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "watoki/cli": 20
+    },
     "platform": [
 
     ],

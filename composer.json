@@ -13,7 +13,8 @@
         "erusev/parsedown": "1.*",
         "watoki/curir": "*",
         "watoki/tempan": "*",
-        "watoki/cfg": "*"
+        "watoki/cfg": "*",
+        "watoki/cli": "*"
     },
     "require-dev": {
         "watoki/scrut": "*",

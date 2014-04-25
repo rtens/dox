@@ -12,10 +12,10 @@ Of course, *dox* itself is documentad using executable specification. You can fi
 
 ## Installation ##
 
-Clone and build
+Clone and install
 
 ```bash
 git clone http://github.com/rtens/dox.git
 cd dox
-php setup.php
+php setup.php install
 ```
