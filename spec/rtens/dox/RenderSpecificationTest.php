@@ -73,7 +73,7 @@ class RenderSpecificationTest extends Specification {
                 ],
                 "method": [
                     {
-                        "name": "Some method",
+                        "name": "someMethod",
                         "description": "<p>Method <em>description</em></p>",
                         "content": "<pre><code>$code = 1;</code></pre>"
                     }
