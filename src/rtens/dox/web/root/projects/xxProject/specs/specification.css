@@ -66,6 +66,11 @@ pre code.hljs {
     background-color: #ddd;
 }
 
+.method.panel .title {
+    text-transform: none;
+    font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+}
+
 .list-group .list-group-item.active,
 .list-group .list-group-item.active:hover,
 .list-group .list-group-item.active:focus {

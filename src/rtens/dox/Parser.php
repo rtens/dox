@@ -76,10 +76,10 @@ class Parser {
 
                 $isScenario = substr($name, 0, strlen($this->SCENARIO_PREFIX)) == $this->SCENARIO_PREFIX;
                 if ($isScenario) {
-                    $name = substr($name, strlen($this->SCENARIO_PREFIX));
+                    $name = $this->uncamelize(substr($name, strlen($this->SCENARIO_PREFIX)));
                 }
 
-                $method = new Method($this->uncamelize($name));
+                $method = new Method($name);
 
                 if ($methodStmt->getAttribute('comments')) {
                     $method->description = $this->commentItem->copy(array($methodStmt));

@@ -103,7 +103,7 @@ class ParseSpecificationTest extends Specification {
         $this->parser->thenScenario_ShouldHaveTheName(1, 'Method');
         $this->parser->thenScenario_ShouldHaveTheName(2, 'Other method');
         $this->parser->thenThereShouldBe_Methods(1);
-        $this->parser->thenMethod_ShouldHaveTheName(1, 'Your method');
+        $this->parser->thenMethod_ShouldHaveTheName(1, 'yourMethod');
     }
 
 }
