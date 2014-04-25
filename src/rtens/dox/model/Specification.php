@@ -1,5 +1,5 @@
 <?php
-namespace rtens\dox;
+namespace rtens\dox\model;
 
 use rtens\dox\content\item\CommentItem;
 
@@ -10,8 +10,11 @@ class Specification {
     /** @var CommentItem */
     public $description;
 
-    /** @var array|Scenario[] */
+    /** @var array|Method[] */
     public $scenarios = array();
+
+    /** @var array|Method[] */
+    public $methods = array();
 
     function __construct($name) {
         $this->name = $name;

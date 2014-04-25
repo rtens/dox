@@ -6,8 +6,9 @@ use rtens\dox\content\item\CodeItem;
 use rtens\dox\content\item\CommentItem;
 use rtens\dox\content\Item;
 use rtens\dox\content\item\StepsItem;
+use rtens\dox\model\Method;
 use rtens\dox\Reader;
-use rtens\dox\Specification;
+use rtens\dox\model\Specification;
 use rtens\dox\web\Presenter;
 use rtens\dox\web\root\projects\xxProjectResource;
 use watoki\curir\http\Path;
@@ -54,20 +55,37 @@ class xxSpecificationResource extends DynamicResource {
         return array(
             'name' => $specification->name,
             'description' => $this->asHtml(array($specification->description)),
-            'scenario' => $this->assembleScenarios($specification)
+            'scenario' => $this->assembleScenarios($specification),
+            'method' => $this->assembleMethods($specification)
         );
     }
 
     private function assembleScenarios(Specification $specification) {
         $scenarios = array();
         foreach ($specification->scenarios as $scenario) {
-            $scenarios[] = array(
-                'name' => $scenario->name,
-                'description' => $this->asHtml(array($scenario->description)),
-                'content' => $this->asHtml($scenario->content->items)
-            );
+            $scenarios[] = $this->assembleMethod($scenario);
         }
         return $scenarios;
+    }
+
+    private function assembleMethods($specification) {
+        $scenarios = array();
+        foreach ($specification->methods as $scenario) {
+            $scenarios[] = $this->assembleMethod($scenario);
+        }
+        return $scenarios;
+    }
+
+    /**
+     * @param Method $method
+     * @return array
+     */
+    private function assembleMethod($method) {
+        return array(
+            'name' => $method->name,
+            'description' => $this->asHtml(array($method->description)),
+            'content' => $this->asHtml($method->content->items)
+        );
     }
 
     /**

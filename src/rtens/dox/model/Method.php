@@ -1,10 +1,10 @@
 <?php
-namespace rtens\dox;
+namespace rtens\dox\model;
 
 use rtens\dox\content\Content;
 use rtens\dox\content\item\CommentItem;
 
-class Scenario {
+class Method {
 
     /** @var string */
     public $name;

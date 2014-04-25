@@ -5,6 +5,8 @@ use spec\rtens\dox\fixtures\ParserFixture;
 use watoki\scrut\Specification;
 
 /**
+ * Parse a specification class and its methods and also their doc comments
+ *
  * @property ParserFixture parser <-
  */
 class ParseSpecificationTest extends Specification {
@@ -88,17 +90,20 @@ class ParseSpecificationTest extends Specification {
         $this->parser->thenThereShouldBe_Scenarios(1);
     }
 
-    public function testMethodsWithoutPrefix() {
+    public function testIncludeMethodsWithoutPrefix() {
         $this->parser->givenTheMethodPrefixIs('my');
         $this->parser->whenIParse('
             class SomeTest {
                 public function myMethod() {}
                 public function yourMethod() {}
+                public function myOtherMethod() {}
             }'
         );
         $this->parser->thenThereShouldBe_Scenarios(2);
         $this->parser->thenScenario_ShouldHaveTheName(1, 'Method');
-        $this->parser->thenScenario_ShouldHaveTheName(2, 'Your method');
+        $this->parser->thenScenario_ShouldHaveTheName(2, 'Other method');
+        $this->parser->thenThereShouldBe_Methods(1);
+        $this->parser->thenMethod_ShouldHaveTheName(1, 'Your method');
     }
 
 }

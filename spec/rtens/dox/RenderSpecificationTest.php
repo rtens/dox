@@ -7,6 +7,10 @@ use watoki\curir\Resource;
 use watoki\scrut\Specification;
 
 /**
+ * All comments are interpreted as [markdown] and rendered as HTML.
+ *
+ * [markdown]: http://daringfireball.net/projects/markdown/
+ *
  * @property WebFixture web <-
  * @property FileFixture file <-
  */
@@ -28,7 +32,7 @@ class RenderSpecificationTest extends Specification {
         ');
     }
 
-    public function testSpecificationWithDescriptionAndScenarios() {
+    public function testSpecificationWithDescriptionAndMethods() {
         $this->web->givenTheProject_WithTheSpecificationFolder('YourProject', 'yourSpec');
         $this->file->givenTheFile_WithContent('yourSpec/some/SpecificationTest.php', '
             <?php
@@ -46,6 +50,13 @@ class RenderSpecificationTest extends Specification {
                     // Just *some* **comment**
                     $andCode = 1 + 1;
                 }
+
+                /**
+                 * Method *description*
+                 */
+                public function someMethod() {
+                    $code = 1;
+                }
             }'
         );
         $this->web->whenIRequestTheResourceAt('projects/YourProject/specs/some/Specification');
@@ -58,6 +69,13 @@ class RenderSpecificationTest extends Specification {
                         "name": "Some things",
                         "description": "<p>Description of <em>scenario</em></p>",
                         "content": "<p>Just <em>some</em> <strong>comment</strong></p>\n<pre><code>$andCode = 1 + 1;</code></pre>"
+                    }
+                ],
+                "method": [
+                    {
+                        "name": "Some method",
+                        "description": "<p>Method <em>description</em></p>",
+                        "content": "<pre><code>$code = 1;</code></pre>"
                     }
                 ]
             }

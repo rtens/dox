@@ -6,6 +6,8 @@ use spec\rtens\dox\fixtures\WebFixture;
 use watoki\scrut\Specification;
 
 /**
+ * dox is supposed to be a browser so we need some links forth and back
+ *
  * @property WebFixture web <-
  * @property FileFixture file <-
  */

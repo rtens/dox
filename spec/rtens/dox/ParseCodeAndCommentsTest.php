@@ -5,9 +5,11 @@ use spec\rtens\dox\fixtures\ParserFixture;
 use watoki\scrut\Specification;
 
 /**
+ * Parse method bodies in blocks of code separated by their comments
+ *
  * @property ParserFixture parser <-
  */
-class ParseScenarioMethodsTest extends Specification {
+class ParseCodeAndCommentsTest extends Specification {
 
     public function testJustCode() {
         $this->parser->whenIParseTheMethodBody('
@@ -23,11 +25,11 @@ class ParseScenarioMethodsTest extends Specification {
     }
 
     public function testJustComment() {
+        // Unfortunately, a comment is not parsed if there is no code
         $this->parser->whenIParseTheMethodBody('// Just a comment');
         $this->parser->thenTheScenarioShouldBe('[]');
-    }
 
-    public function testJustCommentHack() {
+        // As a workaround, `null;` is ignored so it can be used to make comments visible
         $this->parser->whenIParseTheMethodBody('
             // Just a comment
             null;'

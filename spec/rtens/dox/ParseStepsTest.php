@@ -6,7 +6,7 @@ use watoki\scrut\Specification;
 
 /**
  * A *step* is meant in the [SbE] sense being a sentence starting with *given*, *when* or *then*.
- * In code, steps are method calls that use a special syntax for in-lining arguments.
+ * In code, steps are methods that use a special syntax for in-lining arguments.
  *
  * [SbE]: http://specificationbyexample.com
  *
@@ -26,7 +26,20 @@ class ParseStepsTest extends Specification {
         }');
     }
 
-    public function testCallOnProperty() {
+    public function testStepWithArguments() {
+        $this->parser->whenIParseTheMethodBody(
+            '$this->givenSomething(2);'
+        );
+        $this->parser->thenTheScenarioShouldContain('{
+            "code": "$this->givenSomething(2)",
+            "step": [
+                "Given something",
+                {"value":"2"}
+            ]
+        }');
+    }
+
+    public function testMethodInComposedObject() {
         $this->parser->whenIParseTheMethodBody(
             '$this->property->givenSomething();'
         );
@@ -39,6 +52,7 @@ class ParseStepsTest extends Specification {
     }
 
     public function testInlineArguments() {
+        // Underscores are used as placeholders for arguments (trailing underscores can be omitted)
         $this->parser->whenIParseTheMethodBody('
             $this->given_Has_Cows("Bart", 2);
             $this->given_Is("Bart", 10);'
@@ -115,6 +129,9 @@ class ParseStepsTest extends Specification {
         ]');
     }
 
+    /**
+     * Some words should not be lower-case
+     */
     public function testCamelCaseExceptions() {
         $this->parser->whenIParseTheMethodBody(
             '$this->whenIDoSomething();'
@@ -124,17 +141,19 @@ class ParseStepsTest extends Specification {
         );
     }
 
-    public function testArrayArguments() {
+    public function testNonScalarArguments() {
         $this->parser->whenIParseTheMethodBody(
-            '$this->given(array());'
+            '$this->given(array(), null);'
         );
         $this->parser->thenTheScenarioShouldContain('[
             "Given",
-            {"value": "array()"}
+            {"value": "array()"},
+            {"value": "null"}
         ]');
     }
 
     public function testIndentedString() {
+        // For some reason, the parser adds a token when printing indented strings
         $this->parser->whenIParseTheMethodBody('
             $this->given("
                 Something

@@ -7,7 +7,7 @@ use watoki\scrut\Fixture;
 use watoki\scrut\Specification;
 
 /**
- * @property \rtens\dox\Specification $specification
+ * @property \rtens\dox\model\Specification $specification
  */
 class ParserFixture extends Fixture {
 
@@ -31,7 +31,7 @@ class ParserFixture extends Fixture {
     }
 
     public function thenThereShouldBeASpecificationWithTheName($name) {
-        $this->spec->assertTrue($this->specification instanceof \rtens\dox\Specification);
+        $this->spec->assertTrue($this->specification instanceof \rtens\dox\model\Specification);
         $this->spec->assertEquals($name, $this->specification->name);
     }
 
@@ -54,7 +54,7 @@ class ParserFixture extends Fixture {
     }
 
     public function givenTheMethodPrefixIs($string) {
-        $this->parser->METHOD_PREFIX = $string;
+        $this->parser->SCENARIO_PREFIX = $string;
     }
 
     public function thenTheScenarioShouldBe($json) {
@@ -81,11 +81,19 @@ class ParserFixture extends Fixture {
             $this->trimLines(json_encode($scenarios[$pos - 1]->content->items, JSON_PRETTY_PRINT)));
     }
 
+    public function thenThereShouldBe_Methods($int) {
+        $this->spec->assertCount($int, $this->specification->methods);
+    }
+
     private function trimLines($string) {
         $string = implode("\n", array_map(function ($line) {
             return trim($line);
         }, explode("\n", $string)));
         return $string;
+    }
+
+    public function thenMethod_ShouldHaveTheName($pos, $name) {
+        $this->spec->assertEquals($name, $this->specification->methods[$pos - 1]->name);
     }
 
 } 
