@@ -1,11 +1,12 @@
 <?php
-namespace rtens\dox\web\root;
+namespace rtens\dox\web\root\projects;
 
 use rtens\dox\Configuration;
 use rtens\dox\Executer;
 use rtens\dox\Parser;
 use rtens\dox\ProjectConfiguration;
 use rtens\dox\web\Presenter;
+use rtens\dox\web\RootResource;
 use watoki\curir\resource\Container;
 
 class xxProjectResource extends Container {
@@ -36,7 +37,7 @@ class xxProjectResource extends Container {
 
     private function assembleModel(ProjectConfiguration $config) {
         return array(
-            'back' => array('href' => '.'),
+            'back' => array('href' => $this->getAncestor(RootResource::$CLASS)->getUrl('home')->toString()),
             'navigation' => $this->assembleNavigation($config)
         );
     }
@@ -57,7 +58,7 @@ class xxProjectResource extends Container {
         foreach (glob($dir . '/*') as $file) {
             if (!is_dir($file) && substr($file, -strlen($fileSuffix)) == $fileSuffix) {
                 $path = substr($file, strlen($config->getFolder()), -strlen($fileSuffix));
-                $url = $this->getUrl() . $path;
+                $url = $this->getUrl('specs' . $path)->toString();
 
                 $list[] = array(
                     "name" => $this->parser->uncamelize(substr(basename($file), 0, -strlen($fileSuffix))),

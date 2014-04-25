@@ -1,5 +1,5 @@
 <?php
-namespace rtens\dox\web\root\xxProject;
+namespace rtens\dox\web\root\projects\xxProject\specs;
 
 use rtens\dox\Configuration;
 use rtens\dox\content\item\CodeItem;
@@ -9,7 +9,7 @@ use rtens\dox\content\item\StepsItem;
 use rtens\dox\Reader;
 use rtens\dox\Specification;
 use rtens\dox\web\Presenter;
-use rtens\dox\web\root\xxProjectResource;
+use rtens\dox\web\root\projects\xxProjectResource;
 use watoki\curir\http\Path;
 use watoki\curir\http\Request;
 use watoki\curir\resource\DynamicResource;
@@ -35,7 +35,7 @@ class xxSpecificationResource extends DynamicResource {
 
 
     public function doGet() {
-        $project = $this->getUrl()->getPath()->get(-2);
+        $project = $this->getProjectResource()->getUrl()->getPath()->get(-1);
         $reader = new Reader($this->config->getProject($project));
         $specification = $reader->readSpecification($this->path);
 
@@ -44,17 +44,10 @@ class xxSpecificationResource extends DynamicResource {
 
     private function assembleModel(Specification $specification, $project) {
         return array(
-            'back' => array('href' => '../' . $project),
+            'back' => array('href' => $this->getProjectResource()->getUrl()->toString()),
             'specification' => $this->assembleSpecification($specification),
-            'navigation' => $this->getParent()->assembleNavigation($this->config->getProject($project))
+            'navigation' => $this->getProjectResource()->assembleNavigation($this->config->getProject($project))
         );
-    }
-
-    /**
-     * @return xxProjectResource
-     */
-    public function getParent() {
-        return parent::getParent();
     }
 
     private function assembleSpecification(Specification $specification) {
@@ -115,6 +108,13 @@ class xxSpecificationResource extends DynamicResource {
         }
         return $out ? implode("\n", $out) : null;
 
+    }
+
+    /**
+     * @return xxProjectResource
+     */
+    private function getProjectResource() {
+        return $this->getAncestor(xxProjectResource::CLASS);
     }
 
 }

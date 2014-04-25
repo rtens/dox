@@ -6,7 +6,6 @@ use rtens\mockster\Mock;
 use rtens\mockster\MockFactory;
 use spec\rtens\dox\fixtures\FileFixture;
 use spec\rtens\dox\fixtures\WebFixture;
-use watoki\curir\http\Request;
 use watoki\scrut\Specification;
 
 /**
@@ -20,7 +19,7 @@ class WebHookTest extends Specification {
 
     public function testReceivePushEvent() {
         $this->web->givenTheProject_WithTheSpecificationFolder('Project', 'spec');
-        $this->web->whenISendA_RequestTo(Request::METHOD_POST, 'Project');
+        $this->web->whenISendA_RequestTo('post', 'projects/Project');
         $this->thenExecutedCommand_ShouldBe(1, 'cd [userDir]/spec && git pull origin master');
         $this->web->thenTheResponseShouldBe('OK - Updated Project');
     }

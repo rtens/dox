@@ -18,7 +18,7 @@ class RenderSpecificationTest extends Specification {
             <?php
             class SomeSpecificationTest {}'
         );
-        $this->web->whenIRequestTheResourceAt('MyProject/SomeSpecification');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/SomeSpecification');
         $this->web->thenTheResponseShouldContain('
             "specification": {
                 "name": "Some specification",
@@ -48,7 +48,7 @@ class RenderSpecificationTest extends Specification {
                 }
             }'
         );
-        $this->web->whenIRequestTheResourceAt('YourProject/some/Specification');
+        $this->web->whenIRequestTheResourceAt('projects/YourProject/specs/some/Specification');
         $this->web->thenTheResponseShouldContain('
             "specification": {
                 "name": "Specification",
@@ -78,7 +78,7 @@ class RenderSpecificationTest extends Specification {
                 }
             }'
         );
-        $this->web->whenIRequestTheResourceAt('YourProject/some/Specification');
+        $this->web->whenIRequestTheResourceAt('projects/YourProject/specs/some/Specification');
         $this->web->thenTheResponseShouldContainTheText('<div class="steps">
                 <div class="step-group">
                     <div title="$this-&gt;fix-&gt;given_Has_Cows(\'Bart\', 2)" class="step">Given <span class="arg">\'Bart\'</span> has <span class="arg">2</span> cows</div>
@@ -105,7 +105,7 @@ class RenderSpecificationTest extends Specification {
                 }
             }'
         );
-        $this->web->whenIRequestTheResourceAt('project/Specification');
+        $this->web->whenIRequestTheResourceAt('projects/project/specs/Specification');
         $this->web->thenTheResponseShouldContainTheText('&lt;div&gt;Some &lt;em&gt;HTML&lt;/em&gt;&lt;/div&gt;');
     }
 
@@ -121,7 +121,7 @@ class RenderSpecificationTest extends Specification {
                 }
             }'
         );
-        $this->web->whenIRequestTheResourceAt('project/Specification');
+        $this->web->whenIRequestTheResourceAt('projects/project/specs/Specification');
         $this->web->thenTheResponseShouldContainTheText('$this-&gt;givenSomeHtml(\'&lt;div&gt;Some &lt;em&gt;HTML&lt;/em&gt;&lt;/div&gt;\')');
         $this->web->thenTheResponseShouldContainTheText('<span class="arg">\'&lt;div&gt;Some &lt;em&gt;HTML&lt;/em&gt;&lt;/div&gt;\'</span>');
     }

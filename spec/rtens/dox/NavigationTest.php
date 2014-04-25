@@ -11,26 +11,31 @@ use watoki\scrut\Specification;
  */
 class NavigationTest extends Specification {
 
-    public function testProjectList() {
+    public function testRootRedirectsToHome() {
+        $this->web->whenIRequestTheResourceAt('');
+        $this->web->thenIShouldBeRedirectedTo('http://dox/home');
+    }
+
+    public function testProjectListOnHomePage() {
         $this->web->givenTheProject('ProjectOne');
         $this->web->givenTheProject('ProjectTwo');
         $this->web->givenTheProject('ProjectThree');
 
-        $this->web->whenIRequestTheResourceAt('');
+        $this->web->whenIRequestTheResourceAt('home');
 
         $this->web->thenTheResponseShouldContain('
             "project": [
                 {
                     "name": "ProjectOne",
-                    "href": "http://dox/ProjectOne"
+                    "href": "http://dox/projects/ProjectOne"
                 },
                 {
                     "name": "ProjectTwo",
-                    "href": "http://dox/ProjectTwo"
+                    "href": "http://dox/projects/ProjectTwo"
                 },
                 {
                     "name": "ProjectThree",
-                    "href": "http://dox/ProjectThree"
+                    "href": "http://dox/projects/ProjectThree"
                 }
             ]
         ');
@@ -46,7 +51,7 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile('spec/a/b/ABTest.php');
         $this->file->givenTheFile('spec/c/COneTest.php');
 
-        $this->web->whenIRequestTheResourceAt('MyProject');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject');
         $this->web->thenTheResponseShouldContain('
             "navigation": {
                 "name": "MyProject",
@@ -56,11 +61,11 @@ class NavigationTest extends Specification {
                         "specification": [
                             {
                                 "name": "A one",
-                                "href": "http://dox/MyProject/a/AOne"
+                                "href": "http://dox/projects/MyProject/specs/a/AOne"
                             },
                             {
                                 "name": "A two",
-                                "href": "http://dox/MyProject/a/ATwo"
+                                "href": "http://dox/projects/MyProject/specs/a/ATwo"
                             }
                         ]
                     },
@@ -69,7 +74,7 @@ class NavigationTest extends Specification {
                         "specification": [
                             {
                                 "name": "A b",
-                                "href": "http://dox/MyProject/a/b/AB"
+                                "href": "http://dox/projects/MyProject/specs/a/b/AB"
                             }
                         ]
                     },
@@ -78,7 +83,7 @@ class NavigationTest extends Specification {
                         "specification": [
                             {
                                 "name": "C one",
-                                "href": "http://dox/MyProject/c/COne"
+                                "href": "http://dox/projects/MyProject/specs/c/COne"
                             }
                         ]
                     }
@@ -86,11 +91,11 @@ class NavigationTest extends Specification {
                 "specification": [
                     {
                         "name": "One",
-                        "href": "http://dox/MyProject/One"
+                        "href": "http://dox/projects/MyProject/specs/One"
                     },
                     {
                         "name": "Two",
-                        "href": "http://dox/MyProject/Two"
+                        "href": "http://dox/projects/MyProject/specs/Two"
                     }
                 ]
             }
@@ -102,7 +107,7 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile_WithContent('spec/OneTest.php', '<?php class OneTest {}');
         $this->file->givenTheFile_WithContent('spec/TwoTest.php', '<?php class TwoTest {}');
 
-        $this->web->whenIRequestTheResourceAt('MyProject/One');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/One');
         $this->web->thenTheResponseShouldContain('
             "navigation": {
                 "name": "MyProject",
@@ -110,11 +115,11 @@ class NavigationTest extends Specification {
                 "specification": [
                     {
                         "name": "One",
-                        "href": "http://dox/MyProject/One"
+                        "href": "http://dox/projects/MyProject/specs/One"
                     },
                     {
                         "name": "Two",
-                        "href": "http://dox/MyProject/Two"
+                        "href": "http://dox/projects/MyProject/specs/Two"
                     }
                 ]
             }
@@ -127,7 +132,7 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile('spec/a/Ignored.php');
         $this->file->givenTheFile('spec/a/b/IgnoredAsWell.php');
 
-        $this->web->whenIRequestTheResourceAt('MyProject');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject');
         $this->web->thenTheResponseShouldContain('
             "navigation": {
                 "name": "MyProject",
@@ -135,7 +140,7 @@ class NavigationTest extends Specification {
                 "specification": [
                     {
                         "name": "One",
-                        "href": "http://dox/MyProject/One"
+                        "href": "http://dox/projects/MyProject/specs/One"
                     }
                 ]
             }
@@ -145,14 +150,14 @@ class NavigationTest extends Specification {
     public function testLinkBackInSpecification() {
         $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
         $this->file->givenTheFile_WithContent('spec/OneTest.php', '<?php class SomeSpecClass {}');
-        $this->web->whenIRequestTheResourceAt('project/One');
-        $this->web->thenTheResponseShouldContain('"back": {"href": "../project"}');
+        $this->web->whenIRequestTheResourceAt('projects/project/specs/One');
+        $this->web->thenTheResponseShouldContain('"back": {"href": "http://dox/projects/project"}');
     }
 
     public function testLinkBackInProject() {
         $this->web->givenTheProject_WithTheSpecificationFolder('project', 'spec');
-        $this->web->whenIRequestTheResourceAt('project');
-        $this->web->thenTheResponseShouldContain('"back": {"href": "."}');
+        $this->web->whenIRequestTheResourceAt('projects/project');
+        $this->web->thenTheResponseShouldContain('"back": {"href": "http://dox/home"}');
     }
 
 }
