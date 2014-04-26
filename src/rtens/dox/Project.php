@@ -24,6 +24,7 @@ class Project {
 
     public function setRepositoryUrl($repositoryUrl) {
         $this->repositoryUrl = $repositoryUrl;
+        return $this;
     }
 
     public function getRepositoryUrl() {
