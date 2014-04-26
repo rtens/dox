@@ -12,6 +12,7 @@ class Configuration {
 
     function __construct($root) {
         $this->root = $root;
+        $this->configureProjects();
     }
 
     protected function configureProjects() {
