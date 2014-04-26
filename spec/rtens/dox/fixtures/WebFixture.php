@@ -79,8 +79,8 @@ class WebFixture extends Fixture {
         }
         $charlist = "{}, \n";
         $this->spec->assertContains(
-            trim(json_encode($model, JSON_PRETTY_PRINT), $charlist),
-            trim($this->response->getBody(), $charlist));
+            $this->trimLines(trim(json_encode($model, JSON_PRETTY_PRINT), $charlist)),
+            $this->trimLines(trim($this->response->getBody(), $charlist)));
     }
 
     public function thenTheResponseShouldContainTheText($string) {

@@ -66,8 +66,13 @@ class xxProjectResource extends Container {
                 $path = substr($file, strlen($project->getFullSpecFolder()) + 1, -strlen($fileSuffix));
                 $url = $this->getUrl('specs/' . str_replace(array('\\', '/'), '__', $path))->toString();
 
+                $name = substr(basename($file), 0, -strlen($fileSuffix));
+                if (!$name) {
+                    continue;
+                }
+
                 $list[] = array(
-                    "name" => $this->parser->uncamelize(substr(basename($file), 0, -strlen($fileSuffix))),
+                    "name" => $this->parser->uncamelize($name),
                     "href" => $url
                 );
             }

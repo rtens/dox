@@ -115,6 +115,15 @@ class NavigationTest extends Specification {
                 "name": "Some"');
     }
 
+    public function testFileNameConsistingOfOnlySuffix() {
+        $this->web->givenTheProject('MyProject');
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/Test.php', '
+            <?php class SomeTest {}
+        ');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject');
+        $this->web->thenTheResponseShouldContain('"specification": []');
+    }
+
     public function testProjectInNonDefaultFolder() {
         $this->web->givenTheProject('SomeProject');
         $this->web->givenTheProject_IsIn('SomeProject', 'some/other/folder');
