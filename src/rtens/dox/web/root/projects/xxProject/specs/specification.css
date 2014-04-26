@@ -60,6 +60,16 @@ pre code.hljs {
 .panel-default > .panel-heading {
     cursor: pointer;
     background-color: #eee;
+    position: relative;
+}
+
+.panel-heading .glyphicon {
+    position: absolute;
+    color: #ccc;
+    font-size: 1.5em;
+    top: auto;
+    bottom: 10pt;
+    right: 10pt;
 }
 
 .panel-heading:hover {

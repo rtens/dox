@@ -40,3 +40,12 @@ h1 .dox {
 .github:hover {
     opacity: 1;
 }
+
+.glyphicon, .glyphicon.small {
+    color: #ccc;
+}
+
+.glyphicon:hover {
+    text-decoration: none;
+    color: #999;
+}
