@@ -36,7 +36,7 @@ class RenderSpecificationTest extends Specification {
     public function testSpecificationWithDescriptionAndMethods() {
         $this->web->givenTheProject('MyProject');
         $this->web->givenTheProject_HasTheSpecFolder('MyProject', 'mySpec');
-        $this->file->givenTheFile_WithContent('user/projects/MyProject/mySpec/some/SpecificationTest.php', '
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/mySpec/SpecificationTest.php', '
             <?php
 
             /**
@@ -61,7 +61,7 @@ class RenderSpecificationTest extends Specification {
                 }
             }'
         );
-        $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/some/Specification');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/Specification');
         $this->web->thenTheResponseShouldContain('
             "specification": {
                 "name": "Specification",
@@ -88,7 +88,7 @@ class RenderSpecificationTest extends Specification {
         $this->web->givenTheRequestedFormatIs('html');
         $this->web->givenTheProject('YourProject');
         $this->web->givenTheProject_HasTheSpecFolder('YourProject', 'yourSpec');
-        $this->file->givenTheFile_WithContent('user/projects/YourProject/yourSpec/some/SpecificationTest.php', '
+        $this->file->givenTheFile_WithContent('user/projects/YourProject/yourSpec/SpecificationTest.php', '
             <?php
 
             class SpecificationTest {
@@ -99,7 +99,7 @@ class RenderSpecificationTest extends Specification {
                 }
             }'
         );
-        $this->web->whenIRequestTheResourceAt('projects/YourProject/specs/some/Specification');
+        $this->web->whenIRequestTheResourceAt('projects/YourProject/specs/Specification');
         $this->web->thenTheResponseShouldContainTheText('<div class="steps">
                 <div class="step-group">
                     <div title="$this-&gt;fix-&gt;given_Has_Cows(\'Bart\', 2)" class="step">Given <span class="arg">\'Bart\'</span> has <span class="arg">2</span> cows</div>

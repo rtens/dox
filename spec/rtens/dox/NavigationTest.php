@@ -63,11 +63,11 @@ class NavigationTest extends Specification {
                         "specification": [
                             {
                                 "name": "A one",
-                                "href": "http://dox/projects/MyProject/specs/a/AOne"
+                                "href": "http://dox/projects/MyProject/specs/a__AOne"
                             },
                             {
                                 "name": "A two",
-                                "href": "http://dox/projects/MyProject/specs/a/ATwo"
+                                "href": "http://dox/projects/MyProject/specs/a__ATwo"
                             }
                         ]
                     },
@@ -76,7 +76,7 @@ class NavigationTest extends Specification {
                         "specification": [
                             {
                                 "name": "A b",
-                                "href": "http://dox/projects/MyProject/specs/a/b/AB"
+                                "href": "http://dox/projects/MyProject/specs/a__b__AB"
                             }
                         ]
                     },
@@ -85,7 +85,7 @@ class NavigationTest extends Specification {
                         "specification": [
                             {
                                 "name": "C one",
-                                "href": "http://dox/projects/MyProject/specs/c/COne"
+                                "href": "http://dox/projects/MyProject/specs/c__COne"
                             }
                         ]
                     }
@@ -104,9 +104,20 @@ class NavigationTest extends Specification {
         ');
     }
 
+    public function testDeepSpecificationUrl() {
+        $this->web->givenTheProject('MyProject');
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/a/b/c/SomeTest.php', '
+            <?php class SomeTest {}
+        ');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/a__b__c__Some');
+        $this->web->thenTheResponseShouldContainTheText('
+            "specification": {
+                "name": "Some"');
+    }
+
     public function testProjectInNonDefaultFolder() {
         $this->web->givenTheProject('SomeProject');
-        $this->web->givenTheProject_IsIn('SomeProject' ,'some/other/folder');
+        $this->web->givenTheProject_IsIn('SomeProject', 'some/other/folder');
         $this->file->givenTheFile('some/other/folder/spec/SomeSpecificationTest.php');
         $this->web->whenIRequestTheResourceAt('projects/SomeProject');
         $this->web->thenTheResponseShouldContainTheText('"name": "Some specification"');

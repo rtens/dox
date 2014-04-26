@@ -22,14 +22,18 @@ class xxProjectResource extends Container {
     /** @var VcsService <- */
     public $vcs;
 
-    public function doGet() {
-        return new Presenter($this, $this->assembleModel($this->getProject()));
+    protected function getPlaceholderKey() {
+        return 'name';
     }
 
-    public function doPost() {
-        $config = $this->getProject();
-        $this->vcs->update($config);
-        return 'OK - Updated ' . $config->getName();
+    public function doGet($name) {
+        return new Presenter($this, $this->assembleModel($this->config->getProject($name)));
+    }
+
+    public function doPost($name) {
+        $project = $this->config->getProject($name);
+        $this->vcs->update($project);
+        return 'OK - Updated ' . $project->getName();
     }
 
     private function assembleModel(Project $project) {
@@ -59,8 +63,8 @@ class xxProjectResource extends Container {
         $list = array();
         foreach (glob($dir . '/*') as $file) {
             if (!is_dir($file) && substr($file, -strlen($fileSuffix)) == $fileSuffix) {
-                $path = substr($file, strlen($project->getFullSpecFolder()), -strlen($fileSuffix));
-                $url = $this->getUrl('specs' . $path)->toString();
+                $path = substr($file, strlen($project->getFullSpecFolder()) + 1, -strlen($fileSuffix));
+                $url = $this->getUrl('specs/' . str_replace(array('\\', '/'), '__', $path))->toString();
 
                 $list[] = array(
                     "name" => $this->parser->uncamelize(substr(basename($file), 0, -strlen($fileSuffix))),
@@ -88,12 +92,4 @@ class xxProjectResource extends Container {
         return $list;
     }
 
-    /**
-     * @return Project
-     */
-    private function getProject() {
-        $project = $this->getUrl()->getPath()->last();
-        return $this->config->getProject($project);
-    }
-
-} 
+}

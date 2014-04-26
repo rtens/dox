@@ -7,12 +7,10 @@ use rtens\dox\content\item\CommentItem;
 use rtens\dox\content\Item;
 use rtens\dox\content\item\StepsItem;
 use rtens\dox\model\Method;
-use rtens\dox\Reader;
 use rtens\dox\model\Specification;
+use rtens\dox\Reader;
 use rtens\dox\web\Presenter;
 use rtens\dox\web\root\projects\xxProjectResource;
-use watoki\curir\http\Path;
-use watoki\curir\http\Request;
 use watoki\curir\resource\DynamicResource;
 use watoki\curir\Responder;
 
@@ -24,21 +22,14 @@ class xxSpecificationResource extends DynamicResource {
     /** @var \Parsedown <- */
     public $markdown;
 
-    /** @var Path */
-    private $path;
-
-    public function respond(Request $request) {
-        $this->path = $request->getTarget()->copy();
-        $this->path->insert($this->getUrl()->getPath()->last(), 0);
-
-        return parent::respond($request);
+    protected function getPlaceholderKey() {
+        return 'path';
     }
 
-
-    public function doGet() {
+    public function doGet($path) {
         $project = $this->getProjectResource()->getUrl()->getPath()->get(-1);
         $reader = new Reader($this->config->getProject($project));
-        $specification = $reader->readSpecification($this->path);
+        $specification = $reader->readSpecification(str_replace('__', '/', $path));
 
         return new Presenter($this, $this->assembleModel($specification, $project));
     }
