@@ -117,7 +117,7 @@ class IntroductionTest extends Specification {
          * [git]: http://git-scm.org
          */
 
-        $project->setRepositoryUrl('http://github.com/example/project.git');
+        $project->setRepositoryUrl('https://github.com/example/project.git');
 
         /*
          * #### Automatic Update
