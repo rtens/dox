@@ -1,7 +1,7 @@
 <?php
 namespace rtens\dox;
 
-class ProjectConfiguration {
+class Project {
 
     private $name;
 
@@ -10,6 +10,8 @@ class ProjectConfiguration {
     private $specFolder = 'spec';
 
     private $config;
+
+    private $projectFolder;
 
     function __construct(Configuration $config, $name) {
         $this->config = $config;
@@ -34,14 +36,19 @@ class ProjectConfiguration {
 
     public function setSpecFolder($relativeToProjectRoot) {
         $this->specFolder = $relativeToProjectRoot;
+        return $this;
     }
 
     public function getFullProjectFolder() {
-        return $this->config->inProjectsFolder($this->name);
+        return $this->projectFolder ? : $this->config->inProjectsFolder($this->name);
+    }
+
+    public function setFullProjectFolder($absolutePath) {
+        $this->projectFolder = $absolutePath;
+        return $this;
     }
 
     public function getFullSpecFolder() {
-        $fullProjectFolder = $this->getFullProjectFolder();
-        return $fullProjectFolder . DIRECTORY_SEPARATOR . $this->specFolder;
+        return $this->getFullProjectFolder() . DIRECTORY_SEPARATOR . $this->specFolder;
     }
 }

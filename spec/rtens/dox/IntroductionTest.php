@@ -95,15 +95,23 @@ class IntroductionTest extends Specification {
          *
          * You can also host do<span style="color: #bb0000; font-weight: bold;">x</span> yourself.
          * To do so [install dox] on your host and the project to the configuration. The best way is to
-         * overwrite the constructor in `user/UserConfiguration.php`.
+         * overwrite the `configureProjects` method in `user/UserConfiguration.php`.
          *
          * [install dox]: http://github.com/rtens/dox
          */
 
         $project = $this->configuration->addProject('example-name');
 
+        /**
+         * The default folder is in `user/projects/<projectName>` but you can also overwrite it
+         */
+
+        $this->assertPathEndsWith('user/projects/example-name', $project->getFullProjectFolder());
+        $project->setFullProjectFolder('/some/absolute/path');
+        $this->assertPathEndsWith('/some/absolute/path', $project->getFullProjectFolder());
+
         /*
-         * You can either download the files manually into the folder `user/projects/<projectName>` or
+         * You can either download the files manually into the folder or
          * provide the URL to a [git] repository to have it downloaded automatically.
          *
          * [git]: http://git-scm.org
@@ -143,6 +151,12 @@ class IntroductionTest extends Specification {
 
     private function then_ShouldHave_Apples($name, $apples) {
         $this->assertEquals($apples, $this->apples[$name]);
+    }
+
+    private function assertPathEndsWith($with, $path) {
+        $this->assertStringEndsWith(
+            str_replace('/', DIRECTORY_SEPARATOR, $with),
+            str_replace('/', DIRECTORY_SEPARATOR, $path));
     }
 
 } 

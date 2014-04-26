@@ -15,14 +15,14 @@ use watoki\scrut\Specification;
  * @property FileFixture file <-
  * @property Mock executer
  */
-class WebHookTest extends Specification {
+class VcsIntegrationTest extends Specification {
 
     /**
      * Projects can be updated using a [web hook](https://help.github.com/articles/creating-webhooks)
      */
     public function testUpdatingByWebHook() {
         $this->web->givenTheProject('Project');
-        $this->file->givenTheFolder('projects/Project');
+        $this->file->givenTheFolder('user/projects/Project/.git');
 
         $this->web->whenISendA_RequestTo('post', 'projects/Project');
 
@@ -31,15 +31,18 @@ class WebHookTest extends Specification {
     }
 
     public function testDoNotUpdateIfNotUnderGit() {
-        $this->markTestIncomplete();
+        $this->web->givenTheProject('Project');
+        $this->file->givenTheFolder('user/projects/Project');
+
+        $this->web->whenITryToSendA_RequestTo('post', 'projects/Project');
+
+        $this->web->thenAnExceptionShouldBeThrownContaining('Not a git repository');
     }
 
     /**
      * If the project files don't exist yet, they are cloned
      */
     public function testCloneOnDemand() {
-        $this->markTestIncomplete();
-
         $this->web->givenTheProject('MyProject');
         $this->web->givenTheProject_HasTheRepositoryUrl('MyProject', 'some/repo.git');
 
@@ -49,14 +52,20 @@ class WebHookTest extends Specification {
         $this->thenExecutedCommand_ShouldBe(2, 'cd [root]/user/projects/MyProject && git clone some/repo.git .');
     }
 
+    public function testCloneFailsIfNoRepositoryIsSet() {
+        $this->web->givenTheProject('MyProject');
+        $this->web->whenITryToSendA_RequestTo('get', 'projects/MyProject');
+        $this->web->thenAnExceptionShouldBeThrownContaining('Cannot clone [MyProject]. No repository set.');
+    }
+
     public function testDoNotCloneIfFolderExists() {
         $this->web->givenTheProject('MyProject');
         $this->web->givenTheProject_HasTheRepositoryUrl('MyProject', 'some/repo.git');
         $this->file->givenTheFolder('user/projects/MyProject');
 
-        $this->web->whenIRequestTheResourceAt('projects/MyProject');
+        $this->web->whenITryToSendA_RequestTo('get', 'projects/MyProject');
 
-        $this->thenNoCommandShouldBeExecuted();
+        $this->web->thenAnExceptionShouldBeThrownContaining('Project folder already exists');
     }
 
     protected function setUp() {
@@ -74,8 +83,4 @@ class WebHookTest extends Specification {
         $this->assertEquals($command, str_replace('\\', '/', $history->getCalledArgumentAt($pos - 1, 0)));
     }
 
-    private function thenNoCommandShouldBeExecuted() {
-        $this->assertFalse($this->executer->__mock()->method('execute')->getHistory()->wasCalled());
-    }
-
-} 
+}

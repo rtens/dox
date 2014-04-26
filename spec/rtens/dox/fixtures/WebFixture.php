@@ -17,6 +17,9 @@ class WebFixture extends Fixture {
 
     private $format = 'json';
 
+    /** @var null|\Exception */
+    private $caught;
+
     protected function config() {
         try {
             return $this->spec->factory->getSingleton(Configuration::$CLASS);
@@ -39,6 +42,10 @@ class WebFixture extends Fixture {
         $this->config()->getProject($project)->setRepositoryUrl($url);
     }
 
+    public function givenTheProject_IsIn($project, $folder) {
+        $this->config()->getProject($project)->setFullProjectFolder($this->file->tmpDir() . '/' . $folder);
+    }
+
     public function whenIRequestTheResourceAt($path) {
         $this->whenISendA_RequestTo(Request::METHOD_GET, $path);
     }
@@ -51,6 +58,14 @@ class WebFixture extends Fixture {
         /** @var RootResource $root */
         $root = $this->spec->factory->getInstance(RootResource::$CLASS, array(Url::parse('http://dox')));
         $this->response = $root->respond(new Request(Path::parse($path), array($this->format), $method));
+    }
+
+    public function whenITryToSendA_RequestTo($method, $path) {
+        try {
+            $this->whenISendA_RequestTo($method, $path);
+        } catch (\Exception $e) {
+            $this->caught = $e;
+        }
     }
 
     public function thenTheResponseShouldBe($string) {
@@ -81,6 +96,11 @@ class WebFixture extends Fixture {
 
     public function thenIShouldBeRedirectedTo($path) {
         $this->spec->assertEquals($path, $this->response->getHeaders()->get(Response::HEADER_LOCATION));
+    }
+
+    public function thenAnExceptionShouldBeThrownContaining($string) {
+        $this->spec->assertNotNull($this->caught);
+        $this->spec->assertContains($string, $this->caught->getMessage());
     }
 
 } 

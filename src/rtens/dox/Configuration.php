@@ -5,7 +5,7 @@ class Configuration {
 
     public static $CLASS = __CLASS__;
 
-    /** @var array|ProjectConfiguration[] */
+    /** @var array|Project[] */
     private $projects = array();
 
     private $root;
@@ -14,8 +14,11 @@ class Configuration {
         $this->root = $root;
     }
 
+    protected function configureProjects() {
+    }
+
     public function addProject($projectName) {
-        $this->projects[$projectName] = new ProjectConfiguration($this, $projectName);
+        $this->projects[$projectName] = new Project($this, $projectName);
         return $this->projects[$projectName];
     }
 

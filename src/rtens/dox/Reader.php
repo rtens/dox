@@ -8,7 +8,7 @@ class Reader {
     private $parser;
     private $config;
 
-    function __construct(ProjectConfiguration $config) {
+    function __construct(Project $config) {
         $this->config = $config;
         $this->parser = new Parser();
     }

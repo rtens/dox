@@ -104,6 +104,14 @@ class NavigationTest extends Specification {
         ');
     }
 
+    public function testProjectInNonDefaultFolder() {
+        $this->web->givenTheProject('SomeProject');
+        $this->web->givenTheProject_IsIn('SomeProject' ,'some/other/folder');
+        $this->file->givenTheFile('some/other/folder/spec/SomeSpecificationTest.php');
+        $this->web->whenIRequestTheResourceAt('projects/SomeProject');
+        $this->web->thenTheResponseShouldContainTheText('"name": "Some specification"');
+    }
+
     public function testNavigationInSpecificationResource() {
         $this->web->givenTheProject('MyProject');
         $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/OneTest.php', '<?php class OneTest {}');
@@ -158,6 +166,7 @@ class NavigationTest extends Specification {
 
     public function testLinkBackInProject() {
         $this->web->givenTheProject('project');
+        $this->file->givenTheFolder('user/projects/project/spec');
         $this->web->whenIRequestTheResourceAt('projects/project');
         $this->web->thenTheResponseShouldContain('"back": {"href": "http://dox/home"}');
     }

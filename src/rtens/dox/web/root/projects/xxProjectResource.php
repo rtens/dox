@@ -2,9 +2,9 @@
 namespace rtens\dox\web\root\projects;
 
 use rtens\dox\Configuration;
-use rtens\dox\Executer;
 use rtens\dox\Parser;
-use rtens\dox\ProjectConfiguration;
+use rtens\dox\Project;
+use rtens\dox\VcsService;
 use rtens\dox\web\Presenter;
 use rtens\dox\web\RootResource;
 use watoki\curir\resource\Container;
@@ -19,48 +19,47 @@ class xxProjectResource extends Container {
     /** @var Parser <- */
     public $parser;
 
-    /** @var Executer <- */
-    public $executer;
+    /** @var VcsService <- */
+    public $vcs;
 
     public function doGet() {
-        return new Presenter($this, $this->assembleModel($this->getProjectConfig()));
+        return new Presenter($this, $this->assembleModel($this->getProject()));
     }
 
     public function doPost() {
-        $config = $this->getProjectConfig();
-        $error = $this->executer->execute('cd ' . $config->getFullProjectFolder() . ' && git pull origin master');
-
-        if ($error) {
-            throw new \Exception("FAILED with return code " . $error . ' (see logs for details)');
-        }
-
+        $config = $this->getProject();
+        $this->vcs->update($config);
         return 'OK - Updated ' . $config->getName();
     }
 
-    private function assembleModel(ProjectConfiguration $config) {
+    private function assembleModel(Project $project) {
         return array(
             'back' => array('href' => $this->getAncestor(RootResource::$CLASS)->getUrl('home')->toString()),
-            'navigation' => $this->assembleNavigation($config)
+            'navigation' => $this->assembleNavigation($project)
         );
     }
 
-    public function assembleNavigation(ProjectConfiguration $config) {
-        $dir = $config->getFullSpecFolder();
-        $list= array(
-            "name" => $config->getName(),
-            "folder" => $this->assembleFolders($config->getFullSpecFolder(), $config),
-            "specification" => $this->assembleSpecificationList($dir, $config)
+    public function assembleNavigation(Project $project) {
+        $dir = $project->getFullSpecFolder();
+        if (!file_exists($dir)) {
+            $this->vcs->checkout($project);
+        }
+
+        $list = array(
+            "name" => $project->getName(),
+            "folder" => $this->assembleFolders($dir, $project),
+            "specification" => $this->assembleSpecificationList($dir, $project)
         );
         return $list;
     }
 
-    private function assembleSpecificationList($dir, ProjectConfiguration $config) {
-        $fileSuffix = $config->getClassSuffix() . '.php';
+    private function assembleSpecificationList($dir, Project $project) {
+        $fileSuffix = $project->getClassSuffix() . '.php';
 
         $list = array();
         foreach (glob($dir . '/*') as $file) {
             if (!is_dir($file) && substr($file, -strlen($fileSuffix)) == $fileSuffix) {
-                $path = substr($file, strlen($config->getFullSpecFolder()), -strlen($fileSuffix));
+                $path = substr($file, strlen($project->getFullSpecFolder()), -strlen($fileSuffix));
                 $url = $this->getUrl('specs' . $path)->toString();
 
                 $list[] = array(
@@ -72,27 +71,27 @@ class xxProjectResource extends Container {
         return $list;
     }
 
-    private function assembleFolders($dir, ProjectConfiguration $config) {
+    private function assembleFolders($dir, Project $project) {
         $list = array();
         foreach (glob($dir . '/*') as $file) {
             if (is_dir($file)) {
-                $specifications = $this->assembleSpecificationList($file, $config);
+                $specifications = $this->assembleSpecificationList($file, $project);
                 if ($specifications) {
                     $list[] = array(
-                        'name' => substr($file, strlen($config->getFullSpecFolder())+1),
+                        'name' => substr($file, strlen($project->getFullSpecFolder())+1),
                         'specification' => $specifications
                     );
                 }
-                $list = array_merge($list, $this->assembleFolders($file, $config));
+                $list = array_merge($list, $this->assembleFolders($file, $project));
             }
         }
         return $list;
     }
 
     /**
-     * @return ProjectConfiguration
+     * @return Project
      */
-    private function getProjectConfig() {
+    private function getProject() {
         $project = $this->getUrl()->getPath()->last();
         return $this->config->getProject($project);
     }
