@@ -17,6 +17,8 @@ class WebFixture extends Fixture {
 
     private $format = 'json';
 
+    private $body = null;
+
     /** @var null|\Exception */
     private $caught;
 
@@ -57,7 +59,8 @@ class WebFixture extends Fixture {
     public function whenISendA_RequestTo($method, $path) {
         /** @var RootResource $root */
         $root = $this->spec->factory->getInstance(RootResource::$CLASS, array(Url::parse('http://dox')));
-        $this->response = $root->respond(new Request(Path::parse($path), array($this->format), $method));
+        $this->response = $root->respond(new Request(Path::parse($path), array($this->format), $method,
+            null, null, $this->body));
     }
 
     public function whenITryToSendA_RequestTo($method, $path) {
@@ -101,6 +104,10 @@ class WebFixture extends Fixture {
     public function thenAnExceptionShouldBeThrownContaining($string) {
         $this->spec->assertNotNull($this->caught);
         $this->spec->assertContains($string, $this->caught->getMessage());
+    }
+
+    public function givenTheRequestHasTheBody($string) {
+        $this->body = $string;
     }
 
 } 
