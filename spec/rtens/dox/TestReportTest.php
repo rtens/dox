@@ -17,7 +17,7 @@ use watoki\scrut\Specification;
  */
 class TestReportTest extends Specification {
 
-    protected function background() {
+    public function background() {
         $this->web->givenTheProject('myProject');
         $this->web->givenTheProject_HasTheSpecFolder('myProject', 'spec/folder');
     }
