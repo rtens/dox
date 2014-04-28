@@ -60,6 +60,7 @@ pre code.hljs {
 .panel > .panel-heading {
     cursor: pointer;
     position: relative;
+    padding-right: 30pt;
 }
 
 .panel-heading .glyphicon {
