@@ -128,7 +128,24 @@ class IntroductionTest extends Specification {
          *
          * [github]: http://github.com
          * [web hook]: https://help.github.com/articles/creating-webhooks
-         * [specification]: WebHook
+         * [specification]: VcsIntegration
+         */
+        null;
+
+        /*
+         * #### Test Report
+         *
+         * You can send a test report to *dox* to have the status of each scenario displayed in color (green=passed,
+         * orange=pending, red=failed). For example for *dox* the commands would be
+         *
+         * ```bash
+         * $ php vendor/phpunit/phpunit/phpunit.php --log-tap build/report.tap
+         * $ curl -X POST --data-binary @build/report.tap http://dox.rtens.org/projects/rtens-dox/reports
+         * ```
+         *
+         * For more information, see the [specification].
+         *
+         * [specification]: TestReport
          */
         null;
     }
