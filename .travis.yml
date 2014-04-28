@@ -2,5 +2,5 @@ language: php
 php:
   - 5.5
   - 5.4
-before_script: php setup.php build
+script: php setup.php test
 after_script: curl -X POST --data-binary @build/report.tap http://dox.rtens.org/projects/rtens-dox/reports
