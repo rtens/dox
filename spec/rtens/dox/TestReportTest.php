@@ -9,6 +9,9 @@ use spec\rtens\dox\fixtures\WebFixture;
 use watoki\scrut\Specification;
 
 /**
+ * The status (passing|failing|pending) of each scenario can be sent from a CI server
+ * and is represented by color coding the scenario (green|red|orange).
+ *
  * @property WebFixture web <-
  * @property FileFixture file <-
  */

@@ -135,8 +135,14 @@ class IntroductionTest extends Specification {
         /*
          * #### Test Report
          *
-         * You can send a test report to *dox* to have the status of each scenario displayed in color (green=passed,
-         * orange=pending, red=failed). For example for *dox* the commands would be
+         * You can send a test report to do<span style="color: #bb0000; font-weight: bold;">x</span> to have the status
+         * of each scenario displayed in color:
+         * <span class="label label-success">passed</span>,
+         * <span class="label label-danger">failed</span>,
+         * <span class="label label-warning">pending</span>,
+         * <span class="label label-default">unknown</span>.
+         *
+         * For example for do<span style="color: #bb0000; font-weight: bold;">x</span> the commands would be
          *
          * ```bash
          * $ php vendor/phpunit/phpunit/phpunit.php --log-tap build/report.tap
