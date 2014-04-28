@@ -77,6 +77,39 @@ class NavigationTest extends Specification {
         $this->web->then_ShouldBe('navigation/specification/1/name', 'Two');
     }
 
+    public function testRenderReadmeInProjectHome() {
+        $this->web->givenTheProject('MyProject');
+        $this->file->givenTheFile('user/projects/MyProject/spec/OneTest.php');
+
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/readme.md', 'Some *markdown* text.');
+        $this->web->whenIRequestTheResourceAt('projects/MyProject');
+        $this->web->then_ShouldBe('readme/text', '<p>Some <em>markdown</em> text.</p>');
+
+        // Uppercase
+        $this->web->givenTheProject('Uppercase');
+        $this->file->givenTheFile('user/projects/Uppercase/spec/OneTest.php');
+
+        $this->file->givenTheFile_WithContent('user/projects/Uppercase/README.md', 'Found');
+        $this->web->whenIRequestTheResourceAt('projects/Uppercase');
+        $this->web->then_ShouldBe('readme/text', '<p>Found</p>');
+
+        // Mixed case and .markdown extension
+        $this->web->givenTheProject('MixedCase');
+        $this->file->givenTheFile('user/projects/MixedCase/spec/OneTest.php');
+
+        $this->file->givenTheFile_WithContent('user/projects/MixedCase/Readme.markdown', 'Found');
+        $this->web->whenIRequestTheResourceAt('projects/MixedCase');
+        $this->web->then_ShouldBe('readme/text', '<p>Found</p>');
+
+        // Not markdown format
+        $this->web->givenTheProject('NoReadme');
+        $this->file->givenTheFile('user/projects/NoReadme/spec/OneTest.php');
+
+        $this->file->givenTheFile_WithContent('user/projects/NoReadmeCase/Readme', 'Found');
+        $this->web->whenIRequestTheResourceAt('projects/NoReadme');
+        $this->web->then_ShouldBe('readme', null);
+    }
+
     public function testDeepSpecificationUrl() {
         $this->web->givenTheProject('MyProject');
         $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/a/b/c/SomeTest.php', '
@@ -130,14 +163,14 @@ class NavigationTest extends Specification {
         $this->web->givenTheProject('project');
         $this->file->givenTheFile_WithContent('user/projects/project/spec/OneTest.php', '<?php class SomeSpecClass {}');
         $this->web->whenIRequestTheResourceAt('projects/project/specs/One');
-        $this->web->thenTheResponseShouldContain('"back": {"href": "http://dox/projects/project"}');
+        $this->web->then_ShouldBe('back/href', "http://dox/projects/project");
     }
 
     public function testLinkBackInProject() {
         $this->web->givenTheProject('project');
         $this->file->givenTheFolder('user/projects/project/spec');
         $this->web->whenIRequestTheResourceAt('projects/project');
-        $this->web->thenTheResponseShouldContain('"back": {"href": "http://dox/home"}');
+        $this->web->then_ShouldBe('back/href', "http://dox/home");
     }
 
 }

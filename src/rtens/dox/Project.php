@@ -77,4 +77,13 @@ class Project {
         }
         return $this->description;
     }
+
+    public function getReadmeText() {
+        foreach (glob($this->getFullProjectFolder() . '/*') as $file) {
+            if (in_array(strtolower(basename($file)), array('readme.md', 'readme.markdown'))) {
+                return file_get_contents($file);
+            }
+        }
+        return null;
+    }
 }

@@ -22,6 +22,9 @@ class xxProjectResource extends Container {
     /** @var VcsService <- */
     public $vcs;
 
+    /** @var \Parsedown <- */
+    public $markdown;
+
     protected function getPlaceholderKey() {
         return 'projectName';
     }
@@ -37,9 +40,13 @@ class xxProjectResource extends Container {
     }
 
     private function assembleModel(Project $project) {
+        $readmeText = $this->markdown->text($project->getReadmeText());
         return array(
             'back' => array('href' => $this->getAncestor(RootResource::$CLASS)->getUrl('home')->toString()),
-            'navigation' => $this->assembleNavigation($project)
+            'navigation' => $this->assembleNavigation($project),
+            'readme' => $readmeText ? array(
+                    'text' => $readmeText
+                ) : null
         );
     }
 
@@ -87,7 +94,7 @@ class xxProjectResource extends Container {
                 $specifications = $this->assembleSpecificationList($file, $project);
                 if ($specifications) {
                     $list[] = array(
-                        'name' => substr($file, strlen($project->getFullSpecFolder())+1),
+                        'name' => substr($file, strlen($project->getFullSpecFolder()) + 1),
                         'specification' => $specifications
                     );
                 }
