@@ -56,7 +56,7 @@ class TestReportTest extends Specification {
         $this->web->then_ShouldBeLogged('Failed saving status in [myProject]');
     }
 
-    public function testReadStatusOfScenario() {
+    public function testShowStatusOfScenario() {
         $this->web->givenTheProject('project');
         $this->file->givenTheFile_WithContent('user/projects/project/spec/SpecificationTest.php', '
             <?php
