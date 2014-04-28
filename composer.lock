@@ -234,12 +234,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/watoki/curir.git",
-                "reference": "51bf098e625e690dc704c41ad5ab752f4fdc707b"
+                "reference": "3ce9638260a69f051ede497cd734502bccc3261d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/watoki/curir/zipball/51bf098e625e690dc704c41ad5ab752f4fdc707b",
-                "reference": "51bf098e625e690dc704c41ad5ab752f4fdc707b",
+                "url": "https://api.github.com/repos/watoki/curir/zipball/3ce9638260a69f051ede497cd734502bccc3261d",
+                "reference": "3ce9638260a69f051ede497cd734502bccc3261d",
                 "shasum": ""
             },
             "require": {
@@ -276,7 +276,7 @@
                 "routing",
                 "watoki"
             ],
-            "time": "2014-04-21 09:42:48"
+            "time": "2014-04-28 07:56:07"
         },
         {
             "name": "watoki/dom",
@@ -712,16 +712,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "ce2099fad55c1374c192d7587ee5cb4ee63c8740"
+                "reference": "a702318e713e482a746bc15cea01b61403d7dcdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ce2099fad55c1374c192d7587ee5cb4ee63c8740",
-                "reference": "ce2099fad55c1374c192d7587ee5cb4ee63c8740",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a702318e713e482a746bc15cea01b61403d7dcdb",
+                "reference": "a702318e713e482a746bc15cea01b61403d7dcdb",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
                 "ext-dom": "*",
+                "ext-json": "*",
                 "ext-pcre": "*",
                 "ext-reflection": "*",
                 "ext-spl": "*",
@@ -737,9 +739,6 @@
                 "pear-pear.php.net/pear": "1.9.4"
             },
             "suggest": {
-                "ext-json": "*",
-                "ext-simplexml": "*",
-                "ext-tokenizer": "*",
                 "phpunit/php-invoker": "~1.1"
             },
             "bin": [
@@ -778,7 +777,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-04-24 08:24:57"
+            "time": "2014-04-26 05:26:20"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -843,12 +842,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rtens/mockster.git",
-                "reference": "4eae182bf056d7cd2d9af41559152cad741e63fd"
+                "reference": "464319111e6c67e5935aec6f0e60e58c9bc121c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rtens/mockster/zipball/4eae182bf056d7cd2d9af41559152cad741e63fd",
-                "reference": "4eae182bf056d7cd2d9af41559152cad741e63fd",
+                "url": "https://api.github.com/repos/rtens/mockster/zipball/464319111e6c67e5935aec6f0e60e58c9bc121c8",
+                "reference": "464319111e6c67e5935aec6f0e60e58c9bc121c8",
                 "shasum": ""
             },
             "require": {
@@ -884,7 +883,7 @@
                 "mocking",
                 "unit testing"
             ],
-            "time": "2014-04-24 21:27:00"
+            "time": "2014-04-25 07:08:19"
         },
         {
             "name": "symfony/yaml",
