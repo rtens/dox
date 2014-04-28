@@ -21,6 +21,14 @@ class Report {
     private $reportCache;
 
     public function getStatus($project, $specification, $scenario) {
+        $data = $this->getData($project);
+        if (!isset($data[$specification][$scenario])) {
+            return self::STATUS_UNKNOWN;
+        }
+        return $data[$specification][$scenario];
+    }
+
+    protected function getData($project) {
         if ($this->reportCache === null) {
             $reportFile = $this->reportFile($project);
             if (!file_exists($reportFile)) {
@@ -28,11 +36,25 @@ class Report {
             }
             $this->reportCache = json_decode(file_get_contents($reportFile), true);
         }
-        $key = $specification . '::' . $scenario;
-        if (!array_key_exists($key, $this->reportCache)) {
-            return self::STATUS_UNKNOWN;
+        return $this->reportCache;
+    }
+
+    public function getStatusSummary($project, $specification) {
+        $sum = array(
+            self::STATUS_FAILING => 0,
+            self::STATUS_PENDING => 0,
+            self::STATUS_PASSING => 0
+        );
+        $data = $this->getData($project);
+        if (!isset($data[$specification])) {
+            return $sum;
         }
-        return $this->reportCache[$key];
+        foreach ($data[$specification] as $status) {
+            if (isset($sum[$status])) {
+                $sum[$status] += 1;
+            }
+        }
+        return $sum;
     }
 
     public function save($report, $projectName) {
@@ -82,12 +104,12 @@ class Report {
                 $scenario = substr($scenario, $prefixLength);
             }
 
-            $out[$specification . '::' . $scenario] = $status;
+            $out[$specification][$scenario] = $status;
         }
 
         file_put_contents($this->reportFile($projectName), json_encode($out, JSON_PRETTY_PRINT));
 
-        $this->logger->log('Saved status of [' . count($out) . '] scenarios in [' . $projectName . ']');
+        $this->logger->log('Saved status report of [' . $projectName . ']');
     }
 
     private function reportFile($project) {

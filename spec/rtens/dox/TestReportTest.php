@@ -46,7 +46,7 @@ class TestReportTest extends Specification {
         $this->thenScenario_Of_InProject_ShouldBeMarked('PendingScenario', 'Failing', 'myProject', Report::STATUS_PENDING);
         $this->thenScenario_Of_InProject_ShouldBeMarked('notExisting', 'NoWhere', 'myProject', Report::STATUS_UNKNOWN);
 
-        $this->web->then_ShouldBeLogged('Saved status of [5] scenarios in [myProject]');
+        $this->web->then_ShouldBeLogged('Saved status report of [myProject]');
     }
 
     public function testPushReportInInvalidFormat() {
@@ -75,10 +75,47 @@ class TestReportTest extends Specification {
         $this->givenScenario_Of_In_HasTheStatus('UnknownScenario', 'Specification', 'project', Report::STATUS_UNKNOWN);
 
         $this->web->whenIRequestTheResourceAt('projects/project/specs/Specification');
+
         $this->web->then_ShouldBe('specification/scenario/0/status', 'passing');
         $this->web->then_ShouldBe('specification/scenario/1/status', 'failing');
         $this->web->then_ShouldBe('specification/scenario/2/status', 'pending');
         $this->web->then_ShouldBe('specification/scenario/3/status', 'unknown');
+    }
+
+    public function testStatusSummaryOnProjectPage() {
+        $this->web->givenTheProject('project');
+        $this->file->givenTheFile_WithContent('user/projects/project/spec/OtherTest.php', '<?php
+            class OtherTest {
+                public function testOne() {}
+            }'
+        );
+        $this->file->givenTheFile_WithContent('user/projects/project/spec/SomeTest.php', '<?php
+            class SomeTest {
+                public function testOne() {}
+                public function testTwo() {}
+                public function testThree() {}
+                public function testFour() {}
+                public function testFive() {}
+            }'
+        );
+
+        $this->givenScenario_Of_In_HasTheStatus('One', 'Some', 'project', Report::STATUS_UNKNOWN);
+        $this->givenScenario_Of_In_HasTheStatus('Two', 'Some', 'project', Report::STATUS_FAILING);
+        $this->givenScenario_Of_In_HasTheStatus('Three', 'Some', 'project', Report::STATUS_PENDING);
+        $this->givenScenario_Of_In_HasTheStatus('Four', 'Some', 'project', Report::STATUS_FAILING);
+        $this->givenScenario_Of_In_HasTheStatus('Five', 'Some', 'project', Report::STATUS_PASSING);
+
+        $this->web->whenIRequestTheResourceAt('projects/project');
+
+        $this->web->then_ShouldBe('navigation/specification/0/name', 'Other');
+        $this->web->then_ShouldBe('navigation/specification/0/failingCount', null);
+        $this->web->then_ShouldBe('navigation/specification/0/pendingCount', null);
+        $this->web->then_ShouldBe('navigation/specification/0/passingCount', null);
+
+        $this->web->then_ShouldBe('navigation/specification/1/name', 'Some');
+        $this->web->then_ShouldBe('navigation/specification/1/failingCount', 2);
+        $this->web->then_ShouldBe('navigation/specification/1/pendingCount', 1);
+        $this->web->then_ShouldBe('navigation/specification/1/passingCount', 1);
     }
 
     public function testNonExistentStatusFile() {
@@ -100,6 +137,8 @@ class TestReportTest extends Specification {
     /** @var Mock */
     private $report;
 
+    private $reportData = array();
+
     private function thenScenario_Of_InProject_ShouldBeMarked($scenario, $spec, $project, $status) {
         /** @var Report $report */
         $report = $this->factory->getInstance(Report::$CLASS);
@@ -109,10 +148,11 @@ class TestReportTest extends Specification {
     private function givenScenario_Of_In_HasTheStatus($scenario, $spec, $project, $status) {
         if (!$this->report) {
             $mf = new MockFactory();
-            $this->report = $mf->getMock(Report::$CLASS);
+            $this->report = $mf->getTestUnit(Report::$CLASS);
             $this->factory->setSingleton(Report::$CLASS, $this->report);
         }
 
-        $this->report->__mock()->method('getStatus')->willReturn($status)->withArguments($project, $spec, $scenario);
+        $this->reportData[$project][$spec][$scenario] = $status;
+        $this->report->__mock()->method('getData')->willReturn($this->reportData[$project])->withArguments($project);
     }
 }

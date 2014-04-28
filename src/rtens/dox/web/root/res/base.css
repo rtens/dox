@@ -49,3 +49,15 @@ h1 .dox {
     text-decoration: none;
     color: #999;
 }
+
+.badge-danger {
+    background-color: #d9534f;
+}
+
+.badge-warning {
+    background-color: #f0ad4e;
+}
+
+.badge-success {
+    background-color: #5cb85c;
+}

@@ -4,6 +4,7 @@ namespace rtens\dox\web\root\projects;
 use rtens\dox\Configuration;
 use rtens\dox\Parser;
 use rtens\dox\Project;
+use rtens\dox\Report;
 use rtens\dox\VcsService;
 use rtens\dox\web\Presenter;
 use rtens\dox\web\RootResource;
@@ -25,6 +26,9 @@ class xxProjectResource extends Container {
     /** @var \Parsedown <- */
     public $markdown;
 
+    /** @var Report <- */
+    public $report;
+
     protected function getPlaceholderKey() {
         return 'projectName';
     }
@@ -40,23 +44,26 @@ class xxProjectResource extends Container {
     }
 
     private function assembleModel(Project $project) {
+        $decorate = function ($file, $path) use ($project) {
+            $description = $this->parser->getSpecificationDescription(file_get_contents($file));
+            $description = strip_tags($this->markdown->text($description), '<strong><em>');
+
+            $summary = $this->report->getStatusSummary($project->getName(), $path);
+            return array(
+                'description' => $description,
+                'failingCount' => $summary[Report::STATUS_FAILING] ? : null,
+                'pendingCount' => $summary[Report::STATUS_PENDING] ? : null,
+                'passingCount' => $summary[Report::STATUS_PASSING] ? : null
+            );
+        };
+
         $readmeText = $this->markdown->text($project->getReadmeText());
         return array(
             'back' => array('href' => $this->getAncestor(RootResource::$CLASS)->getUrl('home')->toString()),
-            'navigation' => $this->assembleNavigation($project, array($this, 'decorateSpec')),
+            'navigation' => $this->assembleNavigation($project, $decorate),
             'readme' => $readmeText ? array(
                     'text' => $readmeText
                 ) : null
-        );
-    }
-
-    /** @noinspection PhpUnusedPrivateMethodInspection */
-    private function decorateSpec($file) {
-        $description = $this->parser->getSpecificationDescription(file_get_contents($file));
-        $description = strip_tags($this->markdown->text($description), '<strong><em>');
-
-        return array(
-            'description' => $description
         );
     }
 
@@ -93,7 +100,7 @@ class xxProjectResource extends Container {
                     "href" => $url
                 );
                 if ($specDecorator) {
-                    $specModel = array_merge($specModel, $specDecorator($file));
+                    $specModel = array_merge($specModel, $specDecorator($file, $path));
                 }
                 $list[] = $specModel;
             }
