@@ -16,9 +16,8 @@ class IntroductionTest extends Specification {
      */
     public function testCodeAndComments() {
         /**
-         * do<span style="color: #bb0000; font-weight: bold;">x</span> parses the both, code and comments of the
-         * methods in specification classes. Specification classes are classes that have a certain suffix
-         * (usually `Test`).
+         * do<span style="color: #bb0000; font-weight: bold;">x</span> parses code and comments of your test classes
+         * and publishes them as *executable specification*.
          *
          * Comments, both inside the method body as well as *doc comments* of methods and classes, are
          * interpreted as [markdown] and rendered as HTML. So you can create pleasant-to-read documentation
@@ -63,7 +62,7 @@ class IntroductionTest extends Specification {
          * for arguments to create sentences. For example `given_Has_Apples('Bart', 2);`.
          *
          * In order to make these methods more readable, they are parsed specially and presented in a structured
-         * way, filling the argument placeholders. The result looks like this. Hover over a step to see its code
+         * way, filling the argument placeholders. The result looks like below. Hover over a step to see its code
          * or check out the [source code] of this file.
          *
          * [gherkin]: http://docs.behat.org/guides/1.gherkin.html
@@ -85,7 +84,7 @@ class IntroductionTest extends Specification {
         /**
          * #### Publish Here
          *
-         * If you would like to publish your project here, [drop me a line] and I'll add it.
+         * If you would like to publish your project on `dox.rtens.org`, [drop me a line] and I'll add it.
          *
          * [drop me a line]: http://rtens.org
          */
@@ -124,7 +123,7 @@ class IntroductionTest extends Specification {
          *
          * If you are using [github], you can set up a [web hook] to automatically update a project on
          * do<span style="color: #bb0000; font-weight: bold;">x</span> every time you push to the repository
-         * on github. See the [specification].
+         * on github. For more information see the [specification].
          *
          * [github]: http://github.com
          * [web hook]: https://help.github.com/articles/creating-webhooks
@@ -149,7 +148,7 @@ class IntroductionTest extends Specification {
          * $ curl -X POST --data-binary @build/report.tap http://dox.rtens.org/projects/rtens-dox/reports
          * ```
          *
-         * For more information, see the [specification].
+         * For more information see the [specification].
          *
          * [specification]: TestReport
          */
