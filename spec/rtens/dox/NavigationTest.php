@@ -115,6 +115,7 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/OneTest.php', '<?php
             /**
              * Description of this *specification*
+             * in two lines
              */
             class OneTest {}
         ');
@@ -127,8 +128,9 @@ class NavigationTest extends Specification {
 
         $this->web->whenIRequestTheResourceAt('projects/MyProject');
 
-        $this->web->then_ShouldBe('navigation/specification/0/description',
-            'Description of this <em>specification</em>');
+        $this->web->then_ShouldBe('navigation/specification/0/description', '
+            Description of this <em>specification</em><br />
+            in two lines');
         $this->web->then_ShouldBe('navigation/folder/0/specification/0/description',
             'Description of that <em>specification</em>');
     }

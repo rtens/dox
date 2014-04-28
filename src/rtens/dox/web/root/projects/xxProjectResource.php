@@ -47,6 +47,7 @@ class xxProjectResource extends Container {
         $decorate = function ($file, $path) use ($project) {
             $description = $this->parser->getSpecificationDescription(file_get_contents($file));
             $description = strip_tags($this->markdown->text($description), '<strong><em>');
+            $description = nl2br($description);
 
             $summary = $this->report->getStatusSummary($project->getName(), $path);
             return array(
