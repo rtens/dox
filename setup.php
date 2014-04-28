@@ -36,7 +36,7 @@ $commands->add('updateDependencies', new GenericCommand(function () {
 }));
 
 $commands->add('test', GenericCommand::build(function () {
-    system("php vendor/phpunit/phpunit/phpunit.php");
+    system("php vendor/phpunit/phpunit/phpunit.php --log-tap build/report.tap");
 })->setDescription('Runs the test suite.'));
 
 $commands->add('install', new GenericCommand(function (Console $console) {

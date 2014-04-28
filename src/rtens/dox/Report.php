@@ -41,6 +41,7 @@ class Report {
             $this->saveTap($report, $projectName);
         } else {
             $this->logger->log('Failed saving status in [' .  $projectName. ']');
+            $this->logger->log('Received:'. "\n" . $report);
             throw new \Exception('Format not recognized');
         }
     }
@@ -52,6 +53,8 @@ class Report {
 
         $out = array();
         foreach ($lines as $line) {
+            $line = trim($line);
+
             $matches = array();
             if (!preg_match('/^(.+) \d+ - (.* )?(\S+)::(\S+)( .+)?$/', $line, $matches)) {
                 continue;

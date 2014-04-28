@@ -21,17 +21,17 @@ class TestReportTest extends Specification {
 
     public function testPushReportInTapFormat() {
         $this->web->givenTheRequestHasTheBody('
-TAP version 13
-ok 1 - spec/folder/some/folder/SomeSpecificationTest::testSomeScenario
-ok 2 - spec\folder\some\folder\SomeSpecificationTest::testOtherScenario
-not ok 3 - Failure: spec/folder/FailingTest::testBadScenario
-  ---
-  message: \'Some message\'
-  severity: fail
-  ...
-ok 4 - spec/folder/FailingTest::testGoodScenario
-not ok 5 - spec/folder/FailingTest::testPendingScenario # TODO Incomplete Test
-1..5');
+            TAP version 13
+            ok 1 - spec/folder/some/folder/SomeSpecificationTest::testSomeScenario
+            ok 2 - spec\folder\some\folder\SomeSpecificationTest::testOtherScenario
+            not ok 3 - Failure: spec/folder/FailingTest::testBadScenario
+              ---
+              message: \'Some message\'
+              severity: fail
+              ...
+            ok 4 - spec/folder/FailingTest::testGoodScenario
+            not ok 5 - spec/folder/FailingTest::testPendingScenario # TODO Incomplete Test
+            1..5');
         $this->web->whenISendA_RequestTo('post', 'projects/myProject/reports');
 
         $this->web->thenTheResponseShouldBe('OK - report saved for [myProject]');

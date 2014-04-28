@@ -8,9 +8,9 @@ class Logger {
     private $logDir;
 
     public function __construct(Configuration $config) {
-        $logDir = $config->inUserFolder('log');
-        if (!file_exists($logDir)) {
-            mkdir($logDir);
+        $this->logDir = $config->inUserFolder('log');
+        if (!file_exists($this->logDir)) {
+            mkdir($this->logDir);
         }
     }
 
