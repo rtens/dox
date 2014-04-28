@@ -35,9 +35,17 @@ class Project {
         return 'Test';
     }
 
+    public function getScenarioPrefix() {
+        return 'test';
+    }
+
     public function setSpecFolder($relativeToProjectRoot) {
         $this->specFolder = $relativeToProjectRoot;
         return $this;
+    }
+
+    public function getSpecFolder() {
+        return $this->specFolder;
     }
 
     public function getFullProjectFolder() {

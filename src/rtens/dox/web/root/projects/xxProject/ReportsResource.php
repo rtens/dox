@@ -1,22 +1,18 @@
 <?php
 namespace rtens\dox\web\root\projects\xxProject;
 
+use rtens\dox\Report;
 use watoki\curir\http\Request;
 use watoki\curir\resource\DynamicResource;
 use watoki\curir\Responder;
 
 class ReportsResource extends DynamicResource {
 
-    const TAP_VERSION = 'TAP version 13';
+    /** @var Report <- */
+    public $report;
 
-    public function doPost(Request $request) {
-        $body = trim($request->getBody());
-
-        if (substr($body, 0, strlen(self::TAP_VERSION)) == self::TAP_VERSION) {
-
-        } else {
-            throw new \Exception('Format not recognized');
-        }
+    public function doPost($name, Request $request) {
+        $this->report->save(trim($request->getBody()), $name);
     }
 
 } 

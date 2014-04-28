@@ -2,7 +2,10 @@
 namespace spec\rtens\dox\fixtures;
 
 use rtens\dox\Configuration;
+use rtens\dox\Logger;
 use rtens\dox\web\RootResource;
+use rtens\mockster\Mock;
+use rtens\mockster\MockFactory;
 use watoki\curir\http\Path;
 use watoki\curir\http\Request;
 use watoki\curir\http\Response;
@@ -18,6 +21,9 @@ class WebFixture extends Fixture {
     private $format = 'json';
 
     private $body = null;
+
+    /** @var Mock */
+    private $logger;
 
     /** @var null|\Exception */
     private $caught;
@@ -57,6 +63,10 @@ class WebFixture extends Fixture {
     }
 
     public function whenISendA_RequestTo($method, $path) {
+        $mf = new MockFactory();
+        $this->logger = $mf->getMock(Logger::$CLASS);
+        $this->spec->factory->setSingleton(Logger::$CLASS, $this->logger);
+
         /** @var RootResource $root */
         $root = $this->spec->factory->getInstance(RootResource::$CLASS, array(Url::parse('http://dox')));
         $this->response = $root->respond(new Request(Path::parse($path), array($this->format), $method,
@@ -108,6 +118,12 @@ class WebFixture extends Fixture {
 
     public function givenTheRequestHasTheBody($string) {
         $this->body = $string;
+    }
+
+    public function then_ShouldBeLogged($string) {
+        $history = $this->logger->__mock()->method('log')->getHistory();
+        $this->spec->assertTrue($history->wasCalledWith(array($string)),
+            $history->toString());
     }
 
 } 
