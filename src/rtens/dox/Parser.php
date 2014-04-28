@@ -33,6 +33,14 @@ class Parser {
         return $this->parseSpecification($classStmt);
     }
 
+    public function getSpecificationDescription($code) {
+        if (!$code) {
+            return null;
+        }
+        $item = new CommentItem();
+        return $item->copy(array($this->findClassStatement($this->parser->parse($code))))->content;
+    }
+
     /**
      * @param Node|Node[] $in
      * @throws \Exception If class statement cannot be found

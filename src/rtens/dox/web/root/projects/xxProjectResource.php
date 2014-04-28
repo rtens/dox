@@ -78,9 +78,13 @@ class xxProjectResource extends Container {
                     continue;
                 }
 
+                $description = $this->parser->getSpecificationDescription(file_get_contents($file));
+                $description = strip_tags($this->markdown->text($description), '<strong><em>');
+
                 $list[] = array(
                     "name" => $this->parser->uncamelize($name),
-                    "href" => $url
+                    "href" => $url,
+                    "description" => $description
                 );
             }
         }

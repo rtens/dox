@@ -19,7 +19,7 @@ class CommentItem extends Item {
 
     /**
      * @param Node[] $nodes
-     * @return Item
+     * @return CommentItem
      */
     public function copy($nodes) {
         $item = new CommentItem();
@@ -29,9 +29,12 @@ class CommentItem extends Item {
 
     /**
      * @param Comment[] $comments
-     * @return array
+     * @return string
      */
     private function parseComments($comments) {
+        if (!$comments) {
+            return '';
+        }
         $out = array();
         foreach ($comments as $comment) {
             $lines = explode("\n", trim($comment->getText()));

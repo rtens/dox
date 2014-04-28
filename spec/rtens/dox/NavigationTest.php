@@ -77,7 +77,7 @@ class NavigationTest extends Specification {
         $this->web->then_ShouldBe('navigation/specification/1/name', 'Two');
     }
 
-    public function testRenderReadmeInProjectHome() {
+    public function testRenderReadmeInProjectPage() {
         $this->web->givenTheProject('MyProject');
         $this->file->givenTheFile('user/projects/MyProject/spec/OneTest.php');
 
@@ -108,6 +108,29 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile_WithContent('user/projects/NoReadmeCase/Readme', 'Found');
         $this->web->whenIRequestTheResourceAt('projects/NoReadme');
         $this->web->then_ShouldBe('readme', null);
+    }
+
+    public function testShowDescriptionOfSpecificationInProjectHome() {
+        $this->web->givenTheProject('MyProject');
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/OneTest.php', '<?php
+            /**
+             * Description of this *specification*
+             */
+            class OneTest {}
+        ');
+        $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/a/TwoTest.php', '<?php
+            /**
+             * Description of [that](http://example.com) *specification*
+             */
+            class TwoTest {}
+        ');
+
+        $this->web->whenIRequestTheResourceAt('projects/MyProject');
+
+        $this->web->then_ShouldBe('navigation/specification/0/description',
+            'Description of this <em>specification</em>');
+        $this->web->then_ShouldBe('navigation/folder/0/specification/0/description',
+            'Description of that <em>specification</em>');
     }
 
     public function testDeepSpecificationUrl() {
