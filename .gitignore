@@ -4,3 +4,4 @@
 /vendor
 /user
 /.htaccess
+/phpunit.xml
