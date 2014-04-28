@@ -13,6 +13,8 @@ class Project {
 
     private $projectFolder;
 
+    private $description;
+
     function __construct(Configuration $config, $name) {
         $this->config = $config;
         $this->name = $name;
@@ -59,5 +61,20 @@ class Project {
 
     public function getFullSpecFolder() {
         return $this->getFullProjectFolder() . DIRECTORY_SEPARATOR . $this->specFolder;
+    }
+
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+
+    public function getDescription() {
+        $composerFile = $this->getFullProjectFolder() . DIRECTORY_SEPARATOR . 'composer.json';
+        if (file_exists($composerFile)) {
+            $meta = json_decode(file_get_contents($composerFile), true);
+            if (isset($meta['description'])) {
+                return $meta['description'];
+            }
+        }
+        return $this->description;
     }
 }

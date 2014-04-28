@@ -34,6 +34,18 @@ class NavigationTest extends Specification {
         $this->web->then_ShouldBe('project/2/href', 'http://dox/projects/ProjectThree');
     }
 
+    public function testShowProjectDescriptionInProjectList() {
+        $this->web->givenTheProject('SomeProject');
+        $this->file->givenTheFile_WithContent('user/projects/SomeProject/composer.json', '{
+            "name": "Some cool project",
+            "description": "A short description of this project"
+        }');
+
+        $this->web->whenIRequestTheResourceAt('home');
+
+        $this->web->then_ShouldBe('project/0/description', 'A short description of this project');
+    }
+
     public function testNavigationInProjectResource() {
         $this->web->givenTheProject('MyProject');
         $this->file->givenTheFile('user/projects/MyProject/spec/OneTest.php');

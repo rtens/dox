@@ -120,6 +120,10 @@ class WebFixture extends Fixture {
     }
 
     private function trimLines($string) {
+        if (!is_string($string)) {
+            return $string;
+        }
+
         $string = implode("\n", array_map(function ($line) {
             return trim($line);
         }, explode("\n", $string)));

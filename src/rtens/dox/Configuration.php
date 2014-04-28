@@ -28,7 +28,7 @@ class Configuration {
     }
 
     public function getProjects() {
-        return array_keys($this->projects);
+        return $this->projects;
     }
 
     public function inUserFolder($path) {

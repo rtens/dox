@@ -24,8 +24,9 @@ class HomeResource extends Container {
         $projects = array();
         foreach ($this->config->getProjects() as $project) {
             $projects[] = array(
-                'name' => $project,
-                'href' => $this->getParent()->getUrl('projects/' . $project)->toString()
+                'name' => $project->getName(),
+                'href' => $this->getParent()->getUrl('projects/' . $project->getName())->toString(),
+                'description' => $project->getDescription()
             );
         }
         return $projects;
