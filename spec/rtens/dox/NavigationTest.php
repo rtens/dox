@@ -25,22 +25,13 @@ class NavigationTest extends Specification {
 
         $this->web->whenIRequestTheResourceAt('home');
 
-        $this->web->thenTheResponseShouldContain('
-            "project": [
-                {
-                    "name": "ProjectOne",
-                    "href": "http://dox/projects/ProjectOne"
-                },
-                {
-                    "name": "ProjectTwo",
-                    "href": "http://dox/projects/ProjectTwo"
-                },
-                {
-                    "name": "ProjectThree",
-                    "href": "http://dox/projects/ProjectThree"
-                }
-            ]
-        ');
+        $this->web->then_ShouldHaveTheSize('project', 3);
+        $this->web->then_ShouldBe('project/0/name', 'ProjectOne');
+        $this->web->then_ShouldBe('project/0/href', 'http://dox/projects/ProjectOne');
+        $this->web->then_ShouldBe('project/1/name', 'ProjectTwo');
+        $this->web->then_ShouldBe('project/1/href', 'http://dox/projects/ProjectTwo');
+        $this->web->then_ShouldBe('project/2/name', 'ProjectThree');
+        $this->web->then_ShouldBe('project/2/href', 'http://dox/projects/ProjectThree');
     }
 
     public function testNavigationInProjectResource() {
@@ -54,54 +45,24 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile('user/projects/MyProject/spec/c/COneTest.php');
 
         $this->web->whenIRequestTheResourceAt('projects/MyProject');
-        $this->web->thenTheResponseShouldContain('
-            "navigation": {
-                "name": "MyProject",
-                "folder": [
-                    {
-                        "name": "a",
-                        "specification": [
-                            {
-                                "name": "A one",
-                                "href": "http://dox/projects/MyProject/specs/a__AOne"
-                            },
-                            {
-                                "name": "A two",
-                                "href": "http://dox/projects/MyProject/specs/a__ATwo"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "a/b",
-                        "specification": [
-                            {
-                                "name": "A b",
-                                "href": "http://dox/projects/MyProject/specs/a__b__AB"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "c",
-                        "specification": [
-                            {
-                                "name": "C one",
-                                "href": "http://dox/projects/MyProject/specs/c__COne"
-                            }
-                        ]
-                    }
-                ],
-                "specification": [
-                    {
-                        "name": "One",
-                        "href": "http://dox/projects/MyProject/specs/One"
-                    },
-                    {
-                        "name": "Two",
-                        "href": "http://dox/projects/MyProject/specs/Two"
-                    }
-                ]
-            }
-        ');
+
+        $this->web->then_ShouldBe('navigation/name', "MyProject");
+        $this->web->then_ShouldHaveTheSize('navigation/folder', 3);
+
+        $this->web->then_ShouldBe('navigation/folder/0/name', 'a');
+        $this->web->then_ShouldHaveTheSize('navigation/folder/0/specification', 2);
+        $this->web->then_ShouldBe('navigation/folder/0/specification/0/name', 'A one');
+        $this->web->then_ShouldBe('navigation/folder/0/specification/0/href', 'http://dox/projects/MyProject/specs/a__AOne');
+
+        $this->web->then_ShouldBe('navigation/folder/1/name', 'a/b');
+        $this->web->then_ShouldBe('navigation/folder/1/specification/0/href', 'http://dox/projects/MyProject/specs/a__b__AB');
+
+        $this->web->then_ShouldBe('navigation/folder/2/name', 'c');
+
+        $this->web->then_ShouldHaveTheSize('navigation/specification', 2);
+        $this->web->then_ShouldBe('navigation/specification/0/name', 'One');
+        $this->web->then_ShouldBe('navigation/specification/0/href', 'http://dox/projects/MyProject/specs/One');
+        $this->web->then_ShouldBe('navigation/specification/1/name', 'Two');
     }
 
     public function testDeepSpecificationUrl() {
@@ -138,43 +99,19 @@ class NavigationTest extends Specification {
         $this->file->givenTheFile_WithContent('user/projects/MyProject/spec/TwoTest.php', '<?php class TwoTest {}');
 
         $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/One');
-        $this->web->thenTheResponseShouldContain('
-            "navigation": {
-                "name": "MyProject",
-                "folder": [],
-                "specification": [
-                    {
-                        "name": "One",
-                        "href": "http://dox/projects/MyProject/specs/One"
-                    },
-                    {
-                        "name": "Two",
-                        "href": "http://dox/projects/MyProject/specs/Two"
-                    }
-                ]
-            }
-        ');
+        $this->web->then_ShouldHaveTheSize('navigation/folder', 0);
+        $this->web->then_ShouldHaveTheSize('navigation/specification', 2);
     }
 
     public function testSkipEmptyFolders() {
         $this->web->givenTheProject('MyProject');
-        $this->file->givenTheFile('user/projects/MyProject/spec/OneTest.php');
         $this->file->givenTheFile('user/projects/MyProject/spec/a/Ignored.php');
         $this->file->givenTheFile('user/projects/MyProject/spec/a/b/IgnoredAsWell.php');
+        $this->file->givenTheFile('user/projects/MyProject/spec/c/OneTest.php');
 
         $this->web->whenIRequestTheResourceAt('projects/MyProject');
-        $this->web->thenTheResponseShouldContain('
-            "navigation": {
-                "name": "MyProject",
-                "folder": [],
-                "specification": [
-                    {
-                        "name": "One",
-                        "href": "http://dox/projects/MyProject/specs/One"
-                    }
-                ]
-            }
-        ');
+        $this->web->then_ShouldHaveTheSize('navigation/folder', 1);
+        $this->web->then_ShouldBe('navigation/folder/0/name', 'c');
     }
 
     public function testLinkBackInSpecification() {
