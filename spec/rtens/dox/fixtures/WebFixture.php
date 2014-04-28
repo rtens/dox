@@ -100,11 +100,30 @@ class WebFixture extends Fixture {
         $this->spec->assertContains($this->trimLines($string), $this->trimLines($this->response->getBody()));
     }
 
+    public function then_ShouldBe($fieldPath, $value) {
+        $this->spec->assertEquals($this->trimLines($value), $this->trimLines($this->resolve($fieldPath)));
+    }
+
+    public function then_ShouldHaveTheSize($fieldPath, $count) {
+        $this->spec->assertCount($count, $this->resolve($fieldPath));
+    }
+
+    private function resolve($fieldPath) {
+        $model = json_decode($this->response->getBody(), true);
+        foreach (explode('/', $fieldPath) as $field) {
+            if (!array_key_exists($field, $model)) {
+                $this->spec->fail("Could not find [$field] in " . json_encode($model));
+            }
+            $model = $model[$field];
+        }
+        return $model;
+    }
+
     private function trimLines($string) {
         $string = implode("\n", array_map(function ($line) {
             return trim($line);
         }, explode("\n", $string)));
-        return $string;
+        return trim($string);
     }
 
     public function thenIShouldBeRedirectedTo($path) {
@@ -126,4 +145,4 @@ class WebFixture extends Fixture {
             $history->toString());
     }
 
-} 
+}

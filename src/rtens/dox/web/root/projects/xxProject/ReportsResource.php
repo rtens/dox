@@ -11,8 +11,8 @@ class ReportsResource extends DynamicResource {
     /** @var Report <- */
     public $report;
 
-    public function doPost($name, Request $request) {
-        $this->report->save(trim($request->getBody()), $name);
+    public function doPost($projectName, Request $request) {
+        $this->report->save(trim($request->getBody()), $projectName);
     }
 
 } 

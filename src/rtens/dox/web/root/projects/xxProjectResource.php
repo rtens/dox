@@ -23,15 +23,15 @@ class xxProjectResource extends Container {
     public $vcs;
 
     protected function getPlaceholderKey() {
-        return 'name';
+        return 'projectName';
     }
 
-    public function doGet($name) {
-        return new Presenter($this, $this->assembleModel($this->config->getProject($name)));
+    public function doGet($projectName) {
+        return new Presenter($this, $this->assembleModel($this->config->getProject($projectName)));
     }
 
-    public function doPost($name) {
-        $project = $this->config->getProject($name);
+    public function doPost($projectName) {
+        $project = $this->config->getProject($projectName);
         $this->vcs->update($project);
         return 'OK - Updated ' . $project->getName();
     }

@@ -73,13 +73,16 @@ class Parser {
         foreach ($class->stmts as $methodStmt) {
             if ($methodStmt instanceof Node\Stmt\ClassMethod && $methodStmt->isPublic()) {
                 $name = $methodStmt->name;
+                $key = $name;
 
                 $isScenario = substr($name, 0, strlen($this->SCENARIO_PREFIX)) == $this->SCENARIO_PREFIX;
                 if ($isScenario) {
-                    $name = $this->uncamelize(substr($name, strlen($this->SCENARIO_PREFIX)));
+                    $key = substr($name, strlen($this->SCENARIO_PREFIX));
+                    $name = $this->uncamelize($key);
                 }
 
                 $method = new Method($name);
+                $method->key = $key;
 
                 if ($methodStmt->getAttribute('comments')) {
                     $method->description = $this->commentItem->copy(array($methodStmt));

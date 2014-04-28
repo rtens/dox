@@ -9,6 +9,7 @@ use rtens\dox\content\item\StepsItem;
 use rtens\dox\model\Method;
 use rtens\dox\model\Specification;
 use rtens\dox\Reader;
+use rtens\dox\Report;
 use rtens\dox\web\Presenter;
 use rtens\dox\web\root\projects\xxProjectResource;
 use watoki\curir\resource\DynamicResource;
@@ -22,39 +23,43 @@ class xxSpecificationResource extends DynamicResource {
     /** @var \Parsedown <- */
     public $markdown;
 
+    /** @var Report <- */
+    public $report;
+
     protected function getPlaceholderKey() {
         return 'path';
     }
 
-    public function doGet($path) {
-        $project = $this->getProjectResource()->getUrl()->getPath()->get(-1);
-        $reader = new Reader($this->config->getProject($project));
+    public function doGet($projectName, $path) {
+        $reader = new Reader($this->config->getProject($projectName));
         $specification = $reader->readSpecification(str_replace('__', '/', $path));
 
-        return new Presenter($this, $this->assembleModel($specification, $project));
+        return new Presenter($this, $this->assembleModel($specification, $projectName));
     }
 
-    private function assembleModel(Specification $specification, $project) {
+    private function assembleModel(Specification $specification, $projectName) {
         return array(
             'back' => array('href' => $this->getProjectResource()->getUrl()->toString()),
-            'specification' => $this->assembleSpecification($specification),
-            'navigation' => $this->getProjectResource()->assembleNavigation($this->config->getProject($project))
+            'specification' => $this->assembleSpecification($specification, $projectName),
+            'navigation' => $this->getProjectResource()->assembleNavigation($this->config->getProject($projectName))
         );
     }
 
-    private function assembleSpecification(Specification $specification) {
+    private function assembleSpecification(Specification $specification, $projectName) {
         return array(
             'name' => $specification->name,
             'description' => $this->asHtml(array($specification->description)),
-            'scenario' => $this->assembleScenarios($specification),
+            'scenario' => $this->assembleScenarios($specification, $projectName),
             'method' => $this->assembleMethods($specification)
         );
     }
 
-    private function assembleScenarios(Specification $specification) {
+    private function assembleScenarios(Specification $specification, $projectName) {
         $scenarios = array();
         foreach ($specification->scenarios as $scenario) {
-            $scenarios[] = $this->assembleMethod($scenario);
+            $scenarioModel = $this->assembleMethod($scenario);
+            $scenarioModel['status'] = $this->report->getStatus($projectName, $specification->path, $scenario->key);
+            $scenarios[] = $scenarioModel;
         }
         return $scenarios;
     }

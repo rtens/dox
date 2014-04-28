@@ -15,6 +15,9 @@ class Method {
     /** @var null|Content */
     public $content;
 
+    /** @var null|string */
+    public $key;
+
     function __construct($name) {
         $this->name = $name;
     }

@@ -16,6 +16,9 @@ class Specification {
     /** @var array|Method[] */
     public $methods = array();
 
+    /** @var null|string */
+    public $path;
+
     function __construct($name) {
         $this->name = $name;
     }

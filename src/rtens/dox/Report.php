@@ -21,8 +21,13 @@ class Report {
     private $reportCache;
 
     public function getStatus($project, $specification, $scenario) {
+        $reportFile = $this->reportFile($project);
+        if (!file_exists($reportFile)) {
+            return self::STATUS_UNKNOWN;
+        }
+
         if ($this->reportCache === null) {
-            $this->reportCache = json_decode(file_get_contents($this->reportFile($project)), true);
+            $this->reportCache = json_decode(file_get_contents($reportFile), true);
         }
         $key = $specification . '::' . $scenario;
         if (!array_key_exists($key, $this->reportCache)) {

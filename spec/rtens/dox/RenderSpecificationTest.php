@@ -62,26 +62,22 @@ class RenderSpecificationTest extends Specification {
             }'
         );
         $this->web->whenIRequestTheResourceAt('projects/MyProject/specs/Specification');
-        $this->web->thenTheResponseShouldContain('
-            "specification": {
-                "name": "Specification",
-                "description": "<p>This is some <em>description</em></p>",
-                "scenario": [
-                    {
-                        "name": "Some things",
-                        "description": "<p>Description of <em>scenario</em></p>",
-                        "content": "<p>Just <em>some</em> <strong>comment</strong></p>\n<pre><code>$andCode = 1 + 1;</code></pre>"
-                    }
-                ],
-                "method": [
-                    {
-                        "name": "someMethod",
-                        "description": "<p>Method <em>description</em></p>",
-                        "content": "<pre><code>$code = 1;</code></pre>"
-                    }
-                ]
-            }
-        ');
+
+        $this->web->then_ShouldBe('specification/name', 'Specification');
+        $this->web->then_ShouldBe('specification/description', '<p>This is some <em>description</em></p>');
+
+        $this->web->then_ShouldHaveTheSize('specification/scenario', 1);
+        $this->web->then_ShouldBe('specification/scenario/0/name', 'Some things');
+        $this->web->then_ShouldBe('specification/scenario/0/description',
+            '<p>Description of <em>scenario</em></p>');
+        $this->web->then_ShouldBe('specification/scenario/0/content', '
+            <p>Just <em>some</em> <strong>comment</strong></p>
+            <pre><code>$andCode = 1 + 1;</code></pre>');
+
+        $this->web->then_ShouldHaveTheSize('specification/method', 1);
+        $this->web->then_ShouldBe('specification/method/0/name', 'someMethod');
+        $this->web->then_ShouldBe('specification/method/0/description', '<p>Method <em>description</em></p>');
+        $this->web->then_ShouldBe('specification/method/0/content', '<pre><code>$code = 1;</code></pre>');
     }
 
     public function testRenderSteps() {
