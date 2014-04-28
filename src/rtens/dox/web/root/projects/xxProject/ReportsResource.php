@@ -13,6 +13,7 @@ class ReportsResource extends DynamicResource {
 
     public function doPost($projectName, Request $request) {
         $this->report->save(trim($request->getBody()), $projectName);
+        return "OK - report saved for [$projectName]";
     }
 
 } 

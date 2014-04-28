@@ -34,6 +34,8 @@ not ok 5 - spec/folder/FailingTest::testPendingScenario # TODO Incomplete Test
 1..5');
         $this->web->whenISendA_RequestTo('post', 'projects/myProject/reports');
 
+        $this->web->thenTheResponseShouldBe('OK - report saved for [myProject]');
+
         $this->thenScenario_Of_InProject_ShouldBeMarked('SomeScenario', 'some/folder/SomeSpecification', 'myProject', Report::STATUS_PASSING);
         $this->thenScenario_Of_InProject_ShouldBeMarked('OtherScenario', 'some/folder/SomeSpecification', 'myProject', Report::STATUS_PASSING);
         $this->thenScenario_Of_InProject_ShouldBeMarked('BadScenario', 'Failing', 'myProject', Report::STATUS_FAILING);

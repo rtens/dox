@@ -14,6 +14,7 @@ use rtens\dox\web\Presenter;
 use rtens\dox\web\root\projects\xxProjectResource;
 use watoki\curir\resource\DynamicResource;
 use watoki\curir\Responder;
+use watoki\dom\Element;
 
 class xxSpecificationResource extends DynamicResource {
 
@@ -58,7 +59,19 @@ class xxSpecificationResource extends DynamicResource {
         $scenarios = array();
         foreach ($specification->scenarios as $scenario) {
             $scenarioModel = $this->assembleMethod($scenario);
-            $scenarioModel['status'] = $this->report->getStatus($projectName, $specification->path, $scenario->key);
+
+            $status = $this->report->getStatus($projectName, $specification->path, $scenario->key);
+            $scenarioModel['status'] = $status;
+            $scenarioModel['class'] = function (Element $element) use ($status) {
+                $classes = array(
+                    Report::STATUS_FAILING => 'danger',
+                    Report::STATUS_PASSING => 'success',
+                    Report::STATUS_PENDING => 'warning',
+                    Report::STATUS_UNKNOWN => 'default'
+                );
+                return str_replace('default', $classes[$status], $element->getAttribute('class')->getValue());
+            };
+
             $scenarios[] = $scenarioModel;
         }
         return $scenarios;
