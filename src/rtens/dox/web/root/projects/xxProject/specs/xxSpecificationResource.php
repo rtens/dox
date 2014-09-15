@@ -51,8 +51,17 @@ class xxSpecificationResource extends DynamicResource {
             'name' => $specification->name,
             'description' => $this->asHtml(array($specification->description)),
             'scenario' => $this->assembleScenarios($specification, $projectName),
-            'method' => $this->assembleMethods($specification)
+            'method' => $this->assembleMethods($specification),
+            'codeLink' => $this->getCodeLink($specification, $projectName)
         );
+    }
+
+    private function getCodeLink(Specification $specification, $projectName) {
+        $project = $this->config->getProject($projectName);
+        if (!$project->getHosterProjectUrl()) {
+            return null;
+        }
+        return array('href' => $project->getHosterSpecificationUrl($specification));
     }
 
     private function assembleScenarios(Specification $specification, $projectName) {

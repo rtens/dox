@@ -63,8 +63,13 @@ class xxProjectResource extends Container {
             'navigation' => $this->assembleNavigation($project, $decorate),
             'readme' => $readmeText ? array(
                     'text' => $readmeText
-                ) : null
+                ) : null,
+            'codeLink' => $this->getCodeLink($project)
         );
+    }
+
+    private function getCodeLink(Project $project) {
+        return $project->getHosterProjectUrl() ? array('href' => $project->getHosterProjectUrl()) : null;
     }
 
     public function assembleNavigation(Project $project, $specDecorator = null) {

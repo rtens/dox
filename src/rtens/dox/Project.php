@@ -1,6 +1,8 @@
 <?php
 namespace rtens\dox;
 
+use rtens\dox\model\Specification;
+
 class Project {
 
     private $name;
@@ -14,6 +16,8 @@ class Project {
     private $projectFolder;
 
     private $description;
+
+    private $hoster;
 
     function __construct(Configuration $config, $name) {
         $this->config = $config;
@@ -86,4 +90,22 @@ class Project {
         }
         return null;
     }
+
+    public function setHoster($hosterUrl) {
+        $this->hoster = $hosterUrl;
+        return $this;
+    }
+
+    public function getHosterProjectUrl() {
+        return $this->hoster;
+    }
+
+    public function getHosterSpecificationUrl(Specification $specification) {
+        if (!$this->hoster) {
+            return null;
+        }
+        return $this->hoster . '/blob/master/' . $this->specFolder . '/'
+        . $specification->path . $this->getClassSuffix() . '.php';
+    }
+
 }

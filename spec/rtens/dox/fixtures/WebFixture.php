@@ -54,6 +54,10 @@ class WebFixture extends Fixture {
         $this->config()->getProject($project)->setFullProjectFolder($this->file->tmpDir() . '/' . $folder);
     }
 
+    public function givenTheProject_HasTheHoster($project, $string) {
+        $this->config()->getProject($project)->setHoster($string);
+    }
+
     public function whenIRequestTheResourceAt($path) {
         $this->whenISendA_RequestTo(Request::METHOD_GET, $path);
     }
@@ -111,7 +115,7 @@ class WebFixture extends Fixture {
     private function resolve($fieldPath) {
         $model = json_decode($this->response->getBody(), true);
         foreach (explode('/', $fieldPath) as $field) {
-            if (!array_key_exists($field, $model)) {
+            if (!is_array($model) || !array_key_exists($field, $model)) {
                 $this->spec->fail("Could not find [$field] in " . json_encode($model));
             }
             $model = $model[$field];

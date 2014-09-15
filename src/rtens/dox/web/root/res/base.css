@@ -24,17 +24,28 @@ h1 .dox {
     margin-top: 20px;
 }
 
-.github {
-    background-image: url("https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Mark.png");
+.page-header .github {
+    /*position: absolute;*/
+    /*bottom: 15pt;*/
+    /*right: 5pt;*/
     background-size: 40px 40px;
-    background-position: center;
-    display: inline-block;
     width: 30px;
     height: 30px;
-    position: absolute;
-    bottom: 15pt;
-    right: 5pt;
+    margin-top: 1em;
+}
+
+.github {
+    background-image: url("https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Mark.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    background-size: 25px 25px;
+    width: 20px;
+    height: 20px;
     opacity: .6;
+    float: right;
+    margin-top: 10px;
+    margin-right: 5px;
 }
 
 .github:hover {
