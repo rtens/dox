@@ -6,7 +6,7 @@
 
 ## Documentation ##
 
-Of course, *dox* itself is documentad using executable specification. You can find it [here][dox].
+Of course, *dox* itself is documented using executable specification. You can find it [here][dox].
 
 [dox]: http://dox.rtens.org/projects/rtens-dox
 
